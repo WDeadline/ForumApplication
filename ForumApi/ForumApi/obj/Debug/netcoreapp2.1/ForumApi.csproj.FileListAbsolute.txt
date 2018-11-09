@@ -1,0 +1,14 @@
+D:\CTUForum\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.deps.json
+D:\CTUForum\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.runtimeconfig.json
+D:\CTUForum\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.runtimeconfig.dev.json
+D:\CTUForum\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.dll
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.csprojAssemblyReference.cache
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.csproj.CoreCompileInputs.cache
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorAssemblyInfo.cache
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorAssemblyInfo.cs
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.AssemblyInfoInputs.cache
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.AssemblyInfo.cs
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorTargetAssemblyInfo.cache
+D:\CTUForum\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.pdb
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.dll
+D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.pdb
