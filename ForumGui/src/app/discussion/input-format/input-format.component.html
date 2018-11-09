@@ -1,0 +1,6 @@
+<app-ngx-editor [config]="editorConfig"  [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor>
+<!--"-->
+<div *ngIf="htmlContent">
+  <h6>HTML Output</h6>
+    {{ htmlContent }}
+</div>
