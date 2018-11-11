@@ -9,9 +9,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumApi.Authentications
+namespace ForumApi.Services
 {
-    public interface IAuthentication
+    public interface IAuthenticationService
     {
         Task<UserDto> AuthenticateAsync(string usernameOrEmailAddress, string password);
     }

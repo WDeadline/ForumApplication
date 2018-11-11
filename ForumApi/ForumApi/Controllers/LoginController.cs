@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ForumApi.Authentications;
 using ForumApi.Commons;
 using ForumApi.Payloads;
 using ForumApi.Services;
@@ -20,12 +19,12 @@ namespace ForumApi.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ILogger<LoginController> _logger;
-        private readonly IAuthentication _authentication;
+        private readonly IAuthenticationService _authenticationService;
 
-        public LoginController(ILogger<LoginController> logger, IAuthentication authentication)
+        public LoginController(ILogger<LoginController> logger, IAuthenticationService authenticationService)
         {
             _logger = logger;
-            _authentication = authentication;
+            _authenticationService = authenticationService;
         }
 
         // POST: api/login
@@ -34,7 +33,8 @@ namespace ForumApi.Controllers
         {
             string usernameOrEmailAddress = login.UsernameOrEmailAddress.Trim();
             _logger.LogInformation("Login with username or email address is {UsernameOrEmailAddress}", usernameOrEmailAddress);
-            if (usernameOrEmailAddress.IndexOf('@') > -1)
+            bool isEmailAddress = usernameOrEmailAddress.IndexOf('@') > -1;
+            if (isEmailAddress)
             {
                 Regex regex = new Regex(RegexText.EMAILADDRESSREGEX);
                 if (!regex.IsMatch(usernameOrEmailAddress))
@@ -58,12 +58,12 @@ namespace ForumApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _authentication.AuthenticateAsync(usernameOrEmailAddress, login.Password);
+            var user = await _authenticationService.AuthenticateAsync(usernameOrEmailAddress, login.Password);
             if (user == null)
             {
-                if (usernameOrEmailAddress.IndexOf('@') > -1)
+                if (isEmailAddress)
                 {
-                    ModelState.AddModelError("UsernameOrEmailAddress", "EmailAddress or password is incorrect");
+                    ModelState.AddModelError("UsernameOrEmailAddress", "Email address or password is incorrect");
                     _logger.LogError("EmailAddress or password is incorrect");
                 }
                 else

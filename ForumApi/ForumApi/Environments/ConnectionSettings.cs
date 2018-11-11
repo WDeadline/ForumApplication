@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumApi.Environment
+namespace ForumApi.Environments
 {
     public class ConnectionSettings
     {

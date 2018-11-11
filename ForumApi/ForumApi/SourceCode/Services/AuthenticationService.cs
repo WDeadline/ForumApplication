@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using ForumApi.Authentications;
+using ForumApi.Environments;
 using ForumApi.Helpers;
 using ForumApi.Models;
 using ForumApi.Payloads;
 using ForumApi.Repositories;
+using ForumApi.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -14,40 +16,36 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumApi.SourceCode.Authentications
+namespace ForumApi.SourceCode.Services
 {
-    public class AuthenticationService : IAuthentication
+    public class AuthenticationService : IAuthenticationService
     {
-        private readonly ILogger _logger;
-        private readonly IUserRepository _userRepository;
+        private readonly ILogger<AuthenticationService> _logger;
         private readonly IMapper _mapper;
+        private readonly TokenParameterSettings _tokenParameters;
+        private readonly IUserRepository _userRepository;
+        
 
-        public AuthenticationService(ILogger logger, IUserRepository userRepository, IMapper mapper)
+        public AuthenticationService(ILogger<AuthenticationService> logger, IMapper mapper,
+            IOptions<TokenParameterSettings> tokenParameters, IUserRepository userRepository)
         {
             _logger = logger;
             _mapper = mapper;
+            _tokenParameters = tokenParameters.Value;
             _userRepository = userRepository;
-
         }
 
         private string GenerateJSONWebToken(User user)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TokenParameters:SecretKey"));
+            var claims = new List<Claim>();
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenParameters.SecretKey));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(Convert.ToDouble("TokenParameters:Expires"));
-
-            //tecnical debt: add role
-            var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
-                    new Claim(ClaimTypes.Role, "Manager"),
-                    new Claim(ClaimTypes.Role, "Manager"),
-
-                };
+            var expires = DateTime.Now.AddDays(Convert.ToDouble(_tokenParameters.Expires));
+            AddClaimRoles(user, claims);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "TokenParameters:Issuer",
-                audience: "TokenParameters:Audience",
+                issuer: _tokenParameters.Issuer,
+                audience: _tokenParameters.Audience,
                 claims: claims,
                 expires: expires,
                 signingCredentials: signinCredentials
@@ -56,18 +54,33 @@ namespace ForumApi.SourceCode.Authentications
             return new JwtSecurityTokenHandler().WriteToken(tokeOptions);
         }
 
+        private static void AddClaimRoles(User user, List<Claim> claims)
+        {
+            foreach (string role in user.Roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+        }
+
         public async Task<UserDto> AuthenticateAsync(string usernameOrEmailAddress, string password)
         {
             if (string.IsNullOrEmpty(usernameOrEmailAddress) || string.IsNullOrEmpty(password))
+            {
                 return null;
+            }
 
             var user = await _userRepository.GetUserByUsernameOrEmailAddress(usernameOrEmailAddress);
 
             if (user == null)
+            {
                 return null;
+            } 
 
             if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
                 return null;
+            }
+            
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = GenerateJSONWebToken(user);
             return userDto;

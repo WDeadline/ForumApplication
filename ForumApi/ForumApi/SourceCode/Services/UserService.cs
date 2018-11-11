@@ -1,5 +1,6 @@
 ﻿using ForumApi.Helpers;
 using ForumApi.Models;
+using ForumApi.Payloads;
 using ForumApi.Repositories;
 using ForumApi.Services;
 using MongoDB.Bson;
@@ -18,7 +19,10 @@ namespace ForumApi.SourceCode.Services
             _userRepository = userRepository;
         }
 
-        public Task Create(User obj) => _userRepository.Create(obj);
+        public Task Create(User obj)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<bool> Delete(string id) => _userRepository.Delete(new ObjectId(id));
 
@@ -26,20 +30,9 @@ namespace ForumApi.SourceCode.Services
 
         public Task<User> Get(string id) => _userRepository.Get(new ObjectId(id));
 
-        public async Task<User> AuthenticateAsync(string usernameOrEmailAddress, string password)
+        public Task<bool> Register(Register register)
         {
-            if (string.IsNullOrEmpty(usernameOrEmailAddress) || string.IsNullOrEmpty(password))
-                return null;
-
-            var user = await _userRepository.GetUserByUsernameOrEmailAddress(usernameOrEmailAddress);
-
-            if (user == null)
-                return null;
-
-            if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return null;
-
-            return user;
+            throw new NotImplementedException();
         }
 
         public Task<bool> Update(User obj) => _userRepository.Update(obj);

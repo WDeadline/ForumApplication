@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using ForumApi.Contexts;
-using ForumApi.Environment;
+using ForumApi.Environments;
 using ForumApi.Repositories;
 using ForumApi.Services;
 using ForumApi.SourceCode.Contexts;
@@ -39,6 +39,9 @@ namespace ForumApi
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            var tokenParametersSection = Configuration.GetSection("TokenParameters");
+            services.Configure<TokenParameterSettings>(tokenParametersSection);
+            var tokenParameters = tokenParametersSection.Get<TokenParameterSettings>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -51,15 +54,19 @@ namespace ForumApi
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = "TokenParameters:Issuer",
-                    ValidAudience = "TokenParameters:Audience",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TokenParameters:SecretKey"))
+                    ValidIssuer = tokenParameters.Issuer,
+                    ValidAudience = tokenParameters.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenParameters.SecretKey))
                 };
             });
 
+            var connectionSection = Configuration.GetSection("MongoDB");
+            services.Configure<ConnectionSettings>(connectionSection);
+            var connection = tokenParametersSection.Get<ConnectionSettings>();
+
             services.Configure<ConnectionSettings>(options =>{
-                options.ConnectionString = Configuration.GetSection("MongoDB:ConnectionString").Value;
-                options.Database = Configuration.GetSection("MongoDB:Database").Value;
+                options.ConnectionString = connection.ConnectionString;
+                options.Database = connection.Database;
             });
 
             services.AddTransient<IForumDbConnector, ForumDbConnector>();
