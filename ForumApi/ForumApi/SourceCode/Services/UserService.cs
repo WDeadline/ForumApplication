@@ -1,4 +1,5 @@
-﻿using ForumApi.Models;
+﻿using ForumApi.Helpers;
+using ForumApi.Models;
 using ForumApi.Repositories;
 using ForumApi.Services;
 using MongoDB.Bson;
@@ -25,11 +26,21 @@ namespace ForumApi.SourceCode.Services
 
         public Task<User> Get(string id) => _userRepository.Get(new ObjectId(id));
 
-        public Task<User> GetUserByEmailAddress(string emailAddress) =>
-            _userRepository.GetUserByEmailAddress(emailAddress);
+        public async Task<User> AuthenticateAsync(string usernameOrEmailAddress, string password)
+        {
+            if (string.IsNullOrEmpty(usernameOrEmailAddress) || string.IsNullOrEmpty(password))
+                return null;
 
-        public Task<User> GetUserByUsername(string username) =>
-            _userRepository.GetUserByUsername(username);
+            var user = await _userRepository.GetUserByUsernameOrEmailAddress(usernameOrEmailAddress);
+
+            if (user == null)
+                return null;
+
+            if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                return null;
+
+            return user;
+        }
 
         public Task<bool> Update(User obj) => _userRepository.Update(obj);
     }

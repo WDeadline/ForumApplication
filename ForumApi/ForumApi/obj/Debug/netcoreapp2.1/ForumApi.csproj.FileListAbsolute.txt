@@ -12,3 +12,17 @@ D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorTargetAssemb
 D:\CTUForum\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.pdb
 D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.dll
 D:\CTUForum\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.pdb
+D:\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.deps.json
+D:\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.runtimeconfig.json
+D:\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.runtimeconfig.dev.json
+D:\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.dll
+D:\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.pdb
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.csprojAssemblyReference.cache
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.csproj.CoreCompileInputs.cache
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorAssemblyInfo.cache
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorAssemblyInfo.cs
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.AssemblyInfoInputs.cache
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.AssemblyInfo.cs
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorTargetAssemblyInfo.cache
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.dll
+D:\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.pdb

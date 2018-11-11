@@ -9,7 +9,7 @@ namespace ForumApi.Payloads
     public class Login
     {
         [Required]
-        public string UsernameOrEmail { get; set; }
+        public string UsernameOrEmailAddress { get; set; }
 
         [Required]
         public string Password { get; set; }

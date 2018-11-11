@@ -8,7 +8,6 @@ namespace ForumApi.Services
 {
     public interface IUserService : IService<User>
     {
-        Task<User> GetUserByUsername(string username);
-        Task<User> GetUserByEmailAddress(string emailAddress);
+        Task<User> AuthenticateAsync(string usernameOrEmailAddress, string password);
     }
 }

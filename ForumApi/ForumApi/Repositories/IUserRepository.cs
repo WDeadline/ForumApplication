@@ -10,5 +10,6 @@ namespace ForumApi.Repositories
     {
         Task<User> GetUserByUsername(string username);
         Task<User> GetUserByEmailAddress(string emailAddress);
+        Task<User> GetUserByUsernameOrEmailAddress(string usernameOrEmailAddress);
     }
 }

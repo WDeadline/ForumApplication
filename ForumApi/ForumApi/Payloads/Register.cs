@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumApi.Commons;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,16 +9,20 @@ namespace ForumApi.Payloads
 {
     public class Register
     {
-        [Required]
-        public string Name { get; set; }
 
-        [Required, RegularExpression(@"^[a-zA-Z][a-zA-Z0-9]{3,30}$"), StringLength(30)]
+        [Required, MaxLength(25), RegularExpression(RegexText.VIETNAMESEREGEX)]
+        public string FirstName { get; set; }
+
+        [Required, MaxLength(25), RegularExpression(RegexText.VIETNAMESEREGEX)]
+        public string LastName { get; set; }
+
+        [Required, StringLength(30), RegularExpression(RegexText.USERNAMEREGEX)]
         public string Username { get; set; }
 
         [Required, EmailAddress]
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
 
-        [Required, StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
+        [Required]
         public string Password { get; set; }
     }
 }

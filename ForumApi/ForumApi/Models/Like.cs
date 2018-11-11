@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumApi.Environment
+namespace ForumApi.Models
 {
-    public class AuthSettings
+    public class Like
     {
-        public string Token { get; set; }
     }
 }
