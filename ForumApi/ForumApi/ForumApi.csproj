@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exeptions\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

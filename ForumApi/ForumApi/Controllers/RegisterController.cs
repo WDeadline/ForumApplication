@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ForumApi.Exeptions;
 using ForumApi.Payloads;
 using ForumApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -28,8 +29,18 @@ namespace ForumApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Register register)
         {
-            await _registerService.Register(register);
-            return null;
+            try
+            {
+                await _registerService.Register(register);
+            }
+            catch (BadRequestException be)
+            {
+                return BadRequest(new { message = be.Message });
+            }catch (ConflictException ce)
+            {
+                return Conflict(new { message = ce.Message});
+            }
+            return new OkResult();
         }
     }
 }

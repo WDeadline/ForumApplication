@@ -22,32 +22,28 @@ namespace ForumApi.SourceCode.Services
     {
         private readonly ILogger<AuthenticationService> _logger;
         private readonly IMapper _mapper;
-        private readonly TokenParameterSettings _tokenParameters;
         private readonly IUserRepository _userRepository;
         
 
-        public AuthenticationService(ILogger<AuthenticationService> logger, IMapper mapper,
-            IOptions<TokenParameterSettings> tokenParameters, IUserRepository userRepository)
+        public AuthenticationService(ILogger<AuthenticationService> logger, IMapper mapper, IUserRepository userRepository)
         {
             _logger = logger;
             _mapper = mapper;
-            _tokenParameters = tokenParameters.Value;
             _userRepository = userRepository;
         }
 
         private string GenerateJSONWebToken(User user)
         {
             var claims = new List<Claim>();
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenParameters.SecretKey));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TokenParameters:SecretKey"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(Convert.ToDouble(_tokenParameters.Expires));
             AddClaimRoles(user, claims);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: _tokenParameters.Issuer,
-                audience: _tokenParameters.Audience,
+                issuer: "TokenParameters:Issuer",
+                audience: "TokenParameters:Audience",
                 claims: claims,
-                expires: expires,
+                expires: DateTime.UtcNow.AddDays(1),
                 signingCredentials: signinCredentials
             );
 

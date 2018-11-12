@@ -39,7 +39,7 @@ namespace ForumApi.Controllers
                 Regex regex = new Regex(RegexText.EMAILADDRESSREGEX);
                 if (!regex.IsMatch(usernameOrEmailAddress))
                 {
-                    ModelState.AddModelError("UsernameOrEmailAddress", "The Email Address field is not valid.");
+                    ModelState.AddModelError("UsernameOrEmailAddress", "Please enter your email address in format: yourname@example.com");
                     _logger.LogError("The Email Address {EmailAddress} is not valid.", usernameOrEmailAddress);
                 }
             }
@@ -48,7 +48,7 @@ namespace ForumApi.Controllers
                 Regex regex = new Regex(RegexText.USERNAMEREGEX);
                 if (!regex.IsMatch(usernameOrEmailAddress))
                 {
-                    ModelState.AddModelError("UsernameOrEmailAddress", "The Username field is not valid.");
+                    ModelState.AddModelError("UsernameOrEmailAddress", "A username can only contain alphanumeric characters (letters a-Z, numbers 0-9) and cannot be longer than 15 characters.");
                     _logger.LogError("The Username {Username} is not valid.", usernameOrEmailAddress);
                 }
             }
@@ -57,24 +57,31 @@ namespace ForumApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var user = await _authenticationService.AuthenticateAsync(usernameOrEmailAddress, login.Password);
-            if (user == null)
+            try
             {
-                if (isEmailAddress)
+                var user = await _authenticationService.AuthenticateAsync(usernameOrEmailAddress, login.Password);
+                if (user == null)
                 {
-                    ModelState.AddModelError("UsernameOrEmailAddress", "Email address or password is incorrect");
-                    _logger.LogError("EmailAddress or password is incorrect");
+                    if (isEmailAddress)
+                    {
+                        ModelState.AddModelError("UsernameOrEmailAddress", "Your email address and/or password do not match.");
+                        _logger.LogError("EmailAddress and/or password is incorrect");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("UsernameOrEmailAddress", "Your username and/or password do not match.");
+                        _logger.LogError("Username and/or password is incorrect");
+                    }
+                    return BadRequest(ModelState);
                 }
-                else
-                {
-                    ModelState.AddModelError("UsernameOrEmailAddress", "Username or password is incorrect");
-                    _logger.LogError("Username or password is incorrect");
-                }
-                return BadRequest(ModelState);
-            }
 
-            return new ObjectResult(user);
+                return new ObjectResult(user);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            
         }
     }
 }

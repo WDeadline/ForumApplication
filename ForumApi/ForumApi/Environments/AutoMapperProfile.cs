@@ -13,6 +13,9 @@ namespace ForumApi.Environments
         public AutoMapperProfile()
         {
             CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
+            CreateMap<Register, User>();
+            CreateMap<User, Register>();
         }
     }
 }

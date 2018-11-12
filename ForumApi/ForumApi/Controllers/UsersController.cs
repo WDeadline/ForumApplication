@@ -29,7 +29,7 @@ namespace ForumApi.Controllers
         public async Task<IActionResult> Get()
         {
             _logger.LogError("Dit me may");
-            return new ObjectResult(await _userService.Get());
+            return new OkObjectResult(await _userService.Get());
         }
         // GET: api/users/id
         [HttpGet("{id:length(24)}")]
@@ -38,7 +38,7 @@ namespace ForumApi.Controllers
             var user = await _userService.Get(id);
             if (user == null)
                 return new NotFoundResult();
-            return new ObjectResult(user);
+            return new OkObjectResult(user);
         }
         // POST: api/users
         [HttpPost]

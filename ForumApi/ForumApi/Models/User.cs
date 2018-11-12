@@ -17,7 +17,11 @@ namespace ForumApi.Models
         public string EmailAddress { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        [BsonDateTimeOptions]
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        [BsonDateTimeOptions]
+        public DateTime UpdatedOn { get; set; } = DateTime.Now;
+        public bool Active { get; set; } = true;
         public IEnumerable<string> Roles { get; set; }
-        public bool Active { get; set; }
     }
 }
