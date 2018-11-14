@@ -33,12 +33,15 @@ namespace ForumApi.Controllers
             {
                 await _registerService.Register(register);
             }
-            catch (BadRequestException be)
+            catch (ConflictException e)
             {
-                return BadRequest(new { message = be.Message });
-            }catch (ConflictException ce)
-            {
-                return Conflict(new { message = ce.Message});
+                string message = e.Message;
+                bool isEmailAddress = message.IndexOf('@') > -1;
+                if (isEmailAddress)
+                {
+                    return Conflict(new { EmailAddress = message });
+                }
+                return Conflict(new { Username = message });
             }
             return new OkResult();
         }

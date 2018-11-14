@@ -8,8 +8,8 @@ namespace ForumApi.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<User> GetUserByUsername(string username);
-        Task<User> GetUserByEmailAddress(string emailAddress);
-        Task<User> GetUserByUsernameOrEmailAddress(string usernameOrEmailAddress);
+        Task<User> GetUserByUsernameAsync(string username);
+        Task<User> GetUserByEmailAddressAsync(string emailAddress);
+        Task<User> GetUserByUsernameOrEmailAddressAsync(string usernameOrEmailAddress);
     }
 }

@@ -38,7 +38,7 @@ namespace ForumApi
         {
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -83,7 +83,7 @@ namespace ForumApi
 
             app.UseAuthentication();
             app.UseCors(builder => builder
-                .AllowAnyOrigin()
+                .WithOrigins("**")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

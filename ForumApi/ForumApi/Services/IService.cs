@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ForumApi.Services
 {
     public interface IService<T>
     {
-        Task<IEnumerable<T>> Get();
-        Task<T> Get(string id);
-        Task Create(T obj);
-        Task<bool> Update(T obj);
-        Task<bool> Delete(string id);
+        Task AddAsync(T entity);
+        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(Expression<Func<T, bool>> where);
+        Task<bool> UpdateAsync(T entity);
+        Task<T> GetByIdAsync(string id);
+        Task<T> GetAsync(Expression<Func<T, bool>> where);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetManyAsync(Expression<Func<T, bool>> where);
     }
 }

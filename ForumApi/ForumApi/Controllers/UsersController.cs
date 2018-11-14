@@ -28,14 +28,13 @@ namespace ForumApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            _logger.LogError("Dit me may");
-            return new OkObjectResult(await _userService.Get());
+            return new OkObjectResult(await _userService.GetAllAsync());
         }
         // GET: api/users/id
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {
-            var user = await _userService.Get(id);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null)
                 return new NotFoundResult();
             return new OkObjectResult(user);
@@ -44,28 +43,28 @@ namespace ForumApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]User user)
         {
-            await _userService.Create(user);
+            await _userService.AddAsync(user);
             return new OkObjectResult(user);
         }
         // PUT: api/users/5
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Put(string id, [FromBody]User user)
         {
-            var userFromDb = await _userService.Get(id);
+            var userFromDb = await _userService.GetByIdAsync(id);
             if (userFromDb == null)
                 return new NotFoundResult();
             user.Id = userFromDb.Id;
-            await _userService.Update(user);
+            await _userService.AddAsync(user);
             return new OkObjectResult(user);
         }
         // DELETE: api/users/5
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var userFromDb = await _userService.Get(id);
+            var userFromDb = await _userService.GetByIdAsync(id);
             if (userFromDb == null)
                 return new NotFoundResult();
-            await _userService.Delete(id);
+            await _userService.DeleteAsync(id);
             return new OkResult();
         }
     }

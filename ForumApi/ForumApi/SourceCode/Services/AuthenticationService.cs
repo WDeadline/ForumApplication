@@ -34,10 +34,14 @@ namespace ForumApi.SourceCode.Services
 
         private string GenerateJSONWebToken(User user)
         {
-            var claims = new List<Claim>();
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TokenParameters:SecretKey"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            AddClaimRoles(user, claims);
+            List<Claim> claims = new List<Claim>(){
+                new Claim(ClaimTypes.Email, user.EmailAddress),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.DateOfBirth, user.CreationTime.ToLongDateString())
+            };
+            AddClaimRoles(user.Roles, claims);
 
             var tokeOptions = new JwtSecurityToken(
                 issuer: "TokenParameters:Issuer",
@@ -50,9 +54,9 @@ namespace ForumApi.SourceCode.Services
             return new JwtSecurityTokenHandler().WriteToken(tokeOptions);
         }
 
-        private static void AddClaimRoles(User user, List<Claim> claims)
+        private static void AddClaimRoles(IEnumerable<string> roles, List<Claim> claims)
         {
-            foreach (string role in user.Roles)
+            foreach (string role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
@@ -60,26 +64,34 @@ namespace ForumApi.SourceCode.Services
 
         public async Task<UserDto> AuthenticateAsync(string usernameOrEmailAddress, string password)
         {
-            if (string.IsNullOrEmpty(usernameOrEmailAddress) || string.IsNullOrEmpty(password))
+            try
             {
-                return null;
+                if (string.IsNullOrEmpty(usernameOrEmailAddress) || string.IsNullOrEmpty(password))
+                {
+                    return null;
+                }
+
+                var user = await _userRepository.GetUserByUsernameOrEmailAddressAsync(usernameOrEmailAddress);
+
+                if (user == null)
+                {
+                    return null;
+                }
+
+                if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                {
+                    return null;
+                }
+
+                var userDto = _mapper.Map<UserDto>(user);
+                userDto.Token = GenerateJSONWebToken(user);
+                return userDto;
             }
-
-            var user = await _userRepository.GetUserByUsernameOrEmailAddress(usernameOrEmailAddress);
-
-            if (user == null)
+            catch (Exception e)
             {
-                return null;
-            } 
-
-            if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            {
-                return null;
+                _logger.LogError(e, e.Message, usernameOrEmailAddress);
+                throw e;
             }
-            
-            var userDto = _mapper.Map<UserDto>(user);
-            userDto.Token = GenerateJSONWebToken(user);
-            return userDto;
         }
     }
 }

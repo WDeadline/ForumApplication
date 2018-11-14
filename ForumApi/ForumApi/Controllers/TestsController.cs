@@ -19,7 +19,7 @@ namespace ForumApi.Controllers
         [HttpGet, Route("student")]
         public IActionResult Student()
         {
-            return new OkResult();
+            return new OkObjectResult(new List<object> { new { Name = "Thanh", Discription = ""}, new { Name = "Student"} });
         }
 
         // GET api/tests/teacher
@@ -27,7 +27,7 @@ namespace ForumApi.Controllers
         [HttpGet, Route("teacher")]
         public IActionResult Teacher()
         {
-            return new OkResult();
+            return new OkObjectResult(new List<object> { new { Name = "Thanh" }, new { Name = "Cong" } });
         }
 
         // GET api/tests/admin
@@ -35,7 +35,7 @@ namespace ForumApi.Controllers
         [HttpGet, Route("admin")]
         public IActionResult Admin()
         {
-            return new OkResult();
+            return new OkObjectResult(new List<object> { new { Name = "Thanh" }, new { Name = "Admin" } });
         }
 
         // GET api/tests/anonymous
@@ -43,7 +43,7 @@ namespace ForumApi.Controllers
         [HttpGet, Route("authorize")]
         public IActionResult Authorizes()
         {
-            return new OkResult();
+            return new OkObjectResult(new List<object> { new { Name = "Thanh" }, new { Name = "Authorize" } });
         }
 
 
@@ -52,7 +52,7 @@ namespace ForumApi.Controllers
         [HttpGet, Route("anonymous")]
         public IActionResult Anonymous()
         {
-            return new OkResult();
+            return new OkObjectResult(new List<object> { new { Name = "Thanh" }, new { Name = "Anonymous" } });
         }
     }
 }

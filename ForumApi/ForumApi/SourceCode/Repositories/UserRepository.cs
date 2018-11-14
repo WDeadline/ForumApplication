@@ -2,11 +2,11 @@
 using ForumApi.Models;
 using ForumApi.Repositories;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ForumApi.SourceCode.Repositories
@@ -22,16 +22,50 @@ namespace ForumApi.SourceCode.Repositories
             _db = db;
         }
 
-        public async Task Create(User obj) => await _db.Users.InsertOneAsync(obj);
-
-        public async Task<bool> Delete(ObjectId id)
+        public Task AddAsync(User entity)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Id, id);
-            DeleteResult deleteResult = await _db.Users.DeleteOneAsync(filter);
-            return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
+            try
+            {
+                return _db.Users.InsertOneAsync(entity);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, entity);
+                throw e;
+            }
         }
 
-        public async Task<IEnumerable<User>> Get()
+        public async Task<bool> DeleteAsync(string id)
+        {
+            try
+            {
+                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Id, id);
+                DeleteResult deleteResult = await _db.Users.DeleteOneAsync(filter);
+                return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, id);
+                throw e;
+            }
+        }
+
+        public async Task<bool> DeleteAsync(Expression<Func<User, bool>> where)
+        {
+            try
+            {
+                FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
+                DeleteResult deleteResult = await _db.Users.DeleteManyAsync(filter);
+                return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                throw e;
+            }
+        }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
             try
             {
@@ -39,49 +73,116 @@ namespace ForumApi.SourceCode.Repositories
             }
             catch (Exception e)
             {
+                _logger.LogError(e, e.Message);
                 throw e;
             }
         }
 
-        public Task<User> Get(ObjectId id)
-        {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Id, id);
-            return _db.Users.Find(filter).FirstOrDefaultAsync();
-        }
-
-        public Task<User> GetUserByEmailAddress(string emailAddress)
-        {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.EmailAddress, emailAddress);
-            return _db.Users.Find(filter).FirstOrDefaultAsync();
-        }
-
-        public Task<User> GetUserByUsername(string username)
-        {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Username, username);
-            return _db.Users.Find(filter).FirstOrDefaultAsync();
-        }
-
-        public Task<User> GetUserByUsernameOrEmailAddress(string usernameOrEmailAddress)
+        public async Task<User> GetAsync(Expression<Func<User, bool>> where)
         {
             try
             {
-                FilterDefinition<User> filter = Builders<User>.Filter.Or(
-                    Builders<User>.Filter.Eq(u => u.Username, usernameOrEmailAddress),
-                    Builders<User>.Filter.Eq(u => u.EmailAddress, usernameOrEmailAddress)
-                );
-                return _db.Users.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
+                return await _db.Users.Find(filter).FirstOrDefaultAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
+                _logger.LogError(e, e.Message);
                 throw e;
             }
         }
 
-        public async Task<bool> Update(User obj)
+        public async Task<User> GetByIdAsync(string id)
         {
-            ReplaceOneResult updateResult = 
-                await _db.Users.ReplaceOneAsync(filter: g => g.Id == obj.Id,replacement: obj);
-            return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+            try
+            {
+                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Id, id);
+                return await _db.Users.Find(filter).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, id);
+                throw e;
+            }
+
+            
+        }
+
+        public async Task<IEnumerable<User>> GetManyAsync(Expression<Func<User, bool>> where)
+        {
+            try
+            {
+                FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
+                return await _db.Users.Find(filter).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                throw e;
+            }
+        }
+
+        public Task<User> GetUserByEmailAddressAsync(string emailAddress)
+        {
+            try
+            {
+                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.EmailAddress, emailAddress);
+                return _db.Users.Find(filter).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, emailAddress);
+                throw e;
+            }
+        }
+
+        public Task<User> GetUserByUsernameAsync(string username)
+        {
+            try
+            {
+                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Username, username);
+                return _db.Users.Find(filter).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, username);
+                throw e;
+            }
+        }
+
+        public Task<User> GetUserByUsernameOrEmailAddressAsync(string usernameOrEmailAddress)
+        {
+            try
+            {
+                FilterDefinition<User> filter = Builders<User>.Filter.And(
+                    Builders<User>.Filter.Or(
+                        Builders<User>.Filter.Eq(u => u.Username, usernameOrEmailAddress),
+                        Builders<User>.Filter.Eq(u => u.EmailAddress, usernameOrEmailAddress)
+                    ),
+                    Builders<User>.Filter.Eq(u => u.Active, true)
+                );
+                return _db.Users.Find(filter).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, usernameOrEmailAddress);
+                throw e;
+            }
+        }
+
+        public async Task<bool> UpdateAsync(User entity)
+        {
+            try
+            {
+                ReplaceOneResult updateResult = await _db.Users
+                    .ReplaceOneAsync(filter: g => g.Id == entity.Id, replacement: entity);
+                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, entity);
+                throw e;
+            }
         }
     }
 }

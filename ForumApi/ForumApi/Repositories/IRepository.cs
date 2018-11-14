@@ -1,17 +1,20 @@
-﻿using MongoDB.Bson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ForumApi.Repositories
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> Get();
-        Task<T> Get(ObjectId id);
-        Task Create(T obj);
-        Task<bool> Update(T obj);
-        Task<bool> Delete(ObjectId id);
+        Task AddAsync(T entity);
+        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(Expression<Func<T, bool>> where);
+        Task<bool> UpdateAsync(T entity);
+        Task<T> GetByIdAsync(string id);
+        Task<T> GetAsync(Expression<Func<T, bool>> where);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetManyAsync(Expression<Func<T, bool>> where);
     }
 }

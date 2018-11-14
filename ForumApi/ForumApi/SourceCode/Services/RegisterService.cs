@@ -25,40 +25,33 @@ namespace ForumApi.SourceCode.Services
             _userRepository = userRepository;
            
         }
+
         public async Task<bool> Register(Register register)
         {
-            if(register == null)
-            {
-                throw new BadRequestException("Please enter your Account.");
-            }
-
-            if (string.IsNullOrWhiteSpace(register.Password))
-            {
-                throw new BadRequestException("Please enter your password.");
-            }
-            
-            if (await _userRepository.GetUserByEmailAddress(register.Username) != null)
-            {
-                throw new ConflictException("Sorry, A account with the username {0} already exists.", register.Username);
-            }
-            if (await _userRepository.GetUserByEmailAddress(register.EmailAddress) != null)
-            {
-                throw new ConflictException("Sorry, A account with the email address {0} already exists.", register.EmailAddress);
-            }
-
-            byte[] passwordHash, passwordSalt;
-            PasswordManager.CreatePasswordHash(register.Password, out passwordHash, out passwordSalt);
-            var user = _mapper.Map<User>(register);
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            user.Roles = new List<string> { "Student" };
             try
             {
-                await _userRepository.Create(user);
+                if (await _userRepository.GetUserByUsernameAsync(register.Username) != null)
+                {
+                    throw new ConflictException("Sorry, A account with the username {0} already exists.", register.Username);
+                }
+
+                if (await _userRepository.GetUserByEmailAddressAsync(register.EmailAddress) != null)
+                {
+                    throw new ConflictException("Sorry, A account with the email address {0} already exists.", register.EmailAddress);
+                }
+
+                byte[] passwordHash, passwordSalt;
+                PasswordManager.CreatePasswordHash(register.Password, out passwordHash, out passwordSalt);
+                User user = _mapper.Map<User>(register);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                user.Roles = new List<string> { "Student" };
+                await _userRepository.AddAsync(user);
                 return true;
             }
             catch (Exception e)
             {
+                _logger.LogError(e, e.Message, register);
                 throw e;
             }
         }
