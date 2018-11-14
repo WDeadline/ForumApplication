@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <h1>Question</h1>
+    <h3>Tilte</h3>
+    <p>question content </p>
+    <div class="row">
+        <div class="col-md-1">
+            <a href="#">
+              <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png" alt="...">
+            </a>
+      </div>
+        <div class="col-md-11">
+          <div class="panel panel-default">
+              <div class="panel-heading">Panel heading without title</div>
+              <div class="panel-body">
+                Panel content
+              </div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-1">
+          <a href="#">
+              <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png" alt="...">
+          </a>
+      </div>
+      <div class="col-md-10">
+          <div class="panel panel-default">
+              <div class="panel-heading">Panel heading without title</div>
+              <div class="panel-body">
+                Panel content
+              </div>
+          </div>
+          <a>add comment</a>
+          <div class="form-group">
+              <label for="comment">Comment:</label>
+              <textarea class="form-control" rows="5" id="comment"></textarea>
+          </div>
+      </div>
+    </div>
+    <hr>
+    <h5>Anwers</h5>
+    <app-ngx-editor [config]="editorConfig"  [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor>
+  </div>
+  <div class="col-md-1"></div>
+</div>

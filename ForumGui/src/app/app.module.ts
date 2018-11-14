@@ -16,10 +16,16 @@ import { ProfileEditComponent } from './user/profile-edit/profile-edit.component
 import { ConfigService } from './discussion/config.service';
 import { InputFormatComponent } from './discussion/input-format/input-format.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgxEditorModule } from 'ngx-editor';
+import { QuestionMakeComponent } from './discussion/question-make/question-make.component';
+import { QuestionShowComponent } from './discussion/question-show/question-show.component';
 
+import { ReactiveFormsModule }    from '@angular/forms';
+import { ErrorInterceptor } from './authentication/helper/error.interceptor';
+import { JwtInterceptor } from './authentication/helper/jwt.interceptor';
+import { TestComponent } from './test/test.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,15 +39,24 @@ import { NgxEditorModule } from 'ngx-editor';
     ProfileComponent,
     ProfileEditComponent,
     InputFormatComponent,
+    QuestionMakeComponent,
+    QuestionShowComponent,
+    TestComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgxEditorModule
+    NgxEditorModule,
+    ReactiveFormsModule
   ],
-  providers: [ConfigService],
+  providers: [
+    ConfigService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
