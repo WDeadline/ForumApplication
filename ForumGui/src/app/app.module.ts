@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './share/header/header.component';
-import { FooterComponent } from './share/footer/footer.component';
-import { LeftMenuComponent } from './share/left-menu/left-menu.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { HomeContentComponent } from './home-content/home-content.component';
 import { RegisterComponent } from './authentication/register/register.component';
@@ -26,6 +26,7 @@ import { ReactiveFormsModule }    from '@angular/forms';
 import { ErrorInterceptor } from './authentication/helper/error.interceptor';
 import { JwtInterceptor } from './authentication/helper/jwt.interceptor';
 import { TestComponent } from './test/test.component';
+import { CookieService } from 'ngx-cookie-service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,7 @@ import { TestComponent } from './test/test.component';
   ],
   providers: [
     ConfigService,
+    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

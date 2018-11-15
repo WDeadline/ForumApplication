@@ -3,12 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../service/authentication.service';
-
-//import { Cookie } from 'ng2-cookies';
+import {CurrentUserInfo} from '../model/current-user-info';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
 
@@ -16,10 +15,10 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error = '';
+  error : [];
   isEmailAddress = true;
   patternUsernameOrEmail = '^(([a-zA-Z0-9]{3,15})|([a-zA-Z0-9]{1,}[a-zA-Z0-9.+-]{0,}@[a-zA-Z0-9-]{2,}([.][a-zA-Z]{2,}|[.][a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,}|[.][a-zA-Z0-9-]{2,}[.][a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,})))$';
-
+  currentUserInfo: CurrentUserInfo = new CurrentUserInfo();
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -34,9 +33,6 @@ export class LoginComponent implements OnInit {
           password: ['',[Validators.required, Validators.pattern('^([a-zA-Z0-9]+[^]{3,15})$')]],
           
       });
-
-      // reset login status
-      this.authenticationService.logout();
 
       // get return url from route parameters or default to '/'
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -59,19 +55,29 @@ export class LoginComponent implements OnInit {
           .pipe(first())
           .subscribe(            
               data => {
-                  //Cookie.set('accessCookie', this.userInfo.accessToken, 0.5);
-                  this.router.navigate([this.returnUrl]);
+                    if(data != null){
+                        this.currentUserInfo = data;
+                        this.currentUserInfo.roles.forEach( role => {
+                            {
+                                if(role === 'Admin')
+                                {
+                                   this.router.navigate(['/home']);
+
+                                }
+                                else{
+                                    this.router.navigate(['/register'])
+                                }
+                            }
+                        });
+                        localStorage.setItem('userRole', this.currentUserInfo.roles[0]);
+                    }
+                  //this.cookie.set('accessCookie', this.curentUserInfo.token, 0.5);
+                  //this.router.navigate([this.returnUrl]);
               },
               error => {
-                  console.log("error: "+ error);
-                  if(error == 'Bad Request'){
-                    this.error = "Your username and/or password do not match";
-                  }
-                  else{
-                    this.error = error;
-                    this.error
-                  }
+                  this.error = this.authenticationService.getErrorLogin(error);
                   this.loading = false;
+                  
               });
     }
 

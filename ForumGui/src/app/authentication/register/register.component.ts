@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../service/authentication.service';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -53,19 +54,12 @@ export class RegisterComponent implements OnInit {
         .pipe(first())
           .subscribe(
             data => {
-              //Cookie.set('accessCookie', this.userInfo.accessToken, 0.5);
-              this.router.navigate(['/register']);
+              //this.cookieService.set('accessCookie', this.currentUserInfo.accessToken, 0.5);
+              this.router.navigate(['/home']);
               this.loading = false;
           },
           error => {
               console.log("error: "+ error);
-              if(error == 'Conflict'){
-                  this.error = "Your username and/or password do not match";
-              }
-              else{
-                this.error = error;
-                this.error
-              }
               this.loading = false;
           });
   }
