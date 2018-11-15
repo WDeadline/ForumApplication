@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using ForumApi.Exeptions;
-using ForumApi.Helpers;
+﻿using ForumApi.Helpers;
 using ForumApi.Models;
 using ForumApi.Payloads;
 using ForumApi.Repositories;
@@ -16,36 +14,40 @@ namespace ForumApi.SourceCode.Services
     public class RegisterService : IRegisterService
     {
         private readonly ILogger<RegisterService> _logger;
-        private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        public RegisterService(ILogger<RegisterService> logger, IMapper mapper, IUserRepository userRepository)
+        public RegisterService(ILogger<RegisterService> logger, IUserRepository userRepository)
         {
             _logger = logger;
-            _mapper = mapper;
             _userRepository = userRepository;
-           
         }
 
-        public async Task<bool> Register(Register register)
+        public async Task<bool> IsExistedEmailAddressAsync(string emailAddress)
+        {
+            var user = await _userRepository.GetUserByEmailAddressAsync(emailAddress);
+            return (user != null);
+        }
+
+        public async Task<bool> IsExistedUsernameAsync(string username)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            return (user != null);
+        }
+
+        public async Task<bool> RegisterAsync(Register register)
         {
             try
             {
-                if (await _userRepository.GetUserByUsernameAsync(register.Username) != null)
+                PasswordManager.CreatePasswordHash(register.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                User user = new User
                 {
-                    throw new ConflictException("Sorry, A account with the username {0} already exists.", register.Username);
-                }
-
-                if (await _userRepository.GetUserByEmailAddressAsync(register.EmailAddress) != null)
-                {
-                    throw new ConflictException("Sorry, A account with the email address {0} already exists.", register.EmailAddress);
-                }
-
-                byte[] passwordHash, passwordSalt;
-                PasswordManager.CreatePasswordHash(register.Password, out passwordHash, out passwordSalt);
-                User user = _mapper.Map<User>(register);
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
-                user.Roles = new List<string> { "Student" };
+                    FirstName = register.FirstName.Trim(),
+                    LastName = register.LastName.Trim(),
+                    Username = register.Username,
+                    EmailAddress = register.EmailAddress,
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
+                    Roles = new List<string> { "Student" }
+                };
                 await _userRepository.AddAsync(user);
                 return true;
             }

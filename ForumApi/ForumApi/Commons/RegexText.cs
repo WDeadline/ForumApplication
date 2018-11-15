@@ -14,6 +14,9 @@ namespace ForumApi.Commons
         public const string USERNAMEREGEX = @"^[a-zA-Z][a-zA-Z0-9]{2,30}$";
 
         //tecnical debt: "I don't know the regex text for vietnamese"
-        public const string VIETNAMESEREGEX = @"^[a-zA-ZáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰ ]+$";
+        public const string VIETNAMESEREGEX = @"^[a-zA-Záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệđíìỉĩị" +
+                                              @"óòỏõọôốồổỗộơớờởỡợúùủũụưứừửữự" +
+                                              @"ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆĐÍÌỈĨỊ" +
+                                              @"ÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰ ]+$";
     }
 }

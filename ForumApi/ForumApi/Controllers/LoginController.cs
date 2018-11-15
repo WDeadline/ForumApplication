@@ -34,7 +34,7 @@ namespace ForumApi.Controllers
             try
             {
                 string usernameOrEmailAddress = login.UsernameOrEmailAddress.Trim();
-                _logger.LogInformation("Login with username or email address is {0}", usernameOrEmailAddress);
+                _logger.LogInformation("Login with Username or EmailAddress is \"{0}\"", usernameOrEmailAddress);
 
                 ValidateUsernameOrEmaillAddress(usernameOrEmailAddress);
                 if (!ModelState.IsValid)
@@ -86,7 +86,7 @@ namespace ForumApi.Controllers
             Regex regex = new Regex(RegexText.USERNAMEREGEX);
             if (!regex.IsMatch(username))
             {
-                ModelState.AddModelError("UsernameOrEmailAddress", "A username can only contain alphanumeric characters (letters a-Z, numbers 0-9) and cannot be longer than 15 characters.");
+                ModelState.AddModelError("UsernameOrEmailAddress", "A username can only contain alphanumeric characters (letters a-Z, numbers 0-9) and cannot be longer than 20 characters.");
                 _logger.LogError("The Username {Username} is not valid.", username);
             }
         }

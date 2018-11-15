@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using ForumApi.Environments;
-using ForumApi.Helpers;
+﻿using ForumApi.Helpers;
 using ForumApi.Models;
 using ForumApi.Payloads;
 using ForumApi.Repositories;
 using ForumApi.Services;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -21,14 +18,11 @@ namespace ForumApi.SourceCode.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly ILogger<AuthenticationService> _logger;
-        private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         
-
-        public AuthenticationService(ILogger<AuthenticationService> logger, IMapper mapper, IUserRepository userRepository)
+        public AuthenticationService(ILogger<AuthenticationService> logger, IUserRepository userRepository)
         {
             _logger = logger;
-            _mapper = mapper;
             _userRepository = userRepository;
         }
 
@@ -66,11 +60,6 @@ namespace ForumApi.SourceCode.Services
         {
             try
             {
-                if (string.IsNullOrEmpty(usernameOrEmailAddress) || string.IsNullOrEmpty(password))
-                {
-                    return null;
-                }
-
                 var user = await _userRepository.GetUserByUsernameOrEmailAddressAsync(usernameOrEmailAddress);
 
                 if (user == null)
@@ -82,10 +71,16 @@ namespace ForumApi.SourceCode.Services
                 {
                     return null;
                 }
-
-                var userDto = _mapper.Map<UserDto>(user);
-                userDto.Token = GenerateJSONWebToken(user);
-                return userDto;
+                var dto = new UserDto {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.Username,
+                    EmailAddress = user.EmailAddress,
+                    Roles = user.Roles,
+                    Token = GenerateJSONWebToken(user)
+                };
+                return dto;
             }
             catch (Exception e)
             {

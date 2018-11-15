@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ForumApi.Exeptions;
 using ForumApi.Payloads;
 using ForumApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -31,19 +30,41 @@ namespace ForumApi.Controllers
         {
             try
             {
-                await _registerService.Register(register);
-            }
-            catch (ConflictException e)
-            {
-                string message = e.Message;
-                bool isEmailAddress = message.IndexOf('@') > -1;
-                if (isEmailAddress)
+                _logger.LogInformation("Register with username \"{0}\" and email address \"{1}\"", register.Username, register.EmailAddress);
+                await CheckUniqueEmailAddressAsync(register.EmailAddress.Trim());
+                await CheckUniqueUsername(register.Username.Trim());
+                if (!ModelState.IsValid)
                 {
-                    return Conflict(new { EmailAddress = message });
+                    return Conflict(ModelState);
                 }
-                return Conflict(new { Username = message });
+                await _registerService.RegisterAsync(register);
+                return new OkResult();
             }
-            return new OkResult();
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, register);
+                throw e;
+            }
+        }
+
+        private async Task CheckUniqueEmailAddressAsync(string emailAddress)
+        {
+            bool isExistedEmailAddress = await _registerService.IsExistedEmailAddressAsync(emailAddress);
+            if (isExistedEmailAddress)
+            {
+                ModelState.AddModelError("EmailAddress", "Sorry, A account with the email address \"" + emailAddress + "\" already exists.");
+                _logger.LogError("A account with the email address \"" + emailAddress + "\" already exists.");
+            }
+        }
+
+        private async Task CheckUniqueUsername(string username)
+        {
+            bool isExistedUsername = await _registerService.IsExistedUsernameAsync(username);
+            if (isExistedUsername)
+            {
+                ModelState.AddModelError("Username", "Sorry, A account with the username \"" + username + "\" already exists.");
+                _logger.LogError("A account with the username \"" + username + "\" already exists.");
+            }
         }
     }
 }
