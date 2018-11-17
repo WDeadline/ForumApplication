@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumApi.Contexts;
 using ForumApi.Environments;
+using ForumApi.Interfaces.Contexts;
+using ForumApi.Interfaces.Repositories;
+using ForumApi.Interfaces.Services;
 using ForumApi.Repositories;
 using ForumApi.Services;
-using ForumApi.SourceCode.Contexts;
-using ForumApi.SourceCode.Repositories;
 using ForumApi.SourceCode.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +37,36 @@ namespace ForumApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddCors();
+
+            string origins = Configuration.GetSection("AllowedOrigins").Value;
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins(origins)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
+            services.Configure<ConnectionSettings>(options => {
+                options.ConnectionString = Configuration.GetSection("ForumDbContext:ConnectionString").Value;
+                options.Database = Configuration.GetSection("ForumDbContext:Database").Value;
+            });
+
+            JwtTokenSettings jwtToken = new JwtTokenSettings {
+                Issuer = Configuration.GetSection("JwtTokenParameter:Issuer").Value,
+                Audience = Configuration.GetSection("JwtTokenParameter:Audience").Value,
+                SecretKey = Configuration.GetSection("JwtTokenParameter:SecretKey").Value,
+                Duration = Configuration.GetSection("JwtTokenParameter:Duration").Value
+            };
+
+            services.Configure<JwtTokenSettings>(options => {
+                options.Issuer = jwtToken.Issuer;
+                options.Audience = jwtToken.Audience;
+                options.SecretKey = jwtToken.SecretKey;
+                options.Duration = jwtToken.Duration;
+            });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -47,15 +77,12 @@ namespace ForumApi
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "TokenParameters:Issuer",
-                    ValidAudience = "TokenParameters:Audience",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TokenParameters:SecretKey"))
+                    ValidIssuer = jwtToken.Issuer,
+                    ValidAudience = jwtToken.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtToken.SecretKey))
                 };
             });
-            services.Configure<ConnectionSettings>(options => {
-                options.ConnectionString = Configuration.GetSection("MongoDB:ConnectionString").Value;
-                options.Database = Configuration.GetSection("MongoDB:Database").Value;
-            });
+            
 
             services.AddTransient<IForumDbConnector, ForumDbConnector>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -80,11 +107,7 @@ namespace ForumApi
             loggerFactory.AddDebug();
 
             app.UseAuthentication();
-            app.UseCors(builder => builder
-                .WithOrigins("**")
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ForumApi.Repositories
+namespace ForumApi.Interfaces.Repositories
 {
     public interface IRepository<T> where T : class
     {

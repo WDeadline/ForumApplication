@@ -1,5 +1,5 @@
-﻿using ForumApi.Contexts;
-using ForumApi.Environments;
+﻿using ForumApi.Environments;
+using ForumApi.Interfaces.Contexts;
 using ForumApi.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumApi.SourceCode.Contexts
+namespace ForumApi.Contexts
 {
     public class ForumDbConnector : IForumDbConnector
     {

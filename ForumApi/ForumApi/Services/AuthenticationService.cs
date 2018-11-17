@@ -1,9 +1,11 @@
-﻿using ForumApi.Helpers;
+﻿using ForumApi.Environments;
+using ForumApi.Helpers;
+using ForumApi.Interfaces.Repositories;
+using ForumApi.Interfaces.Services;
 using ForumApi.Models;
 using ForumApi.Payloads;
-using ForumApi.Repositories;
-using ForumApi.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -19,29 +21,33 @@ namespace ForumApi.SourceCode.Services
     {
         private readonly ILogger<AuthenticationService> _logger;
         private readonly IUserRepository _userRepository;
-        
-        public AuthenticationService(ILogger<AuthenticationService> logger, IUserRepository userRepository)
+        private readonly JwtTokenSettings jwtTokenSettings;
+        public AuthenticationService(IOptions<JwtTokenSettings> options, ILogger<AuthenticationService> logger,
+            IUserRepository userRepository)
         {
+            jwtTokenSettings = options.Value;
             _logger = logger;
             _userRepository = userRepository;
         }
 
         private string GenerateJSONWebToken(User user)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TokenParameters:SecretKey"));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtTokenSettings.SecretKey));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            double.TryParse(jwtTokenSettings.Duration, out double duration);
+            DateTime expires = DateTime.UtcNow.AddMinutes(duration);
             List<Claim> claims = new List<Claim>(){
                 new Claim(ClaimTypes.Email, user.EmailAddress),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.DateOfBirth, user.CreationTime.ToLongDateString())
+                new Claim(ClaimTypes.Expiration, user.CreationTime.ToLongDateString())
             };
             AddClaimRoles(user.Roles, claims);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "TokenParameters:Issuer",
-                audience: "TokenParameters:Audience",
+                issuer: jwtTokenSettings.Issuer,
+                audience: jwtTokenSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
+                expires: expires,
                 signingCredentials: signinCredentials
             );
 

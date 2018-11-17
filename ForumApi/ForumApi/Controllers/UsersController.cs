@@ -1,7 +1,6 @@
-﻿using ForumApi.Models;
-using ForumApi.Services;
+﻿using ForumApi.Interfaces.Services;
+using ForumApi.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -54,7 +53,11 @@ namespace ForumApi.Controllers
             if (userFromDb == null)
                 return new NotFoundResult();
             user.Id = userFromDb.Id;
-            await _userService.AddAsync(user);
+            user.PasswordHash = userFromDb.PasswordHash;
+            user.PasswordSalt = userFromDb.PasswordSalt;
+            user.CreationTime = userFromDb.CreationTime;
+            user.UpdationTime = DateTime.UtcNow;
+            await _userService.UpdateAsync(user);
             return new OkObjectResult(user);
         }
         // DELETE: api/users/5

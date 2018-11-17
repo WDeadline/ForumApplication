@@ -1,4 +1,5 @@
 ﻿using ForumApi.Commons;
+using ForumApi.Validations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,17 +10,13 @@ namespace ForumApi.Payloads
 {
     public class Register
     {
-
-        [Required, MaxLength(25)]
-        [RegularExpression(RegexText.VIETNAMESEREGEX, ErrorMessage = "Sorry, The first name should not contain any special characters.")]
+        [Required, MaxLength(25), PersonName(ErrorMessage = "Please enter your first name in format: Smith")]
         public string FirstName { get; set; }
 
-        [Required, MaxLength(25)]
-        [RegularExpression(RegexText.VIETNAMESEREGEX, ErrorMessage = "Sorry, The last should not contain any special characters.")]
+        [Required, MaxLength(25), PersonName(ErrorMessage = "Please enter your last name in format: Robert")]
         public string LastName { get; set; }
 
-        [Required, MaxLength(20)]
-        [RegularExpression(RegexText.USERNAMEREGEX, ErrorMessage = "The Username can only contain alphanumeric characters (letters a-zA-Z, numbers 0-9).")]
+        [Required, MaxLength(20), Username]
         public string Username { get; set; }
 
         [Required, EmailAddress]

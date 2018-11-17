@@ -1,6 +1,6 @@
-﻿using ForumApi.Models;
-using ForumApi.Repositories;
-using ForumApi.Services;
+﻿using ForumApi.Interfaces.Repositories;
+using ForumApi.Interfaces.Services;
+using ForumApi.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ForumApi.SourceCode.Services
+namespace ForumApi.Services
 {
     public class UserService : IUserService
     {

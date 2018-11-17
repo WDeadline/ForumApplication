@@ -54,5 +54,12 @@ namespace ForumApi.Controllers
         {
             return new OkObjectResult(new List<object> { new { Name = "Thanh" }, new { Name = "Anonymous" } });
         }
+
+        [AllowAnonymous]
+        [HttpGet, Route("questions")]
+        public IActionResult GetQuestions()
+        {
+            return new OkObjectResult(new List<object> { new { Name = "Thanh" }, new { Name = "Anonymous" } });
+        }
     }
 }

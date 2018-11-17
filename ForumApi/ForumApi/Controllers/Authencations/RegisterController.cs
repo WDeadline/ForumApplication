@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ForumApi.Interfaces.Services;
 using ForumApi.Payloads;
-using ForumApi.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ForumApi.Controllers
+namespace ForumApi.Authencations.Controllers
 {
     [AllowAnonymous]
     [Route("api/[controller]")]
@@ -31,8 +30,8 @@ namespace ForumApi.Controllers
             try
             {
                 _logger.LogInformation("Register with username \"{0}\" and email address \"{1}\"", register.Username, register.EmailAddress);
-                await CheckUniqueEmailAddressAsync(register.EmailAddress.Trim());
-                await CheckUniqueUsername(register.Username.Trim());
+                await CheckUniqueEmailAddressAsync(register.EmailAddress);
+                await CheckUniqueUsernameAsync(register.Username);
                 if (!ModelState.IsValid)
                 {
                     return Conflict(ModelState);
@@ -57,7 +56,7 @@ namespace ForumApi.Controllers
             }
         }
 
-        private async Task CheckUniqueUsername(string username)
+        private async Task CheckUniqueUsernameAsync(string username)
         {
             bool isExistedUsername = await _registerService.IsExistedUsernameAsync(username);
             if (isExistedUsername)

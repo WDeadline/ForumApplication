@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumApi.Repositories
+namespace ForumApi.Interfaces.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {

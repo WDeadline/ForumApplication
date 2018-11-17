@@ -1,15 +1,15 @@
 ﻿using ForumApi.Helpers;
+using ForumApi.Interfaces.Repositories;
+using ForumApi.Interfaces.Services;
 using ForumApi.Models;
 using ForumApi.Payloads;
-using ForumApi.Repositories;
-using ForumApi.Services;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumApi.SourceCode.Services
+namespace ForumApi.Services
 {
     public class RegisterService : IRegisterService
     {

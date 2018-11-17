@@ -1,6 +1,6 @@
-﻿using ForumApi.Contexts;
+﻿using ForumApi.Interfaces.Contexts;
+using ForumApi.Interfaces.Repositories;
 using ForumApi.Models;
-using ForumApi.Repositories;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ForumApi.SourceCode.Repositories
+namespace ForumApi.Repositories
 {
     public class UserRepository : IUserRepository
     {

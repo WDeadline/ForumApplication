@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ForumApi.Services
+namespace ForumApi.Interfaces.Services
 {
     public interface IService<T>
     {

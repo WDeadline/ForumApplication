@@ -1,14 +1,14 @@
 ﻿using ForumApi.Models;
-using MongoDB.Driver;
+using ForumApi.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumApi.Contexts
+namespace ForumApi.Interfaces.Services
 {
-    public interface IForumDbConnector
+    public interface IUserService : IService<User>
     {
-        IMongoCollection<User> Users { get; }
+        
     }
 }
