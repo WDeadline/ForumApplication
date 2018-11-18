@@ -9,6 +9,8 @@ namespace ForumApi.Validations
 {
     public class PersonNameAttribute : ValidationAttribute
     {
+        private const string PersonNameRegex = @"^([A-ZÀ-ÝẠ-ỸĂĐĨŨƠƯ][a-zà-ýạ-ỹăđĩũơư]*)(([',.-]$)|(([',.-]?[ ]|[ ])([A-ZÀ-ÝẠ-ỸĂĐĨŨƠƯ][a-zà-ýạ-ỹăđĩũơư]*)))*$";
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             string firstOrLastName = value.ToString();
@@ -21,15 +23,7 @@ namespace ForumApi.Validations
 
         private bool IsValidUsername(string username)
         {
-                    //tecnical debt: "I don't know the regex text for vietnamese"
-        const string personNameRegex = @"^(([A-ZÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆĐÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰ]" + 
-                                       @"[a-zA-Záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệđíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữự" +
-                                       @"ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆĐÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰ]*)" +
-                                       @"(([\',. -][a-zA-Záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệđíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữự" +
-                                       @"ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆĐÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰ ])?" +
-                                       @"[a-zA-Záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệđíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữự" +
-                                       @"ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆĐÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰ]*))$";
-        Regex regex = new Regex(personNameRegex);
+            Regex regex = new Regex(PersonNameRegex);
             return regex.IsMatch(username);
         }
 

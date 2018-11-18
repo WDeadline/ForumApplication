@@ -73,7 +73,9 @@ namespace ForumApi.SourceCode.Services
                     return null;
                 }
 
-                if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                Password lastPassword = user.Passwords.OrderByDescending(p => p.CreationTime).FirstOrDefault();
+
+                if (!PasswordManager.VerifyPasswordHash(password, lastPassword.PasswordHash, lastPassword.PasswordSalt))
                 {
                     return null;
                 }

@@ -89,6 +89,9 @@ namespace ForumApi
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IRegisterService, RegisterService>();
+
+            services.AddTransient<ForumApi.Interfaces.IImageHandler, ForumApi.Interfaces.ImageHandler>();
+            services.AddTransient<ForumApi.Interfaces.IImageWriter,ForumApi.Interfaces.ImageWriter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,6 +111,7 @@ namespace ForumApi
 
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

@@ -1,0 +1,73 @@
+﻿using ForumApi.Helpers;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ForumApi.Interfaces
+{
+    public class ImageWriter : IImageWriter
+    {
+        public async Task<string> UploadImage(IFormFile file)
+        {
+            if (CheckIfImageFile(file))
+            {
+                return await WriteFile(file);
+            }
+
+            return "Invalid image file";
+        }
+
+        /// <summary>
+        /// Method to check if file is image file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        private bool CheckIfImageFile(IFormFile file)
+        {
+            byte[] fileBytes;
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                fileBytes = ms.ToArray();
+            }
+
+            return WriterHelper.GetImageFormat(fileBytes) != WriterHelper.ImageFormat.unknown;
+        }
+
+        /// <summary>
+        /// Method to write file onto the disk
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public async Task<string> WriteFile(IFormFile file)
+        {
+            string fileName;
+            try
+            {
+                var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                fileName = Guid.NewGuid().ToString() + extension; //Create a new Name 
+                var path1 = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images2");
+                if (!Directory.Exists(path1))
+                {
+                    Directory.CreateDirectory(path1);
+                }
+
+
+                var path = Path.Combine(path1, fileName);
+                using (var bits = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(bits);
+                }
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+
+            return fileName;
+        }
+    }
+}

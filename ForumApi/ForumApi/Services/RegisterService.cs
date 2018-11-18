@@ -15,6 +15,8 @@ namespace ForumApi.Services
     {
         private readonly ILogger<RegisterService> _logger;
         private readonly IUserRepository _userRepository;
+
+        private const string DefaultRole = "Student";
         public RegisterService(ILogger<RegisterService> logger, IUserRepository userRepository)
         {
             _logger = logger;
@@ -40,13 +42,18 @@ namespace ForumApi.Services
                 PasswordManager.CreatePasswordHash(register.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 User user = new User
                 {
-                    FirstName = register.FirstName.Trim(),
-                    LastName = register.LastName.Trim(),
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
                     Username = register.Username,
                     EmailAddress = register.EmailAddress,
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    Roles = new List<string> { "Student" }
+                    Passwords = new List<Password>() {
+                        new Password
+                        {
+                            PasswordHash = passwordHash,
+                            PasswordSalt = passwordSalt
+                        }
+                    },
+                    Roles = new List<string> { DefaultRole }
                 };
                 await _userRepository.AddAsync(user);
                 return true;

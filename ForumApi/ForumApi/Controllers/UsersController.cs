@@ -49,16 +49,20 @@ namespace ForumApi.Controllers
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Put(string id, [FromBody]User user)
         {
-            var userFromDb = await _userService.GetByIdAsync(id);
+            /*var userFromDb = await _userService.GetByIdAsync(id);
             if (userFromDb == null)
                 return new NotFoundResult();
             user.Id = userFromDb.Id;
+            Password password = new Password
+            {
+                PasswordHash = userFromDb.PasswordHash,
+                PasswordSalt = userFromDb.PasswordSalt
+            }
             user.PasswordHash = userFromDb.PasswordHash;
             user.PasswordSalt = userFromDb.PasswordSalt;
-            user.CreationTime = userFromDb.CreationTime;
             user.UpdationTime = DateTime.UtcNow;
-            await _userService.UpdateAsync(user);
-            return new OkObjectResult(user);
+            await _userService.UpdateAsync(user);*/
+            return new OkResult();
         }
         // DELETE: api/users/5
         [HttpDelete("{id:length(24)}")]

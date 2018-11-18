@@ -16,6 +16,8 @@ namespace ForumApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            string a = HttpContext.Request.PathBase;
+            a = null;
             return new string[] { "value1", "value2" };
         }
 
