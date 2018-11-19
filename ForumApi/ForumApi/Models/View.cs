@@ -1,15 +1,16 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ForumApi.Models
 {
-    public class Avatar
+    public class View
     {
-        [Required]
-        public Picture Images { get; set; }
+        [BsonElement("vie")]
+        public string ViewBy { get; set; }
+        [BsonElement("cre")]
         public DateTime CreationTime { get; set; } = DateTime.UtcNow;
     }
 }

@@ -15,38 +15,22 @@ namespace ForumApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public string FirstName { get; set; }
+        [BsonElement("avt")]
+        public string Avatar { get; set; } = string.Empty;
 
-        public string LastName { get; set; }
-
-        public bool Gender { get; set; }
-
-        public DateTime? DateOfBirth { get; set; }
-
-        public string PhoneNumber { get; set; } = string.Empty;
-
-        public string Address { get; set; } = string.Empty;
-
-        [JsonIgnore]
-        public IEnumerable<Avatar> Avatars { get; set; }
-
-        public Avatar Avatar {
-            get
-            {
-                if (!Avatars.IsNullOrEmpty())
-                {
-                    return Avatars.FirstOrDefault();
-                }
-                return null;
-            }
-        }
-
+        [BsonElement("usn")]
         public string Username { get; set; }
 
+        [BsonElement("email")]
         public string EmailAddress { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Password> Passwords { get; set; }
+        [BsonElement("pwdh")]
+        public byte[] PasswordHash { get; set; }
+
+        [JsonIgnore]
+        [BsonElement("pwds")]
+        public byte[] PasswordSalt { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreationTime {
@@ -61,10 +45,13 @@ namespace ForumApi.Models
         }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        [BsonElement("updt")]
         public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
 
+        [BsonElement("act")]
         public bool Active { get; set; } = true;
 
-        public IEnumerable<string> Roles { get; set; }
+        [BsonElement("rls")]
+        public IEnumerable<Role> Roles { get; set; }
     }
 }
