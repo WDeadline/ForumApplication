@@ -10,12 +10,6 @@ namespace ForumApi.Payloads
 {
     public class Register
     {
-        [Required, MaxLength(25), PersonName(ErrorMessage = "Please enter your first name in format: Smith")]
-        public string FirstName { get; set; }
-
-        [Required, MaxLength(25), PersonName(ErrorMessage = "Please enter your last name in format: Robert")]
-        public string LastName { get; set; }
-
         [Required, MaxLength(20), Username]
         public string Username { get; set; }
 

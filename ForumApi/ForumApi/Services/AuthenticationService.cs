@@ -54,11 +54,11 @@ namespace ForumApi.SourceCode.Services
             return new JwtSecurityTokenHandler().WriteToken(tokeOptions);
         }
 
-        private static void AddClaimRoles(IEnumerable<string> roles, List<Claim> claims)
+        private static void AddClaimRoles(IEnumerable<Role> roles, List<Claim> claims)
         {
-            foreach (string role in roles)
+            foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
             }
         }
 
@@ -73,16 +73,12 @@ namespace ForumApi.SourceCode.Services
                     return null;
                 }
 
-                Password lastPassword = user.Passwords.OrderByDescending(p => p.CreationTime).FirstOrDefault();
-
-                if (!PasswordManager.VerifyPasswordHash(password, lastPassword.PasswordHash, lastPassword.PasswordSalt))
+                if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
                     return null;
                 }
                 var dto = new UserDto {
                     Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
                     Username = user.Username,
                     EmailAddress = user.EmailAddress,
                     Roles = user.Roles,

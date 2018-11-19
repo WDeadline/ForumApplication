@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Models
 {
-    public class Like
+    public enum Role
     {
+        Administrator,
+        Teacher,
+        Student,
+        Company
     }
 }

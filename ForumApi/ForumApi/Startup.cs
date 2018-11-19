@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 
 namespace ForumApi
 {
@@ -111,7 +112,18 @@ namespace ForumApi
 
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    int cachePeriod = env.IsDevelopment() ? 60 * 60 : 60 * 60 * 24 * 7;
+                    string path = ctx.Context.Request.Path;
+                    if(path.EndsWith(".jpg") || path.EndsWith(".npg"))
+                    {
+                        ctx.Context.Response.Headers[HeaderNames.CacheControl] = $"public, max-age={cachePeriod}";
+                    }
+                }
+            });
             app.UseHttpsRedirection();
             app.UseMvc();
         }
