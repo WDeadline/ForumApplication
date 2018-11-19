@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../service/authentication.service';
-
+import jsSHA from 'jssha';
+import {AlertService} from '../service/alert.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -22,17 +23,18 @@ export class RegisterComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private alertService: AlertService,
   ) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
 
-      firstName : ['', Validators.required],
-      lastName : ['', Validators.required],
-      username : ['', Validators.required],
+      firstName : ['', [Validators.required,Validators.pattern('[a-zA-Z]*')]],
+      lastName : ['',  [Validators.required,Validators.pattern('[a-zA-Z]*')]],
+      username : ['', [Validators.required,Validators.pattern('[a-zA-Z0-9]*')]],
       emailAddress : ['',[Validators.required, Validators.email]],
-      password : ['', Validators.required],
-      passwordConfirm : ['', Validators.required],
+      password : ['', [Validators.required,Validators.pattern('^([a-zA-Z0-9]+[^])$'),Validators.maxLength(24),Validators.minLength(6)]],
+      passwordConfirm : ['',[Validators.required,Validators.pattern('^([a-zA-Z0-9]+[^])$'),Validators.maxLength(24),Validators.minLength(6)]],
       
   });
   }
@@ -48,17 +50,28 @@ export class RegisterComponent implements OnInit {
     console.log("out")
     this.checkPasswords();
     this.loading = true;
+    
     //ma hoa mat khau
+    let shaObj = new jsSHA("SHA-256", "TEXT");
+    shaObj.update(this.f.password.value);
+    let passwordHash = shaObj.getHash("HEX");
+    console.log("hash1:"+ passwordHash);
+
     this.authenticationService.register(this.f.firstName.value, this.f.lastName.value,
-      this.f.username.value,this.f.emailAddress.value, this.f.password.value)
+      this.f.username.value,this.f.emailAddress.value, passwordHash)
         .pipe(first())
           .subscribe(
             data => {
               //this.cookieService.set('accessCookie', this.currentUserInfo.accessToken, 0.5);
-              this.router.navigate(['/home']);
-              this.loading = false;
+              this.loading = false;             
+              this.router.navigate(['/login']);
+              // chua thong bao success duoc
+              //this.alertService.success("Registration successful", true);
+                           
           },
           error => {
+              this.error = this.authenticationService.getErrorRegistor(error);
+              this.alertService.error(this.error, true);
               console.log("error: "+ error);
               this.loading = false;
           });

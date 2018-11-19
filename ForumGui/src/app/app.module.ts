@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +11,6 @@ import { HomeContentComponent } from './home-content/home-content.component';
 import { RegisterComponent } from './authentication/register/register.component';
 import { AllUserComponent } from './user/all-user/all-user.component';
 import { ProfileComponent } from './user/profile/profile.component';
-import { ProfileEditComponent } from './user/profile-edit/profile-edit.component';
 
 import { ConfigService } from './discussion/config.service';
 import { InputFormatComponent } from './discussion/input-format/input-format.component';
@@ -27,6 +26,10 @@ import { ErrorInterceptor } from './authentication/helper/error.interceptor';
 import { JwtInterceptor } from './authentication/helper/jwt.interceptor';
 import { TestComponent } from './test/test.component';
 import { CookieService } from 'ngx-cookie-service';
+
+import {AlertService} from './authentication/service/alert.service';
+import { from } from 'rxjs';
+import {AlertComponent} from './authentication/directives/alert.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,11 +41,11 @@ import { CookieService } from 'ngx-cookie-service';
     RegisterComponent,
     AllUserComponent,
     ProfileComponent,
-    ProfileEditComponent,
     InputFormatComponent,
     QuestionMakeComponent,
     QuestionShowComponent,
     TestComponent,
+    AlertComponent,
     
   ],
   imports: [
@@ -51,14 +54,18 @@ import { CookieService } from 'ngx-cookie-service';
     FormsModule,
     HttpClientModule,
     NgxEditorModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     ConfigService,
     CookieService,
+    AlertService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
 })
 export class AppModule { }

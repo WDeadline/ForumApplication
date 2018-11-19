@@ -1,1 +1,1 @@
-declare var config: any;
+declare var config: 'https://localhost:44375/api';

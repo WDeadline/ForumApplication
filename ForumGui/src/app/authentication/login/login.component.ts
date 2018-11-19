@@ -3,7 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../service/authentication.service';
+import { AlertService,  } from '../service/alert.service';
 import {CurrentUserInfo} from '../model/current-user-info';
+import jsSHA from 'jssha';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,22 +18,25 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error : [];
+  error : string;
   isEmailAddress = true;
   patternUsernameOrEmail = '^(([a-zA-Z0-9]{3,15})|([a-zA-Z0-9]{1,}[a-zA-Z0-9.+-]{0,}@[a-zA-Z0-9-]{2,}([.][a-zA-Z]{2,}|[.][a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,}|[.][a-zA-Z0-9-]{2,}[.][a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,})))$';
   currentUserInfo: CurrentUserInfo = new CurrentUserInfo();
+  usernameOrEmail: string;
+  password: string;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private alertService: AlertService,
     ) {}
 
     ngOnInit() {
       this.loginForm = this.formBuilder.group({
           // username: ['',[Validators.required, Validators.email]],
           username: ['',[Validators.required,Validators.pattern(this.patternUsernameOrEmail)]],
-          password: ['',[Validators.required, Validators.pattern('^([a-zA-Z0-9]+[^]{3,15})$')]],
+          password: ['',[Validators.required, Validators.pattern('^([a-zA-Z0-9]+[^])$'),Validators.maxLength(24),Validators.minLength(6)]],
           
       });
 
@@ -50,32 +56,43 @@ export class LoginComponent implements OnInit {
       }
       
       this.loading = true;
+      let shaObj = new jsSHA("SHA-256", "TEXT");
+      shaObj.update(this.f.password.value);
+      let passwordHash = shaObj.getHash("HEX");
+      console.log("hash:"+passwordHash);
+
       //ma hoa mat khau
-      this.authenticationService.login(this.f.username.value, this.f.password.value)
+      this.authenticationService.login(this.f.username.value, passwordHash)
           .pipe(first())
           .subscribe(            
               data => {
-                    if(data != null){
-                        this.currentUserInfo = data;
-                        this.currentUserInfo.roles.forEach( role => {
-                            {
-                                if(role === 'Admin')
-                                {
-                                   this.router.navigate(['/home']);
+                     if(data != null){
+                    //     console.log("co data")
+                         this.currentUserInfo = data;
+                    //     this.currentUserInfo.roles.forEach( role => {
+                    //         {
+                    //             if(role === 'Admin')
+                    //             {
+                    //                this.router.navigate(['/home']);
+                    //                this.authenticationService.loggedin();
 
-                                }
-                                else{
-                                    this.router.navigate(['/register'])
-                                }
-                            }
-                        });
-                        localStorage.setItem('userRole', this.currentUserInfo.roles[0]);
+                    //             }
+                    //             else{
+                    //                 this.router.navigate(['/register'])
+                    //                 this.authenticationService.loggedin();
+                    //             }
+                    //         }
+                    //     });
+                        //localStorage.setItem('userInfo', JSON.stringify(this.currentUserInfo));
+                        //console.log("userInfo"+JSON.parse(localStorage.getItem('userInfo')));
+                        
                     }
                   //this.cookie.set('accessCookie', this.curentUserInfo.token, 0.5);
-                  //this.router.navigate([this.returnUrl]);
+                  this.router.navigate([this.returnUrl]);
               },
               error => {
                   this.error = this.authenticationService.getErrorLogin(error);
+                  this.alertService.error(this.error,true);
                   this.loading = false;
                   
               });

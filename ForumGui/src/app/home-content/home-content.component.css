@@ -1,4 +1,19 @@
 /*question*/
 .questionHeight {
-    height: 70px;
+    height: 100%;
+}
+
+.cellAlign{
+    text-align : center;
+}
+
+.date{
+    width: 30%;
+    text-align: right;
+    font-size:8px;
+}
+
+.tag{
+    width: 70%;
+    text-align: left;
 }

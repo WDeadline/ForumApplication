@@ -1,0 +1,81 @@
+<!--<router-outlet></router-outlet>-->
+<div *ngIf="!isEdit">
+  <h3>Infomation</h3>
+  <hr>
+  <table style="width:100%; ">
+    <tr>
+      <td style="width:30%;height: 30px;"><b>Full name</b></td>
+      <td style="width:65%;">Jack Jack</td> 
+      <td style="width:5%;">
+          <a (click)="isEdit = true;" ><span class="glyphicon glyphicon-pencil"></span></a>
+      </td> 
+    </tr>
+    <tr>
+      <td style="height: 30px;"><b>Gender</b></td>
+      <td >Male</td> 
+    </tr>
+    <tr>
+      <td style="height: 30px;"><b>Birthdate</b></td>
+      <td >15-9-1898</td> 
+    </tr>
+    <tr>
+      <td style="height: 30px;"><b>Phone number</b></td>
+      <td >0128548655</td> 
+    </tr>
+    <tr>
+      <td style="height: 30px;"><b>Email address</b></td>
+      <td >mail@gmail.com</td> 
+    </tr>
+  </table>
+</div>
+<div *ngIf="isEdit">
+  <h3>Infomation</h3>
+  <hr>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-2 control-label">First name</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputEmail3" placeholder="Email">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword3" class="col-sm-2 control-label">Last name</label>
+      <div class="col-sm-10">
+        <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Gender</label>
+        <div class="col-sm-10">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Male 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">FeMale
+              </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Birthdate</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" id="inputPassword3">
+        </div>
+      </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Number phone</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputPassword3">
+        </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" (click)="isEdit = false;">Save</button>
+        <button type="submit" class="btn btn-primary" (click)="isEdit = false;">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+

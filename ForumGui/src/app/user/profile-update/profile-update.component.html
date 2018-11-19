@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">    
+      <div class="row">
+          <div class="col-sm-5 col-md-3">
+            <br>
+            <div class="thumbnail" style="width:220px; height: 220px;">
+                <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png" alt="...">
+              <div class="caption">           
+                <div class="inputWrapper" style="height: 24px; width: 24px;">
+                    <div class="glyphicon glyphicon-open">
+                        <input class="fileInput" type="file" (change)="handleImageUpload($event)"/>
+                    </div>
+                </div>
+              </div>
+            </div>
+              
+          </div>
+
+          <div class="col-md-9">
+              <!--noidung--> 
+              <!-- <router-outlet></router-outlet> -->
+              <app-profile-infomation></app-profile-infomation>
+              <app-profile-position></app-profile-position>
+              <app-profile-objective></app-profile-objective>
+              <app-profile-experience></app-profile-experience>
+              <app-profile-skill></app-profile-skill>
+              <app-profile-education></app-profile-education>
+              <!--noidung-->  
+          </div>
+      </div>   
+  
+
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+
+

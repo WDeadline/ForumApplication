@@ -4,11 +4,11 @@
   
     <div class="col-md-7">  <!--style="border-left: 0px solid;"-->
       <div class="row">
-          <div class="col-md-9"><h3>Top Questions</h3></div>
+          <div class="col-md-9"><h1>Top Questions</h1></div>
           <div class="col-md-3">
             <div class="btn-group btn-group-justified" role="group" aria-label="...">
               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary">Ask Question</button>    
+                <a routerLink="/makequestion" class="btn btn-primary">Ask Question</a>    
               </div>
             </div>
           </div>
@@ -18,48 +18,54 @@
           <div class="col-md-6">
               <div class="btn-group btn-group-justified" role="group" aria-label="...">
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default">Left</button>
+                    <a  class="btn btn-default"> top </a>
                   </div>
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default">Middle</button>
+                      <a  class="btn btn-default" (click)="getQuestionsOfMonth()">month </a>
                   </div>
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default">Right</button>
+                      <a  class="btn btn-default" (click)="getQuestionsOfYeah()"> yeah</a>
                   </div>
               </div>
           </div>
       </div>
       <br>
-      <!--question-->
-      <div class="panel panel-default questionHeight">
-          <div class="panel-body ">
-            <div class="col-md-2" >
-              <div class="row">
-                vote 3
-              </div>
-            </div>
-            <div class="col-md-10">
-                Basic panel example
-            </div>
+        <!--start-question-->
+      <div *ngFor="let question of questions">
+        <div  class="panel panel-default questionHeight">
+          <div class="panel-body" style ="max-height: 100%;">
+            <table style="width:100%; max-height: 100%;">
+              <tr>
+                <td rowspan="2"  style="width: 7%;" class="cellAlign">{{question.votes}}</td>
+                <td rowspan="2" style="width: 7%;" class="cellAlign">{{question.answers}}</td> 
+                <td rowspan="2" style="width: 7%;" class="cellAlign">{{question.views}}</td> 
+                <td colspan="2" rowspan="3" style="width: 79%; text-align: left;">
+                  <a>
+                      {{question.title}}
+                  </a>
+                </td>
+              </tr>
+              <tr></tr>
+              <tr>
+                <td rowspan="2" class="cellAlign "><strong><i>Votes</i></strong></td>
+                <td rowspan="2" class="cellAlign"><strong><i>Answers</i></strong></td> 
+                <td rowspan="2" class="cellAlign"><strong><i>Views</i></strong></td>
+              </tr>
+              <tr>
+                  <td class="tag">
+                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
+                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
+                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
+                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
+                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
+                  </td>
+                  <td class="date">{{question.dateCreated | date : 'short'}}</td>
+              </tr>
+            </table>
           </div>
         </div>
-        <div class="panel panel-default questionHeight">
-          <div class="panel-body">
-                Basic panel example
-          </div>
-        </div>
-        <div class="panel panel-default questionHeight">
-            <div class="panel-body">
-                  Basic panel example
-            </div>
-          </div>
-        <div class="panel panel-default questionHeight">
-              <div class="panel-body">
-                    Basic panel example
-              </div>
-        </div>  
-      <!--question-->
-    <!--<app-questions></app-questions>-->
+      </div>  
+      <!--end-question-->
     </div>
   
     <div class="col-md-3"><app-left-menu></app-left-menu></div>

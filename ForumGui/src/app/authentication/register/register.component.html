@@ -4,29 +4,32 @@
     <div class="col-md-6">
         <form class="form-horizontal" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
-                <label for="firstName"  class="col-sm-3 control-label">First Name</label>
+                <label for="firstName" pattern="[a-zA-Z]*" class="col-sm-3 control-label">First Name</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" formControlName="firstName" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" placeholder="Please enter first name" >
                   <div *ngIf="submitted && f.firstName.errors" class="error">
                       <div *ngIf="f.firstName.errors.required">First name is required</div>
+                      <div *ngIf="f.firstName.errors.pattern">a-z A-Z khong chua khoang trong</div>
                   </div>
                 </div>
               </div>          
             <div class="form-group">
               <label for="lastName" class="col-sm-3 control-label">Last Name</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" placeholder="Please enter last name">
+                <input type="text" pattern="[a-zA-Z]*" class="form-control" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" placeholder="Please enter last name">
                 <div *ngIf="submitted && f.lastName.errors" class="error">
                     <div *ngIf="f.lastName.errors.required">Last name is required</div>
+                    <div *ngIf="f.lastName.errors.pattern">a-z A-Z khong chua khoang trong</div>
                 </div>
               </div>
             </div>
             <div class="form-group">
                 <label for="username" class="col-sm-3 control-label">Username</label>
                 <div class="col-sm-9">
-                  <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Please enter username">
+                  <input type="text" pattern="[a-zA-Z0-9]*" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Please enter username">
                   <div *ngIf="submitted && f.username.errors" class="error">
                       <div *ngIf="f.username.errors.required">Username is required</div>
+                      <div *ngIf="f.username.errors.pattern">a-z A-Z 0-9 khong chua khoang trong</div>
                   </div>
                 </div>
             </div>   
@@ -43,18 +46,22 @@
             <div class="form-group">
               <label for="password" class="col-sm-3 control-label">Password</label>
               <div class="col-sm-9">
-                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Please enter password">
+                <input type="password" maxlength="24" minlength="6" pattern="^([a-zA-Z0-9]+[^])$" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Please enter password">
                 <div *ngIf="submitted && f.password.errors" class="error">
                     <div *ngIf="f.password.errors.required">Password is required</div>
+                    <div *ngIf="f.password.errors.pattern">Password is not valid</div>
+                    <div *ngIf="f.password.errors.minlength">Password Confirm maxLength 6</div>
                 </div>
               </div>
             </div>
             <div class="form-group">
                 <label for="passwordConfirm" class="col-sm-3 control-label">Password Confirm</label>
                 <div class="col-sm-9">
-                  <input type="password" formControlName="passwordConfirm" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.passwordConfirm.errors }" placeholder="Please enter password confirm">
+                  <input type="password" maxlength="24" minlength="6" pattern="^([a-zA-Z0-9]+[^])$" formControlName="passwordConfirm" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.passwordConfirm.errors }" placeholder="Please enter password confirm">
                   <div *ngIf="submitted && f.passwordConfirm.errors" class="error">
                       <div *ngIf="f.passwordConfirm.errors.required">Password Confirm is required</div>
+                      <div *ngIf="f.passwordConfirm.errors.pattern">Password Confirm is not valid</div>
+                      <div *ngIf="f.passwordConfirm.errors.minlength">Password Confirm min 6</div>
                   </div>
                   <div *ngIf="submitted && !same" class="error">
                     Password and password confirm is not same 
@@ -67,8 +74,8 @@
                 <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               </div>
             </div>
-            <!--<div *ngIf="error" class="alert alert-danger">{{error}}</div>  [disabled]="loading"-->
         </form>
+        <alert></alert>
     </div>
   
     <div class="col-md-3"></div>
