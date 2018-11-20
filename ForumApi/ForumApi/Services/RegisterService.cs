@@ -14,9 +14,9 @@ namespace ForumApi.Services
     public class RegisterService : IRegisterService
     {
         private readonly ILogger<RegisterService> _logger;
-        private readonly IUserRepository _userRepository;
+        private readonly IRepository<User> _userRepository;
 
-        public RegisterService(ILogger<RegisterService> logger, IUserRepository userRepository)
+        public RegisterService(ILogger<RegisterService> logger, IRepository<User> userRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
@@ -24,36 +24,38 @@ namespace ForumApi.Services
 
         public async Task<bool> IsExistedEmailAddressAsync(string emailAddress)
         {
-            var user = await _userRepository.GetUserByEmailAddressAsync(emailAddress);
+            var user = await _userRepository.Get(u => u.EmailAddress == emailAddress);
             return (user != null);
         }
 
         public async Task<bool> IsExistedUsernameAsync(string username)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
+            var user = await _userRepository.Get(u => u.Username == username);
             return (user != null);
         }
 
-        public async Task<bool> RegisterAsync(Register register)
+        public bool RegisterAsync(Register register)
         {
             try
             {
                 PasswordManager.CreatePasswordHash(register.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 User user = new User
                 {
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
                     Username = register.Username,
                     EmailAddress = register.EmailAddress,
                     PasswordHash = passwordHash,
                     PasswordSalt = passwordSalt,
                     Roles = new List<Role> { Role.Student }
                 };
-                await _userRepository.Add(user);
+                _userRepository.Add(user);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message, register);
-                throw e;
+                _logger.LogError(ex, ex.Message, register);
+                throw ex;
             }
         }
     }

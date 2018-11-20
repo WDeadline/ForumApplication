@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ForumApi.Authencations.Controllers
+namespace ForumApi.Controllers
 {
     [AllowAnonymous]
     [Route("api/[controller]")]

@@ -8,6 +8,7 @@ namespace ForumApi.Interfaces
 {
     public interface IImageWriter
     {
-        Task<string> UploadImage(IFormFile file);
+        Task<string> UploadAvatar(IFormFile file);
+        void DeleteAvatar(string fileName);
     }
 }

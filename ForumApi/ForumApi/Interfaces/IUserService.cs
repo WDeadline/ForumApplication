@@ -14,9 +14,5 @@ namespace ForumApi.Interfaces
         Task<bool> Update(User user);
         Task<User> GetById(string id);
         Task<IEnumerable<User>> GetAll();
-        Task<UserDto> Login(string usernameOrEmailAddress, string password);
-        Task<bool> Register(Register register);
-        Task<bool> IsExistedUsername(string username);
-        Task<bool> IsExistedEmailAddress(string emailAddress);
     }
 }

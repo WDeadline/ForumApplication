@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ForumApi.Authencations.Controllers
+namespace ForumApi.Controllers
 {
     [AllowAnonymous]
     [Route("api/[controller]")]
@@ -36,7 +36,7 @@ namespace ForumApi.Authencations.Controllers
                 {
                     return Conflict(ModelState);
                 }
-                await _registerService.RegisterAsync(register);
+                _registerService.RegisterAsync(register);
                 return new OkResult();
             }
             catch (Exception e)

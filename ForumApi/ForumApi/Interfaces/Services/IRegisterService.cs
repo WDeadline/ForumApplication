@@ -8,7 +8,7 @@ namespace ForumApi.Interfaces.Services
 {
     public interface IRegisterService
     {
-        Task<bool> RegisterAsync(Register register);
+        bool RegisterAsync(Register register);
         Task<bool> IsExistedUsernameAsync(string username);
         Task<bool> IsExistedEmailAddressAsync(string emailAddress);
     }

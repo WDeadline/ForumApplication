@@ -25,9 +25,10 @@ namespace ForumApi.Controllers
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UploadImage(IFormFile file)
+        public async Task<IActionResult> UploadAvatar(IFormFile file)
         {
-            return await _imageHandler.UploadImage(file);
+            //return await _imageHandler.UploadAvatar("", file);
+            return null;
         }
     }
 }

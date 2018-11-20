@@ -10,6 +10,12 @@ namespace ForumApi.Payloads
 {
     public class Register
     {
+        [Required, MaxLength(25), PersonName]
+        public string FirstName { get; set; }
+
+        [Required, MaxLength(25), PersonName]
+        public string LastName { get; set; }
+
         [Required, MaxLength(20), Username]
         public string Username { get; set; }
 

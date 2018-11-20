@@ -8,6 +8,6 @@ namespace ForumApi.Interfaces.Services
 {
     public interface IAuthenticationService
     {
-        Task<UserDto> AuthenticateAsync(string usernameOrEmailAddress, string password);
+        Task<CurrentUser> AuthenticateAsync(string usernameOrEmailAddress, string password);
     }
 }

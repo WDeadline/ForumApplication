@@ -1,4 +1,4 @@
-﻿using ForumApi.Interfaces.Services;
+﻿using ForumApi.Interfaces;
 using ForumApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,13 +27,14 @@ namespace ForumApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return new OkObjectResult(await _userService.GetAllAsync());
+            return new OkObjectResult(await _userService.GetAll());
         }
+
         // GET: api/users/id
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {
-            var user = await _userService.GetByIdAsync(id);
+            var user = await _userService.GetById(id);
             if (user == null)
                 return new NotFoundResult();
             return new OkObjectResult(user);
@@ -42,7 +43,7 @@ namespace ForumApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]User user)
         {
-            await _userService.AddAsync(user);
+            await _userService.Add(user);
             return new OkObjectResult(user);
         }
         // PUT: api/users/5
@@ -68,10 +69,10 @@ namespace ForumApi.Controllers
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var userFromDb = await _userService.GetByIdAsync(id);
+            var userFromDb = await _userService.GetById(id);
             if (userFromDb == null)
                 return new NotFoundResult();
-            await _userService.DeleteAsync(id);
+            await _userService.Delete(id);
             return new OkResult();
         }
     }

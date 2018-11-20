@@ -10,7 +10,7 @@ namespace ForumApi.Interfaces
 {
     public class ImageWriter : IImageWriter
     {
-        public async Task<string> UploadImage(IFormFile file)
+        public async Task<string> UploadAvatar(IFormFile file)
         {
             if (CheckIfImageFile(file))
             {
@@ -20,11 +20,6 @@ namespace ForumApi.Interfaces
             return "Invalid image file";
         }
 
-        /// <summary>
-        /// Method to check if file is image file
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
         private bool CheckIfImageFile(IFormFile file)
         {
             byte[] fileBytes;
@@ -33,41 +28,46 @@ namespace ForumApi.Interfaces
                 file.CopyTo(ms);
                 fileBytes = ms.ToArray();
             }
-
             return WriterHelper.GetImageFormat(fileBytes) != WriterHelper.ImageFormat.unknown;
         }
 
-        /// <summary>
-        /// Method to write file onto the disk
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
         public async Task<string> WriteFile(IFormFile file)
         {
-            string fileName;
             try
             {
                 var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-                fileName = Guid.NewGuid().ToString() + extension; //Create a new Name 
-                var path1 = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images2");
-                if (!Directory.Exists(path1))
-                {
-                    Directory.CreateDirectory(path1);
-                }
-
-
-                var path = Path.Combine(path1, fileName);
+                string fileName = Guid.NewGuid().ToString() + extension;
+                string folder = Path.Combine("images", "avatars");
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder);
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                path = Path.Combine(path, fileName);
                 using (var bits = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(bits);
                 }
+                return Path.Combine(folder, fileName);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return e.Message;
+                return null;
             }
+        }
 
-            return fileName;
+        public void DeleteAvatar(string fileName)
+        {
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

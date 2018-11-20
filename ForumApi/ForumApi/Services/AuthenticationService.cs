@@ -4,6 +4,7 @@ using ForumApi.Interfaces.Repositories;
 using ForumApi.Interfaces.Services;
 using ForumApi.Models;
 using ForumApi.Payloads;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -22,11 +23,13 @@ namespace ForumApi.SourceCode.Services
         private readonly ILogger<AuthenticationService> _logger;
         private readonly IRepository<User> _userRepository;
         private readonly JwtTokenSettings jwtTokenSettings;
+        private readonly IHostingEnvironment _env;
         public AuthenticationService(IOptions<JwtTokenSettings> options, ILogger<AuthenticationService> logger,
-            IRepository<User> userRepository)
+            IRepository<User> userRepository, IHostingEnvironment env)
         {
             jwtTokenSettings = options.Value;
             _logger = logger;
+            _env = env;
             _userRepository = userRepository;
         }
 
@@ -37,7 +40,7 @@ namespace ForumApi.SourceCode.Services
             double.TryParse(jwtTokenSettings.Duration, out double duration);
             DateTime expires = DateTime.UtcNow.AddMinutes(duration);
             List<Claim> claims = new List<Claim>(){
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
             foreach (var role in user.Roles)
                 claims.Add(new Claim(ClaimTypes.Role, role + ""));
@@ -53,31 +56,29 @@ namespace ForumApi.SourceCode.Services
             return new JwtSecurityTokenHandler().WriteToken(tokeOptions);
         }
 
-        public async Task<UserDto> AuthenticateAsync(string usernameOrEmailAddress, string password)
+        public async Task<CurrentUser> AuthenticateAsync(string usernameOrEmailAddress, string password)
         {
             try
             {
-                var user = await _userRepository
-                    .Get(u => u.Username == usernameOrEmailAddress || u.EmailAddress == usernameOrEmailAddress);
+                var user = await _userRepository.Get(u => u.Username == usernameOrEmailAddress ||
+                                                        u.EmailAddress == usernameOrEmailAddress);
 
-                if (user == null)
+                if (user == null || !PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
                     return null;
                 }
 
-                if (!PasswordManager.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                {
-                    return null;
-                }
-
-                var dto = new UserDto {
+                var currentUser = new CurrentUser {
                     Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Username = user.Username,
                     EmailAddress = user.EmailAddress,
+                    Avatar = !string.IsNullOrWhiteSpace(user.Avatar)?_env.ContentRootPath + user.Avatar : "",
                     Roles = user.Roles,
                     Token = GenerateJSONWebToken(user)
                 };
-                return dto;
+                return currentUser;
             }
             catch (Exception e)
             {

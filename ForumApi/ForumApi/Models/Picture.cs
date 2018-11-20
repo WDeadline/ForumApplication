@@ -12,17 +12,23 @@ namespace ForumApi.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        [BsonElement("name")]
+
+        [BsonElement("name"), BsonRequired]
         public string Name { get; set; }
-        [BsonElement("path")]
+
+        [BsonElement("path"), BsonRequired]
         public string Path { get; set; }
+
         [BsonElement("len")]
         public int Length { get; set; }
+
         [BsonElement("wid")]
         public int Width { get; set; }
+
         [BsonElement("hgt")]
         public int Height { get; set; }
-        [BsonElement("type")]
+
+        [BsonElement("type"), BsonRequired]
         public string ContentType { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumApi.Contexts;
 using ForumApi.Environments;
+using ForumApi.Interfaces;
 using ForumApi.Interfaces.Contexts;
 using ForumApi.Interfaces.Repositories;
 using ForumApi.Interfaces.Services;
@@ -84,7 +85,7 @@ namespace ForumApi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtToken.SecretKey))
                 };
             });
-            
+            services.AddHttpContextAccessor();
 
             services.AddTransient<IForumDbConnector, ForumDbConnector>();
             services.AddTransient<IRepository<User>, UserRepository>();
@@ -92,8 +93,8 @@ namespace ForumApi
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IRegisterService, RegisterService>();
 
-            services.AddTransient<ForumApi.Interfaces.IImageHandler, ForumApi.Interfaces.ImageHandler>();
-            services.AddTransient<ForumApi.Interfaces.IImageWriter,ForumApi.Interfaces.ImageWriter>();
+            services.AddTransient<IImageHandler, ImageHandler>();
+            services.AddTransient<IImageWriter, ImageWriter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
