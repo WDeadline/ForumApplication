@@ -20,10 +20,10 @@ namespace ForumApi.SourceCode.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly ILogger<AuthenticationService> _logger;
-        private readonly IUserRepository _userRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly JwtTokenSettings jwtTokenSettings;
         public AuthenticationService(IOptions<JwtTokenSettings> options, ILogger<AuthenticationService> logger,
-            IUserRepository userRepository)
+            IRepository<User> userRepository)
         {
             jwtTokenSettings = options.Value;
             _logger = logger;
@@ -37,11 +37,10 @@ namespace ForumApi.SourceCode.Services
             double.TryParse(jwtTokenSettings.Duration, out double duration);
             DateTime expires = DateTime.UtcNow.AddMinutes(duration);
             List<Claim> claims = new List<Claim>(){
-                new Claim(ClaimTypes.Email, user.EmailAddress),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Expiration, user.CreationTime.ToLongDateString())
+                new Claim(ClaimTypes.Name, user.Username)
             };
-            AddClaimRoles(user.Roles, claims);
+            foreach (var role in user.Roles)
+                claims.Add(new Claim(ClaimTypes.Role, role + ""));
 
             var tokeOptions = new JwtSecurityToken(
                 issuer: jwtTokenSettings.Issuer,
@@ -54,19 +53,12 @@ namespace ForumApi.SourceCode.Services
             return new JwtSecurityTokenHandler().WriteToken(tokeOptions);
         }
 
-        private static void AddClaimRoles(IEnumerable<Role> roles, List<Claim> claims)
-        {
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
-            }
-        }
-
         public async Task<UserDto> AuthenticateAsync(string usernameOrEmailAddress, string password)
         {
             try
             {
-                var user = await _userRepository.GetUserByUsernameOrEmailAddressAsync(usernameOrEmailAddress);
+                var user = await _userRepository
+                    .Get(u => u.Username == usernameOrEmailAddress || u.EmailAddress == usernameOrEmailAddress);
 
                 if (user == null)
                 {
@@ -77,6 +69,7 @@ namespace ForumApi.SourceCode.Services
                 {
                     return null;
                 }
+
                 var dto = new UserDto {
                     Id = user.Id,
                     Username = user.Username,

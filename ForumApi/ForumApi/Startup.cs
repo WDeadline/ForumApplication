@@ -8,6 +8,7 @@ using ForumApi.Environments;
 using ForumApi.Interfaces.Contexts;
 using ForumApi.Interfaces.Repositories;
 using ForumApi.Interfaces.Services;
+using ForumApi.Models;
 using ForumApi.Repositories;
 using ForumApi.Services;
 using ForumApi.SourceCode.Services;
@@ -86,8 +87,8 @@ namespace ForumApi
             
 
             services.AddTransient<IForumDbConnector, ForumDbConnector>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRepository<User>, UserRepository>();
+            services.AddTransient<ForumApi.Interfaces.IUserService, UserService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IRegisterService, RegisterService>();
 

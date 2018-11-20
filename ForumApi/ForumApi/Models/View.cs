@@ -8,9 +8,9 @@ namespace ForumApi.Models
 {
     public class View
     {
-        [BsonElement("vie")]
+        [BsonElement("by")]
         public string ViewBy { get; set; }
-        [BsonElement("cre")]
+        [BsonElement("create")]
         public DateTime CreationTime { get; set; } = DateTime.UtcNow;
     }
 }

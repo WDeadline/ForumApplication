@@ -12,17 +12,17 @@ namespace ForumApi.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        [BsonElement("tle")]
+        [BsonElement("title")]
         public string Title { get; set; }
         [BsonElement("des")]
         public string Description { get; set; }
         [BsonElement("tags")]
         public ICollection<string> Tags { get; set; }
-        [BsonElement("vies")]
+        [BsonElement("views")]
         public IEnumerable<View> Views { get; set; }
-        [BsonElement("vts")]
+        [BsonElement("votes")]
         public IEnumerable<Vote> Votes { get; set; }
-        [BsonElement("anss")]
+        [BsonElement("ans")]
         public IEnumerable<Answer> Answers { get; set; }
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreationTime
@@ -38,7 +38,7 @@ namespace ForumApi.Models
         }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("udt")]
+        [BsonElement("update")]
         public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
     }
 }

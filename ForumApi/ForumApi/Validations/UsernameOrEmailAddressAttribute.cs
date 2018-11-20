@@ -10,11 +10,11 @@ namespace ForumApi.Validations
 {
     public class UsernameOrEmailAddressAttribute : ValidationAttribute
     {
-        private const string UsernameOrEmailAddressRegex = @"^(([a-zA-Z][a-zA-Z0-9]{2,19})|(([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
+        private const string USERNAME_EMAIL_REGEX = @"^(([a-zA-Z][a-zA-Z0-9]{2,19})|(([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
                                        @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)))$";
 
-        private const string ErrorMessageEmailAddress = "Please enter your email address in format: yourname@example.com";
-        private const string ErrorMessageUsername = "A username can only contain alphanumeric characters (letters a-zA-Z, numbers 0-9) and cannot be longer than 20 characters.";
+        private const string MSG_EMAIL_ERR = "Please enter your email address in format: yourname@example.com";
+        private const string MSG_USER_ERR = "A username can only contain alphanumeric characters (letters a-zA-Z, numbers 0-9) and cannot be longer than 20 characters.";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -26,7 +26,7 @@ namespace ForumApi.Validations
 
         private bool IsValidUsernameOrEmailAddress(string usernameOrEmailAddress)
         {
-            Regex regex = new Regex(UsernameOrEmailAddressRegex);
+            Regex regex = new Regex(USERNAME_EMAIL_REGEX);
             return regex.IsMatch(usernameOrEmailAddress);
         }
 
@@ -36,8 +36,8 @@ namespace ForumApi.Validations
                 return this.ErrorMessage;
             bool isEmailAddress = usernameOrEmailAddress.IndexOf('@') > -1;
             if (isEmailAddress)
-                return ErrorMessageEmailAddress;
-            return ErrorMessageUsername;
+                return MSG_EMAIL_ERR;
+            return MSG_USER_ERR;
         }
     }
 }

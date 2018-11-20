@@ -9,8 +9,8 @@ namespace ForumApi.Validations
 {
     public class UsernameAttribute : ValidationAttribute
     {
-        private const string UsernameRegex = @"^[a-zA-Z][a-zA-Z0-9]{2,19}$";
-        private const string ErrorMessageUsername = "A username can only contain alphanumeric characters (letters a-zA-Z, numbers 0-9).";
+        private const string USERNAME_REGEX = @"^[a-zA-Z][a-zA-Z0-9]{2,19}$";
+        private const string MSG_USERNAME = "A username can only contain alphanumeric characters (letters a-zA-Z, numbers 0-9).";
         
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -22,7 +22,7 @@ namespace ForumApi.Validations
 
         private bool IsValidUsername(string username)
         {
-            Regex regex = new Regex(UsernameRegex);
+            Regex regex = new Regex(USERNAME_REGEX);
             return regex.IsMatch(username);
         }
 
@@ -30,7 +30,7 @@ namespace ForumApi.Validations
         {
             if (!string.IsNullOrEmpty(this.ErrorMessage))
                 return this.ErrorMessage;
-            return ErrorMessageUsername;
+            return MSG_USERNAME;
         }
     }
 }

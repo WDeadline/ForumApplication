@@ -12,15 +12,15 @@ namespace ForumApi.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        [BsonElement("usr")]
+        [BsonElement("uid")]
         public string UserId { get; set; }
         [BsonElement("inf")]
         public Information Information { get; set; }
         [BsonElement("ojt")]
         public IEnumerable<Objective> Objectives { get; set; }
-        [BsonElement("educ")]
+        [BsonElement("edu")]
         public IEnumerable<Education> Educations { get; set; }
-        [BsonElement("exper")]
+        [BsonElement("exp")]
         public IEnumerable<Experience> Experiences { get; set; }
     }
 }

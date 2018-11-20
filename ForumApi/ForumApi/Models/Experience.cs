@@ -8,13 +8,13 @@ namespace ForumApi.Models
 {
     public class Experience
     {
-        [BsonElement("wpl")]
+        [BsonElement("wkpl")]
         public string Workplace { get; set; }
         [BsonElement("pos")]
         public string Position { get; set; }
-        [BsonElement("stat")]
+        [BsonElement("start")]
         public DateTime StartTime { get; set; }
-        [BsonElement("endt")]
+        [BsonElement("end")]
         public DateTime EndTime { get; set; }
         [BsonElement("des")]
         public string Description { get; set; }

@@ -8,13 +8,13 @@ namespace ForumApi.Models
 {
     public class Answer
     {
-        [BsonElement("ansb")]
+        [BsonElement("by")]
         public string AnswerBy { get; set; }
         [BsonElement("cont")]
         public string Content { get; set; }
-        [BsonElement("cret")]
+        [BsonElement("create")]
         public DateTime CreationTime { get; set; } = DateTime.UtcNow;
-        [BsonElement("vts")]
+        [BsonElement("votes")]
         public IEnumerable<Vote> Votes { get; set; }
         [BsonElement("cmts")]
         public IEnumerable<Comment> Comments { get; set; }

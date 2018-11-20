@@ -9,11 +9,11 @@ namespace ForumApi.Models
 {
     public class Comment
     {
-        [BsonElement("cmtb")]
+        [BsonElement("by")]
         public string CommentBy { get; set; }
         [BsonElement("cont")]
         public string Content { get; set; }
-        [BsonElement("cret")]
+        [BsonElement("create")]
         public DateTime CreationTime { get; set; } = DateTime.UtcNow;
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IRepository<User>
     {
         private readonly ILogger<UserRepository> _logger;
         private readonly IForumDbConnector _db;
@@ -22,20 +22,20 @@ namespace ForumApi.Repositories
             _db = db;
         }
 
-        public Task AddAsync(User entity)
+        public Task Add(User entity)
         {
             try
             {
                 return _db.Users.InsertOneAsync(entity);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message, entity);
-                throw e;
+                _logger.LogError(ex, ex.Message, entity);
+                throw ex;
             }
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> Delete(string id)
         {
             try
             {
@@ -43,14 +43,14 @@ namespace ForumApi.Repositories
                 DeleteResult deleteResult = await _db.Users.DeleteOneAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message, id);
-                throw e;
+                _logger.LogError(ex, ex.Message, id);
+                throw ex;
             }
         }
 
-        public async Task<bool> DeleteAsync(Expression<Func<User, bool>> where)
+        public async Task<bool> Delete(Expression<Func<User, bool>> where)
         {
             try
             {
@@ -58,119 +58,69 @@ namespace ForumApi.Repositories
                 DeleteResult deleteResult = await _db.Users.DeleteManyAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message);
-                throw e;
+                _logger.LogError(ex, ex.Message);
+                throw ex;
             }
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
-        {
-            try
-            {
-                return await _db.Users.Find(_ => true).ToListAsync();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message);
-                throw e;
-            }
-        }
-
-        public async Task<User> GetAsync(Expression<Func<User, bool>> where)
+        public async Task<User> Get(Expression<Func<User, bool>> where)
         {
             try
             {
                 FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
                 return await _db.Users.Find(filter).FirstOrDefaultAsync();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message);
-                throw e;
+                _logger.LogError(ex, ex.Message);
+                throw ex;
             }
         }
 
-        public async Task<User> GetByIdAsync(string id)
+        public async Task<IEnumerable<User>> GetAll()
+        {
+            try
+            {
+                return await _db.Users.Find(_ => true).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public async Task<User> GetById(string id)
         {
             try
             {
                 FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Id, id);
                 return await _db.Users.Find(filter).FirstOrDefaultAsync();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message, id);
-                throw e;
+                _logger.LogError(ex, ex.Message, id);
+                throw ex;
             }
-
-            
         }
 
-        public async Task<IEnumerable<User>> GetManyAsync(Expression<Func<User, bool>> where)
+        public async Task<IEnumerable<User>> GetMany(Expression<Func<User, bool>> where)
         {
             try
             {
                 FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
                 return await _db.Users.Find(filter).ToListAsync();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message);
-                throw e;
+                _logger.LogError(ex, ex.Message);
+                throw ex;
             }
         }
 
-        public Task<User> GetUserByEmailAddressAsync(string emailAddress)
-        {
-            try
-            {
-                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.EmailAddress, emailAddress);
-                return _db.Users.Find(filter).FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message, emailAddress);
-                throw e;
-            }
-        }
-
-        public Task<User> GetUserByUsernameAsync(string username)
-        {
-            try
-            {
-                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Username, username);
-                return _db.Users.Find(filter).FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message, username);
-                throw e;
-            }
-        }
-
-        public Task<User> GetUserByUsernameOrEmailAddressAsync(string usernameOrEmailAddress)
-        {
-            try
-            {
-                FilterDefinition<User> filter = Builders<User>.Filter.And(
-                    Builders<User>.Filter.Or(
-                        Builders<User>.Filter.Eq(u => u.Username, usernameOrEmailAddress),
-                        Builders<User>.Filter.Eq(u => u.EmailAddress, usernameOrEmailAddress)
-                    ),
-                    Builders<User>.Filter.Eq(u => u.Active, true)
-                );
-                return _db.Users.Find(filter).FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message, usernameOrEmailAddress);
-                throw e;
-            }
-        }
-
-        public async Task<bool> UpdateAsync(User entity)
+        public async Task<bool> Update(User entity)
         {
             try
             {
@@ -178,10 +128,10 @@ namespace ForumApi.Repositories
                     .ReplaceOneAsync(filter: g => g.Id == entity.Id, replacement: entity);
                 return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, e.Message, entity);
-                throw e;
+                _logger.LogError(ex, ex.Message, entity);
+                throw ex;
             }
         }
     }

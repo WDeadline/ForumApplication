@@ -8,10 +8,10 @@ namespace ForumApi.Models
 {
     public class Vote
     {
-        [BsonElement("vot")]
+        [BsonElement("by")]
         public string VoteBy { get; set; }
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("cre")]
+        [BsonElement("create")]
         public DateTime CreationTime { get; set; } = DateTime.UtcNow;
     }
 }

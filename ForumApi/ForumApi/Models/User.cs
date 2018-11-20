@@ -18,18 +18,18 @@ namespace ForumApi.Models
         [BsonElement("avt")]
         public string Avatar { get; set; } = string.Empty;
 
-        [BsonElement("usn")]
+        [BsonElement("uid")]
         public string Username { get; set; }
 
         [BsonElement("email")]
         public string EmailAddress { get; set; }
 
         [JsonIgnore]
-        [BsonElement("pwdh")]
+        [BsonElement("pwd")]
         public byte[] PasswordHash { get; set; }
 
         [JsonIgnore]
-        [BsonElement("pwds")]
+        [BsonElement("salt")]
         public byte[] PasswordSalt { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
@@ -45,13 +45,13 @@ namespace ForumApi.Models
         }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("updt")]
+        [BsonElement("update")]
         public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
 
         [BsonElement("act")]
         public bool Active { get; set; } = true;
 
-        [BsonElement("rls")]
+        [BsonElement("roles")]
         public IEnumerable<Role> Roles { get; set; }
     }
 }

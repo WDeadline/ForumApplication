@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\UserRepositoryOld.cs" />
+    <Compile Remove="Services\UserServiceOld.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\images\avatars\" />
     <Folder Include="wwwroot\images\posts\" />
   </ItemGroup>

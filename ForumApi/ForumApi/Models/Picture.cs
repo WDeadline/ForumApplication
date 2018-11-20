@@ -14,15 +14,15 @@ namespace ForumApi.Models
         public string Id { get; set; }
         [BsonElement("name")]
         public string Name { get; set; }
-        [BsonElement("pth")]
+        [BsonElement("path")]
         public string Path { get; set; }
         [BsonElement("len")]
         public int Length { get; set; }
         [BsonElement("wid")]
         public int Width { get; set; }
-        [BsonElement("hei")]
+        [BsonElement("hgt")]
         public int Height { get; set; }
-        [BsonElement("contt")]
+        [BsonElement("type")]
         public string ContentType { get; set; }
     }
 }

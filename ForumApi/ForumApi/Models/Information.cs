@@ -14,13 +14,13 @@ namespace ForumApi.Models
         [BsonElement("ln")]
         public string LastName { get; set; }
 
-        [BsonElement("gdr")]
+        [BsonElement("gen")]
         public bool? Gender { get; set; }
 
         [BsonElement("dob")]
         public DateTime? DateOfBirth { get; set; }
 
-        [BsonElement("pn")]
+        [BsonElement("phone")]
         public string PhoneNumber { get; set; }
 
         [BsonElement("addr")]

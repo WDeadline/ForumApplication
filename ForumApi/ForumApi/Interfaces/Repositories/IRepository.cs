@@ -8,13 +8,13 @@ namespace ForumApi.Interfaces.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        Task AddAsync(T entity);
-        Task<bool> DeleteAsync(string id);
-        Task<bool> DeleteAsync(Expression<Func<T, bool>> where);
-        Task<bool> UpdateAsync(T entity);
-        Task<T> GetByIdAsync(string id);
-        Task<T> GetAsync(Expression<Func<T, bool>> where);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> GetManyAsync(Expression<Func<T, bool>> where);
+        Task Add(T entity);
+        Task<bool> Delete(string id);
+        Task<bool> Delete(Expression<Func<T, bool>> where);
+        Task<bool> Update(T entity);
+        Task<T> Get(Expression<Func<T, bool>> where);
+        Task<IEnumerable<T>> GetAll();
+        Task<T> GetById(string id);
+        Task<IEnumerable<T>> GetMany(Expression<Func<T, bool>> where);
     }
 }

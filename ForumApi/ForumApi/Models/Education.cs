@@ -8,13 +8,13 @@ namespace ForumApi.Models
 {
     public class Education
     {
-        [BsonElement("mj")]
+        [BsonElement("maj")]
         public string Major { get; set; }
-        [BsonElement("unv")]
+        [BsonElement("uni")]
         public string University { get; set; }
-        [BsonElement("stat")]
+        [BsonElement("start")]
         public DateTime StartTime { get; set; }
-        [BsonElement("endt")]
+        [BsonElement("end")]
         public DateTime EndTime { get; set; }
         [BsonElement("gpa")]
         public float GPA { get; set; }

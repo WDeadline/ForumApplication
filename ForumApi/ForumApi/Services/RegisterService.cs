@@ -47,7 +47,7 @@ namespace ForumApi.Services
                     PasswordSalt = passwordSalt,
                     Roles = new List<Role> { Role.Student }
                 };
-                await _userRepository.AddAsync(user);
+                await _userRepository.Add(user);
                 return true;
             }
             catch (Exception e)
