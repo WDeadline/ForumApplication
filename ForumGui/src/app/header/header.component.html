@@ -26,7 +26,7 @@
         <li><a routerLink="/register">Register</a></li>
         <li *ngIf="!(isLoggedIn$ | async)" ><a routerLink="/login">Login</a></li>
         <li class="dropdown" *ngIf="(isLoggedIn$ | async)">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{authentication.currentUserInfo?.username | uppercase}} <span class="caret"></span></a>
+          <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{authentication.currentUserInfo?.username | uppercase}} <span class="caret"></span></a>
           <ul class="dropdown-menu" >
             <li><a routerLink="/profile">Profile</a></li>
             <li><a routerLink="/profile-update">Edit Profile</a></li>
@@ -34,12 +34,10 @@
             <li><a (click)="onLogout()" >Logout</a></li>
           </ul>
         </li>
-        <li class="dropdown" *ngIf="(isLoggedIn$ | async) && (getUserRole() === 'Student')">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage <span class="caret"></span></a>
+        <li class="dropdown" *ngIf="(isLoggedIn$ | async) && (getUserRole() == 0 )">
+          <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >Manage <span class="caret"></span></a>
           <ul class="dropdown-menu" >
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a routerLink="/admin/user">User</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">Separated link</a></li>
           </ul>

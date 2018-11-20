@@ -31,15 +31,14 @@ export class AuthenticationService {
                         localStorage.setItem('currentUser', JSON.stringify(user));
                         this.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
                         localStorage.setItem('userRole', this.currentUserInfo.roles[0]);
-                        this.loggedIn.next(true);   
-                        console.log("id: "+ this.currentUserInfo.id);                  
+                        this.loggedIn.next(true);                 
                     }
                 return user;
             }));
     }
 
-    register(FirstName: string, LastName: string, Username:string, EmailAddress: string, Password: string){
-        return this.http.post<any>(`${this.config}${this.apiRegister}`,{FirstName,LastName,Username,EmailAddress,Password});
+    register( Username:string, EmailAddress: string, Password: string){
+        return this.http.post<any>(`${this.config}${this.apiRegister}`,{Username,EmailAddress,Password});
     }
 
     logOut() {
@@ -70,23 +69,29 @@ export class AuthenticationService {
     }
 
     getUserRoleFromLocalStorage(): string {
-        return localStorage.getItem('userRole');
+        return localStorage.getItem('userRole').toString();
     }
 
-
+    getToken(): string{
+        return this.currentUserInfo.token;
+    }
 
     getErrorLogin(err : any) {
-        if(err.error){
-            if(err.error.UsernameOrEmailAddress){
-                return err.error.UsernameOrEmailAddress[0];
-            } 
-            //them lỗi dô          
+        if(err.status === 401){
+            return "You username/email and password not match";
+        }
+        if(err.message)
+        {
+            return err.message;
         }
         return;
     }
 
     getErrorRegistor(err : any){
         if(err.error){
+            if(err.error.Username && err.error.EmailAddress){
+                return "Sorry, A account with email address and username already exists."
+            }
             if(err.error.Username){
                 return err.error.Username[0];
             }

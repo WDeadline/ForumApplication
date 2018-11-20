@@ -10,19 +10,25 @@ import {QuestionMakeComponent} from './discussion/question-make/question-make.co
 import {ProfileComponent} from './user/profile/profile.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeContentComponent ,canActivate: [AuthGuard]},
+  { path: 'home', component: HomeContentComponent },
   { path: 'test', component: TestComponent ,canActivate: [AuthGuard]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'users', component: AllUserComponent},
   { path: 'register', component: RegisterComponent },
   { path: 'makequestion', component: QuestionMakeComponent,canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent},
+  { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard]},
+  //{path:'questions', component: QuestionShowComponent},
   {
     path: 'profile-update',
-    loadChildren: './user/profile-update.module#ProfileUpdateModule'
+    loadChildren: './user/profile-update.module#ProfileUpdateModule',
+    canActivate: [AuthGuard]
   },
-  
+  {
+    path: 'admin',
+    loadChildren: './admin/admin.module#AdminModule',
+    canActivate: [AuthGuard]
+  },
 
 ];
 

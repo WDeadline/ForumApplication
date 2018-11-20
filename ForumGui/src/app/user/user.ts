@@ -5,8 +5,9 @@ export class User{
     fistName: string;
     LastName : string;
     FirstName : string;
-    Gender : boolean;
-    PhoneNumber : string;
+    gender : boolean;
+    avatar: string;
+    phoneNumber : string;
     birthDay : Date;
     emailAddress:string;
 

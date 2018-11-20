@@ -19,12 +19,6 @@ export class ProfileInformationService {
     private handleErrorService: HandleErrorService,
   ) { }
 
-  getInformation(){
-    return this.http.get<User[]>(`${this.config}${this.apiProfileInfo}`)
-      .pipe(
-        catchError(this.handleErrorService.handleError('getQuestions',[]))
-      ) 
-  }
 
   
 

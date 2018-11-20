@@ -21,16 +21,3 @@
     font-size:50px;
 }
 
-.menu-link-color{
-    color: grey;
-    font-size: 20px;
-}
-a.menu-link:hover, a.menu-link:visited{
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-}
-
-a.menu-link:hover, a.menu-link:active {
-	color: black;
-}

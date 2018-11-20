@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserRole(): string {
+    console.log("userRole: "+this.authentication.getUserRoleFromLocalStorage());
     return this.authentication.getUserRoleFromLocalStorage();
   }
 
