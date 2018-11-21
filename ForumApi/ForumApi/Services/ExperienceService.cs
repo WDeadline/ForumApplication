@@ -72,10 +72,24 @@ namespace ForumApi.Services
             }
         }
 
+        public Task<IEnumerable<Experience>> GetByUserId(string userId)
+        {
+            try
+            {
+                return _experienceRepository.GetMany(e => e.UserId == userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, userId);
+                throw ex;
+            }
+        }
+
         public Task<bool> Update(Experience entity)
         {
             try
             {
+                entity.UpdationTime = DateTime.UtcNow;
                 return _experienceRepository.Update(entity);
             }
             catch (Exception ex)

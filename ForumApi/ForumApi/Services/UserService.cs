@@ -81,6 +81,7 @@ namespace ForumApi.Services
         {
             try
             {
+                entity.UpdationTime = DateTime.UtcNow;
                 return _userRepository.Update(entity);
             }
             catch (Exception ex)
