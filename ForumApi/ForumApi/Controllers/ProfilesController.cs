@@ -38,13 +38,9 @@ namespace ForumApi.Controllers
         {
             string userId = User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
 
-            string e = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/");
-            string g = HttpContext.Request.ToString();
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
             var img = await _imageHandler.UploadAvatar(userId, file);
-            img = img.Replace("\\", "/");
-            string path = e + img;
-
-            return new OkObjectResult(path);
+            return new OkObjectResult(path + img);
         }
 
     }

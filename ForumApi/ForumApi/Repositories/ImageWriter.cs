@@ -37,16 +37,13 @@ namespace ForumApi.Interfaces
             {
                 var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
                 string fileName = Guid.NewGuid().ToString() + extension;
-                string folder = Path.Combine("images", "avatars");
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder);
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "avatars");
                 path = Path.Combine(path, fileName);
                 using (var bits = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(bits);
                 }
-                return Path.Combine(folder, fileName);
+                return fileName;
             }
             catch (Exception ex)
             {
@@ -58,7 +55,7 @@ namespace ForumApi.Interfaces
         {
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "avatars", fileName);
                 if (File.Exists(path))
                 {
                     File.Delete(path);

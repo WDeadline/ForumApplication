@@ -1,5 +1,5 @@
 ﻿using ForumApi.Environments;
-using ForumApi.Interfaces.Contexts;
+using ForumApi.Interfaces;
 using ForumApi.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -21,5 +21,15 @@ namespace ForumApi.Contexts
         }
 
         public IMongoCollection<User> Users => _db.GetCollection<User>("Users");
+
+        public IMongoCollection<Question> Questions => _db.GetCollection<Question>("Questions");
+
+        public IMongoCollection<Education> Educations => _db.GetCollection<Education>("Educations");
+
+        public IMongoCollection<Experience> Experiences => _db.GetCollection<Experience>("Experiences");
+
+        public IMongoCollection<Objective> Objectives => _db.GetCollection<Objective>("Objectives");
+
+        public IMongoCollection<Information> Informations => _db.GetCollection<Information>("Informations");
     }
 }

@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class ObjectiveRepository : IRepository<Objective>
     {
-        private readonly ILogger<UserRepository> _logger;
+        private readonly ILogger<ObjectiveRepository> _logger;
         private readonly IForumDbConnector _db;
 
-        public UserRepository(ILogger<UserRepository> logger, IForumDbConnector db)
+        public ObjectiveRepository(ILogger<ObjectiveRepository> logger, IForumDbConnector db)
         {
             _logger = logger;
             _db = db;
         }
 
-        public Task Add(User entity)
+        public Task Add(Objective entity)
         {
             try
             {
-                return _db.Users.InsertOneAsync(entity);
+                return _db.Objectives.InsertOneAsync(entity);
             }
             catch (Exception ex)
             {
@@ -38,8 +38,8 @@ namespace ForumApi.Repositories
         {
             try
             {
-                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Id, id);
-                DeleteResult deleteResult = await _db.Users.DeleteOneAsync(filter);
+                FilterDefinition<Objective> filter = Builders<Objective>.Filter.Eq(u => u.Id, id);
+                DeleteResult deleteResult = await _db.Objectives.DeleteOneAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -49,12 +49,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Delete(Expression<Func<User, bool>> where)
+        public async Task<bool> Delete(Expression<Func<Objective, bool>> where)
         {
             try
             {
-                FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
-                DeleteResult deleteResult = await _db.Users.DeleteManyAsync(filter);
+                FilterDefinition<Objective> filter = Builders<Objective>.Filter.Where(where);
+                DeleteResult deleteResult = await _db.Objectives.DeleteManyAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -64,12 +64,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<User> Get(Expression<Func<User, bool>> where)
+        public async Task<Objective> Get(Expression<Func<Objective, bool>> where)
         {
             try
             {
-                FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
-                return await _db.Users.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Objective> filter = Builders<Objective>.Filter.Where(where);
+                return await _db.Objectives.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -78,11 +78,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<Objective>> GetAll()
         {
             try
             {
-                return await _db.Users.Find(_ => true).ToListAsync();
+                return await _db.Objectives.Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -91,12 +91,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<User> GetById(string id)
+        public async Task<Objective> GetById(string id)
         {
             try
             {
-                FilterDefinition<User> filter = Builders<User>.Filter.Eq(u => u.Id, id);
-                return await _db.Users.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Objective> filter = Builders<Objective>.Filter.Eq(u => u.Id, id);
+                return await _db.Objectives.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -105,12 +105,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<User>> GetMany(Expression<Func<User, bool>> where)
+        public async Task<IEnumerable<Objective>> GetMany(Expression<Func<Objective, bool>> where)
         {
             try
             {
-                FilterDefinition<User> filter = Builders<User>.Filter.Where(where);
-                return await _db.Users.Find(filter).ToListAsync();
+                FilterDefinition<Objective> filter = Builders<Objective>.Filter.Where(where);
+                return await _db.Objectives.Find(filter).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -119,11 +119,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Update(User entity)
+        public async Task<bool> Update(Objective entity)
         {
             try
             {
-                ReplaceOneResult updateResult = await _db.Users
+                ReplaceOneResult updateResult = await _db.Objectives
                     .ReplaceOneAsync(filter: g => g.Id == entity.Id, replacement: entity);
                 return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
             }

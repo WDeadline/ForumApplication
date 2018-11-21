@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using ForumApi.Contexts;
 using ForumApi.Environments;
 using ForumApi.Interfaces;
-using ForumApi.Interfaces.Contexts;
-using ForumApi.Interfaces.Repositories;
 using ForumApi.Interfaces.Services;
 using ForumApi.Models;
 using ForumApi.Repositories;
@@ -87,9 +85,19 @@ namespace ForumApi
             });
             services.AddHttpContextAccessor();
 
-            services.AddTransient<IForumDbConnector, ForumDbConnector>();
+            services.AddSingleton<IForumDbConnector, ForumDbConnector>();
             services.AddTransient<IRepository<User>, UserRepository>();
-            services.AddTransient<ForumApi.Interfaces.IUserService, UserService>();
+            services.AddTransient<IRepository<Education>, EducationRepository>();
+            services.AddTransient<IRepository<Experience>, ExperienceRepository>();
+            services.AddTransient<IRepository<Information>, InformationRepository>();
+            services.AddTransient<IRepository<Objective>, ObjectiveRepository>();
+            services.AddTransient<IRepository<Question>, QuestionRepository>();
+            services.AddTransient<IService<User>, UserService>();
+            services.AddTransient<IService<Education>, EducationService>();
+            services.AddTransient<IService<Experience>, ExperienceService>();
+            services.AddTransient<IService<Information>, InformationService>();
+            services.AddTransient<IService<Objective>, ObjectiveService>();
+            services.AddTransient<IService<Question>, QuestionService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IRegisterService, RegisterService>();
 

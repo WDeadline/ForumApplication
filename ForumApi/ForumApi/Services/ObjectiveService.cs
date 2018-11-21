@@ -1,35 +1,30 @@
-﻿using ForumApi.Environments;
-using ForumApi.Interfaces;
+﻿using ForumApi.Interfaces;
 using ForumApi.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumApi.Services
 {
-    public class UserService : IService<User>
+    public class ObjectiveService : IService<Objective>
     {
-        private readonly ILogger<UserService> _logger;
-        private readonly IRepository<User> _userRepository;
+        private readonly ILogger<ObjectiveService> _logger;
+        private readonly IRepository<Objective> _objectiveRepository;
 
-        public UserService(ILogger<UserService> logger, IRepository<User> userRepository)
+        public ObjectiveService(ILogger<ObjectiveService> logger, IRepository<Objective> objectiveRepository)
         {
             _logger = logger;
-            _userRepository = userRepository;
+            _objectiveRepository = objectiveRepository;
 
         }
 
-        public Task Add(User entity)
+        public Task Add(Objective entity)
         {
             try
             {
-                return _userRepository.Add(entity);
+                return _objectiveRepository.Add(entity);
             }
             catch (Exception ex)
             {
@@ -42,7 +37,7 @@ namespace ForumApi.Services
         {
             try
             {
-                return _userRepository.Delete(id);
+                return _objectiveRepository.Delete(id);
             }
             catch (Exception ex)
             {
@@ -51,11 +46,11 @@ namespace ForumApi.Services
             }
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public Task<IEnumerable<Objective>> GetAll()
         {
             try
             {
-                return _userRepository.GetAll();
+                return _objectiveRepository.GetAll();
             }
             catch (Exception ex)
             {
@@ -64,11 +59,11 @@ namespace ForumApi.Services
             }
         }
 
-        public Task<User> GetById(string id)
+        public Task<Objective> GetById(string id)
         {
             try
             {
-                return _userRepository.GetById(id);
+                return _objectiveRepository.GetById(id);
             }
             catch (Exception ex)
             {
@@ -77,11 +72,11 @@ namespace ForumApi.Services
             }
         }
 
-        public Task<bool> Update(User entity)
+        public Task<bool> Update(Objective entity)
         {
             try
             {
-                return _userRepository.Update(entity);
+                return _objectiveRepository.Update(entity);
             }
             catch (Exception ex)
             {

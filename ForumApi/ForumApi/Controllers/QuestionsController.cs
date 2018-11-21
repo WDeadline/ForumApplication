@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ForumApi.Interfaces;
+using ForumApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ForumApi.Controllers
 {
@@ -10,36 +13,57 @@ namespace ForumApi.Controllers
     [ApiController]
     public class QuestionsController : ControllerBase
     {
-        // GET: api/Questions
+        private readonly ILogger<QuestionsController> _logger;
+        private readonly IService<Question> _questionService;
+        public QuestionsController(ILogger<QuestionsController> logger, IService<Question> questionService)
+        {
+            _logger = logger;
+            _questionService = questionService;
+        }
+
+        // GET: api/questions
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new OkObjectResult(await _questionService.GetAll());
         }
 
-        // GET: api/Questions/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // GET: api/questions/id
+        [HttpGet("{id:length(24)}")]
+        public async Task<IActionResult> Get(string id)
         {
-            return "value";
+            var Question = await _questionService.GetById(id);
+            if (Question == null)
+                return new NotFoundResult();
+            return new OkObjectResult(Question);
         }
-
-        // POST: api/Questions
+        // POST: api/questions
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody]Question question)
         {
+            await _questionService.Add(question);
+            return new OkObjectResult(question);
         }
-
-        // PUT: api/Questions/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT: api/questions/5
+        [HttpPut("{id:length(24)}")]
+        public async Task<IActionResult> Put(string id, [FromBody]Question question)
         {
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            question.Id = id;
+            await _questionService.Update(question);
+            return new OkResult();
         }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE: api/questions/5
+        [HttpDelete("{id:length(24)}")]
+        public async Task<IActionResult> Delete(string id)
         {
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            await _questionService.Delete(id);
+            return new OkResult();
         }
     }
 }

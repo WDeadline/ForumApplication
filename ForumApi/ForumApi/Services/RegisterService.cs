@@ -1,5 +1,5 @@
 ﻿using ForumApi.Helpers;
-using ForumApi.Interfaces.Repositories;
+using ForumApi.Interfaces;
 using ForumApi.Interfaces.Services;
 using ForumApi.Models;
 using ForumApi.Payloads;

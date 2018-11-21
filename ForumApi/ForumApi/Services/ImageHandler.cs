@@ -1,5 +1,4 @@
 ﻿using ForumApi.Interfaces;
-using ForumApi.Interfaces.Repositories;
 using ForumApi.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,11 +29,11 @@ namespace ForumApi.Services
             var user = _userRepository.GetById(userId)?.Result;
             if(user == null)
             {
-                return "";
+                return null;
             }
             _imageWriter.DeleteAvatar(user.Avatar);
             string result = await _imageWriter.UploadAvatar(file);
-            user.Avatar = result.Replace("\\","/");
+            user.Avatar = result;
             _userRepository.Update(user);
             return result;
         }
