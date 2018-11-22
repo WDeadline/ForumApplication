@@ -36,9 +36,18 @@
           <div class="panel-body" style ="max-height: 100%;">
             <table style="width:100%; max-height: 100%;">
               <tr>
-                <td rowspan="2"  style="width: 7%;" class="cellAlign">{{question.votes}}</td>
-                <td rowspan="2" style="width: 7%;" class="cellAlign">{{question.answers}}</td> 
-                <td rowspan="2" style="width: 7%;" class="cellAlign">{{question.views}}</td> 
+                <td rowspan="2"  style="width: 7%;" class="cellAlign" >
+                  <p *ngIf="question.votes != null">{{question.votes}}</p>
+                  <p *ngIf="question.votes == null">0</p>
+                </td>
+                <td rowspan="2" style="width: 7%;" class="cellAlign">
+                  <p *ngIf="question.answers != null">{{question.answers}}</p>
+                  <p *ngIf="question.answers == null">0</p>
+                </td> 
+                <td rowspan="2" style="width: 7%;" class="cellAlign">                 
+                  <p *ngIf="question.views != null">{{question.views}}</p>
+                  <p *ngIf="question.views == null">0</p>
+                </td> 
                 <td colspan="2" rowspan="3" style="width: 79%; text-align: left;">
                   <a>
                       {{question.title}}
@@ -52,14 +61,10 @@
                 <td rowspan="2" class="cellAlign"><strong><i>Views</i></strong></td>
               </tr>
               <tr>
-                  <td class="tag">
-                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
-                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
-                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
-                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
-                      <a class="btn btn-primary btn-xs">#dadadad đa</a><span  style="padding-left:3px;"></span>
+                  <td class="tag" >                 
+                      <a *ngFor="let tag of question.tags" class="btn btn-primary btn-xs">{{tag}}</a><span  style="padding-left:3px;"></span>
                   </td>
-                  <td class="date">{{question.dateCreated | date : 'short'}}</td>
+                  <td class="date">{{question.updationTime | date : 'short'}}</td>
               </tr>
             </table>
           </div>

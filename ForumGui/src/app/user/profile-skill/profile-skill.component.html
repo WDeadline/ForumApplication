@@ -1,28 +1,14 @@
 <div *ngIf ="!isEdit && !isAdd">
     <h3>Skills</h3>
-    <hr>
+    <hr style="border: 1px solid ">
     <table style="width:100%; ">
         <tr>
           <td style="width:95%;">skill 11</td>
           <td style="width:5%;">
-              <a (click)="isEdit = true;"><span class="glyphicon glyphicon-pencil"></span></a>
-              <a><span class="glyphicon glyphicon-remove"></span></a>
+              <a class="update-link-color update-link" (click)="isEdit = true;"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a>
           </td>
         </tr> 
-        <tr>
-          <td style="width:95%;">skill 11</td>
-          <td style="width:5%;">
-              <span class="glyphicon glyphicon-pencil"></span>
-              <span class="glyphicon glyphicon-remove"></span>
-          </td>
-        </tr>
-        <tr>
-          <td style="width:95%;">skill 11</td>
-          <td style="width:5%;">
-              <span class="glyphicon glyphicon-pencil"></span>
-              <span class="glyphicon glyphicon-remove"></span>
-          </td>
-        </tr>
         <tr>
           <td style="height: 30px;"><a (click)="isAdd = true;">Add</a></td>
         </tr>

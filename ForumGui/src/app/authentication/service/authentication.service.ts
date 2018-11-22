@@ -31,14 +31,16 @@ export class AuthenticationService {
                         localStorage.setItem('currentUser', JSON.stringify(user));
                         this.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
                         localStorage.setItem('userRole', this.currentUserInfo.roles[0]);
-                        this.loggedIn.next(true);                 
+                        this.loggedIn.next(true);          
+                        console.log("id: "+this.currentUserInfo.id);       
+                        console.log("token: "+this.currentUserInfo.token);  
                     }
                 return user;
             }));
     }
 
-    register( Username:string, EmailAddress: string, Password: string){
-        return this.http.post<any>(`${this.config}${this.apiRegister}`,{Username,EmailAddress,Password});
+    register( FirstName:string,LastName:string,Username:string, EmailAddress: string, Password: string){
+        return this.http.post<any>(`${this.config}${this.apiRegister}`,{FirstName,LastName,Username,EmailAddress,Password});
     }
 
     logOut() {

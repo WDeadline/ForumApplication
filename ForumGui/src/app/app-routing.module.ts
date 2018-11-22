@@ -8,6 +8,7 @@ import { AuthGuard } from './authentication/guard/auth.guard';
 import {TestComponent} from './test/test.component';
 import {QuestionMakeComponent} from './discussion/question-make/question-make.component';
 import {ProfileComponent} from './user/profile/profile.component';
+import {QuestionShowComponent} from './discussion/question-show/question-show.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeContentComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'users', component: AllUserComponent},
   { path: 'register', component: RegisterComponent },
   { path: 'makequestion', component: QuestionMakeComponent,canActivate: [AuthGuard] },
+  { path: 'showquestion', component: QuestionShowComponent,canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard]},
   //{path:'questions', component: QuestionShowComponent},
   {

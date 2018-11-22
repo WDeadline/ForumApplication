@@ -1,13 +1,13 @@
 
 <div *ngIf="(!isEdit)&&(!isAdd)">
   <h3>Position</h3>
-  <hr>
+  <hr style="border: 1px solid ">
   <table style="width:100%; ">
       <tr>
         <td style="width:30%;height: 30px;"><b>Position</b></td>
         <td style="width:65%;">Manerger</td> 
         <td style="width:5%;">
-            <a (click)="isEdit = true;"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="update-link-color update-link" (click)="isEdit = true;"><span class="glyphicon glyphicon-pencil"></span></a>
           </td> 
       </tr>
       <tr>

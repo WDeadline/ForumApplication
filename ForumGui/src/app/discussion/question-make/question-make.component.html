@@ -4,19 +4,37 @@
     <div class="col-md-8">
       <h1>Make Question</h1>
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+              <label for="exampleInputEmail1">Title</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Please enter title" [(ngModel)]='title' >
+              <p class="error">{{errorTitle}}</p>
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              <tag-input [(ngModel)]='items' (onAdd)="onItemAdded($event)" [maxItems]='5'>
+                <tag-input-dropdown
+                  [autocompleteItems]="itemSearch"
+                  [showDropdownIfEmpty]="true"
+                  [dynamicUpdate]="false">
+                </tag-input-dropdown>
+              </tag-input> 
+              <p class="error">{{errorTag}}</p>
             </div>
             <div class="form-group">
-                <app-ngx-editor [config]="editorConfig"  [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor>
+                <p-editor [(ngModel)]='discription' value={{discription}} (onTextChange)="onTextChange($event)" [style]="{'height':'320px'}"></p-editor>
+                <p class="error">{{errorDiscription}}</p>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <div *ngIf="htmlContent">{{htmlContent}}</div>
+            <button type="submit" class="btn btn-primary" (click) ="onSubmit()">Submit</button>         
     </div>
-  
+
     <div class="col-md-2"></div>
   </div>
+
+
+
+  <!--formControlName="description" 
+     <tag-input [(ngModel)]='items' (onAdd)="onItemAdded($event)" (onTextChange)="onTextChange($event)" (onRemove)="onItemRemoved($event)">
+    <tag-input-dropdown
+      [autocompleteItems]="itemSearch"
+      [showDropdownIfEmpty]="true"
+      [dynamicUpdate]="false">
+    </tag-input-dropdown>
+  </tag-input> -->

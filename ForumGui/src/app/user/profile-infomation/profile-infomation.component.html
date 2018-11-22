@@ -1,76 +1,96 @@
 <!--<router-outlet></router-outlet>-->
 <div *ngIf="!isEdit">
   <h3>Infomation</h3>
-  <hr>
-  <table style="width:100%; ">
+  <hr style="border: 1px solid ">
+  <table style="width:100%; " *ngFor="let infor of information">
     <tr>
       <td style="width:30%;height: 30px;"><b>Full name</b></td>
-      <td style="width:65%;">Jack Jack</td> 
+      <td style="width:65%;">{{infor.fullName}}</td> 
       <td style="width:5%;">
-          <a (click)="isEdit = true;" ><span class="glyphicon glyphicon-pencil"></span></a>
+          <a class="update-link-color update-link" (click)="isEdit = true; edit(infor); " ><span class="glyphicon glyphicon-pencil"></span></a>
       </td> 
     </tr>
     <tr>
       <td style="height: 30px;"><b>Gender</b></td>
-      <td >Male</td> 
+
+      <td *ngIf="infor.gender">Male</td> 
+      <td *ngIf="!infor.gender">FeMale</td>
     </tr>
     <tr>
       <td style="height: 30px;"><b>Birthdate</b></td>
-      <td >15-9-1898</td> 
+      <td >{{infor.dateOfBirth | date : 'shortDate'}}</td> 
     </tr>
     <tr>
       <td style="height: 30px;"><b>Phone number</b></td>
-      <td >0128548655</td> 
+      <td >{{infor.phoneNumber}}</td> 
     </tr>
     <tr>
-      <td style="height: 30px;"><b>Email address</b></td>
-      <td >mail@gmail.com</td> 
+      <td style="height: 30px;"><b>Address</b></td>
+      <td >{{infor.address}}</td> 
     </tr>
   </table>
 </div>
 <div *ngIf="isEdit">
   <h3>Infomation</h3>
-  <hr>
-  <form class="form-horizontal">
+  <hr style="border: 1px solid ">
+  <form class="form-horizontal" [formGroup]="informationFormEdit">
     <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">First name</label>
+      <label for="fullNameEdit" class="col-sm-2 control-label">Full name</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="Email">
+        <input type="text" class="form-control" placeholder="Please enter full name" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="fullNameEdit" [ngClass]="{ 'is-invalid': submitted && f.fullNameEdit.errors }">
+        <div *ngIf="submitted && f.fullNameEdit.errors" class="error">
+          <div *ngIf="f.fullNameEdit.errors.required">Sorry, Full name is required</div>
+          <div *ngIf="f.fullNameEdit.errors.pattern">Sorry, Full name can not empty</div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="inputPassword3" class="col-sm-2 control-label">Last name</label>
-      <div class="col-sm-10">
-        <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
       </div>
     </div>
     <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Gender</label>
         <div class="col-sm-10">
             <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Male 
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" [checked]="gender" (change)="handelRadioMale($event)" value=true>Male 
               </label>
               <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">FeMale
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" [checked]="!gender" (change)="handelRadioFemale($event)" value=false>FeMale
               </label>
         </div>
     </div>
     <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Birthdate</label>
         <div class="col-sm-10">
-          <input type="date" class="form-control" id="inputPassword3">
+          <input
+          class="form-control"
+          placeholder="1/1/2018"
+          bsDatepicker
+          (bsValueChange)="onValueChangeEdit($event)"
+          [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
         </div>
       </div>
     <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Number phone</label>
+        <label for="numberPhoneEdit" class="col-sm-2 control-label">Number phone</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="inputPassword3">
+          <input type="text" class="form-control"  pattern="^([0-9]*)$" formControlName="numberPhoneEdit" [ngClass]="{ 'is-invalid': submitted && f.numberPhoneEdit.errors }">
+          <div *ngIf="submitted && f.numberPhoneEdit.errors" class="error">
+            <div *ngIf="f.numberPhoneEdit.errors.required">Sorry, number phone is required</div>
+            <div *ngIf="f.numberPhoneEdit.errors.pattern">Sorry, number phone only number</div>
+        </div>
         </div>
     </div>
 
     <div class="form-group">
+      <label for="addressEdit" class="col-sm-2 control-label">Address</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control"  placeholder="Please enter Address" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="addressEdit" [ngClass]="{ 'is-invalid': submitted && f.addressEdit.errors }">
+        <div *ngIf="submitted && f.addressEdit.errors" class="error">
+          <div *ngIf="f.addressEdit.errors.required">Sorry, address is required</div>
+          <div *ngIf="f.addressEdit.errors.pattern">Sorry, address only number</div>
+      </div>
+      </div>
+    </div>
+
+    <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary" (click)="isEdit = false;">Save</button>
+        <button type="submit" class="btn btn-primary" (click)="updateInfomation()">Save</button>
         <button type="submit" class="btn btn-primary" (click)="isEdit = false;">Cancel</button>
       </div>
     </div>

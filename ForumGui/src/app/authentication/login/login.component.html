@@ -27,7 +27,7 @@
               <div *ngIf="submitted && f.password.errors" class="error">
                 <div *ngIf="f.password.errors.pattern">Password is not valid</div>
                 <div *ngIf="f.password.errors.required">Password is required</div>
-                <div *ngIf="f.password.errors.minlength">minlength 6</div>
+                <div *ngIf="f.password.errors.minlength">Password length is 6 characters minimum</div>
                 <!--div *ngIf="">Password is not</div>-->
               </div>
             </div>

@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class HomeService {
-  private apiGetQuestions = '/tests/question';
+  private apiGetQuestions = '/questions';
   private config = 'https://localhost:44375/api';
   constructor(
     private handleErrorService: HandleErrorService,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ProfileUpdateService} from './profile-update.service';
-import {User} from '../user';
+import {User} from '../model/user';
 import {CurrentUserInfo} from '../../authentication/model/current-user-info';
 @Component({
   selector: 'app-profile-update',

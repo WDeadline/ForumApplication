@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule }    from '@angular/forms';
+import { FormsModule,ReactiveFormsModule }    from '@angular/forms';
 
 import {ProfileUpdateComponent} from './profile-update/profile-update.component';
 import { ProfileUpdateRoutingModule } from './profile-update-routing.module';
@@ -10,7 +10,7 @@ import { ProfileObjectiveComponent } from './profile-objective/profile-objective
 import { ProfileExperienceComponent } from './profile-experience/profile-experience.component';
 import {ProfileEducationComponent} from './profile-education/profile-education.component';
 import { ProfileSkillComponent } from './profile-skill/profile-skill.component';
-
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 @NgModule({
   declarations: [
     ProfileUpdateComponent,
@@ -24,6 +24,8 @@ import { ProfileSkillComponent } from './profile-skill/profile-skill.component';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule, //su dung cho [formGroup] in html
+    BsDatepickerModule.forRoot(),
     ProfileUpdateRoutingModule
   ]
 })

@@ -1,21 +1,17 @@
 <div *ngIf="!isEdit && !isAdd">
     <h3>Objective</h3>
-    <hr>
+    <hr style="border: 1px solid ">
     <table style="width:100%; ">
-        <tr>
+        <tr *ngFor="let objective of objectives">
           <td style="width:95%">
-            Jack Jackdsdshdkjsdskdjklsjdklsjkdljksjdkjsljjkslj
-            dhsjdhjskhdjksd
-            dksjdksjd
-            dsdshdlksdklsdksdklsdksdsklsdksdklsdklsdlksjdklsds
-            Jack Jackdsdshdkjsdskdjklsjdklsjkdljksjdkjsljjkslj
-            dhsjdhjskhdjksd
-            dksjdksjd
-            dsdshdlksdklsdksdklsdksdsklsdksdklsdklsdlksjdklsds
+            <p style="text-align: justify" >
+              <span class="glyphicon glyphicon-triangle-right"></span>
+              {{objective.description}}Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
           </td> 
           <td style="width:95%">
-            <a (click)="isEdit=true;"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="update-link update-link-color" (click)="edit(objective) ;isEdit=true;"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="update-link update-link-color" (click)="deleteObjective(objective);" ><span class="glyphicon glyphicon-remove"></span></a>
         </td>
         </tr>
         <tr>
@@ -26,44 +22,58 @@
 
 
 
-<!--Add-->
-<div  *ngIf="isAdd">
+<!--Edit-->
+<div  *ngIf="isEdit">
   <h3>Objective</h3>
-  <hr>
-  <form class="form-horizontal">
+  <hr style="border: 1px solid ">
+  <form class="form-horizontal" [formGroup]="objectiveFormEdit">
     <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Objective</label>
+      <label for="descriptionEdit" class="col-sm-2 control-label">Objective</label>
       <div class="col-sm-10">
-          <textarea class="form-control" rows="3"></textarea>
+          <textarea type="text"  rows="3" class="form-control" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="descriptionEdit" [ngClass]="{ 'is-invalid': submittedAdd && formEdit.descriptionEdit.errors }">
+              </textarea>
+          <div *ngIf="submittedAdd && formEdit.descriptionEdit.errors" class="error">
+              <div *ngIf="formEdit.descriptionEdit.errors.required">Sorry, discription name is required</div>
+              <div *ngIf="formEdit.descriptionEdit.errors.pattern">Sorry, discription can not empty</div>
+          </div>
       </div>
     </div>
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary" (click)="isAdd = false;">Save</button>
+        <button  class="btn btn-primary" (click)="updateObjective();">Save</button>
+        <button  class="btn btn-primary" (click)="isEdit = false;">Cancle</button>
       </div>
     </div>
   </form>
 </div>
+
+
 <!--Add-->
 
-<div  *ngIf="isEdit">
+ <div  *ngIf="isAdd">
     <h3>Objective</h3>
-    <hr>
-    <form class="form-horizontal">
+    <hr style="border: 1px solid ">
+    <form class="form-horizontal" [formGroup]="objectiveFormAdd" >
       <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">Objective</label>
-        <div class="col-sm-10">
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
+          <label for="descriptionAdd" class="col-sm-2 control-label">Objective</label>
+          <div class="col-sm-10">
+              <textarea class="form-control" rows="3" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="descriptionAdd" [ngClass]="{ 'is-invalid': submittedAdd && f.descriptionAdd.errors }"> 
+              </textarea>
+            <div *ngIf="submittedAdd && f.descriptionAdd.errors" class="error">
+                <div *ngIf="f.descriptionAdd.errors.required">Sorry, discription name is required</div>
+                <div *ngIf="f.descriptionAdd.errors.pattern">Sorry, discription can not empty</div>
+            </div>
+          </div>
       </div>
   
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-primary" (click)="isEdit = false;">Save</button>
+          <button class="btn btn-primary" (click)="addObjective();">Save</button>
+          <button class="btn btn-primary" (click)="isAdd = false;">Cancel</button>
         </div>
       </div>
     </form>
-  </div>
+  </div> 
 
 

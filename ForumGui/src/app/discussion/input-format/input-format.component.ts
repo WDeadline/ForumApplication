@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ConfigService} from '../config.service';
 
 
 @Component({
@@ -10,9 +9,8 @@ import {ConfigService} from '../config.service';
 export class InputFormatComponent implements OnInit {
 
   editorConfig ={};
-  
-  constructor(private configService: ConfigService) { 
-    this.editorConfig = configService.editorConfig;
+  text: string;
+  constructor() { 
   }
 
   ngOnInit() {

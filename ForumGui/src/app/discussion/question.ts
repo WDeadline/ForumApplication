@@ -1,11 +1,12 @@
-import {User} from '../user/user';
+
 export interface Question {
   id: string,
+  userId : string,
   title: string,
-  content: string,
-  user: User,
-  dateCreated: Date ,
-  votes: number,
-  answers: number,
-  views: number,
+  description: string,
+  tags: string[],
+  views: string,
+  votes: string,
+  answers : string,
+  updationTime: Date ,
 }

@@ -1,7 +1,7 @@
 import { Injectable,EventEmitter,Output } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {User} from '../user';
+import {User} from '../model/user';
 import {AuthenticationService} from '../../authentication/service/authentication.service';
 import {CurrentUserInfo} from '../../authentication/model/current-user-info';
 @Injectable({

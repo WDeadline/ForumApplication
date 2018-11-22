@@ -21,7 +21,8 @@ export class HomeContentComponent implements OnInit {
   getQuestions(): void {
     this.homeService.getQuestions()
     .subscribe(questions => {
-      this.questions = questions
+      this.questions = questions;
+      
     });
   }
 
@@ -43,7 +44,7 @@ export class HomeContentComponent implements OnInit {
     let questionsResult: Array<Question> = [];
     let month = now.getMonth()+1;
     questions.forEach(question => {
-      let dateCreated = new Date(question.dateCreated);
+      let dateCreated = new Date(question.updationTime);
       let monthCreated = dateCreated.getMonth()+1;   
       if (monthCreated == month) {
         questionsResult.push(question);
@@ -56,7 +57,7 @@ export class HomeContentComponent implements OnInit {
     let questionsResult: Array<Question> = [];
     let currentYeah = now.getFullYear();
     questions.forEach(question => {
-      let dateCreated = new Date(question.dateCreated);
+      let dateCreated = new Date(question.updationTime);
       let yeahCreated = dateCreated.getFullYear();   
       if (yeahCreated == currentYeah) {
         questionsResult.push(question);

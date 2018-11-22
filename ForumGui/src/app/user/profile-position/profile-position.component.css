@@ -1,0 +1,14 @@
+
+
+.update-link-color{
+    color: grey;
+}
+a.update-link:hover, a.update-link:visited{
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a.update-link:hover, a.update-link:active {
+	color: black;
+}

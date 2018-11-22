@@ -12,12 +12,11 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { AllUserComponent } from './user/all-user/all-user.component';
 import { ProfileComponent } from './user/profile/profile.component';
 
-import { ConfigService } from './discussion/config.service';
 import { InputFormatComponent } from './discussion/input-format/input-format.component';
 
 import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { NgxEditorModule } from 'ngx-editor';
+import {EditorModule} from 'primeng/primeng';
 import { QuestionMakeComponent } from './discussion/question-make/question-make.component';
 import { QuestionShowComponent } from './discussion/question-show/question-show.component';
 
@@ -30,6 +29,12 @@ import { CookieService } from 'ngx-cookie-service';
 import {AlertService} from './authentication/service/alert.service';
 import { from } from 'rxjs';
 import {AlertComponent} from './authentication/directives/alert.component';
+
+
+import { TagInputModule } from 'ngx-chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,11 +58,12 @@ import {AlertComponent} from './authentication/directives/alert.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgxEditorModule,
+    EditorModule,
+    TagInputModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
   ],
   providers: [
-    ConfigService,
     CookieService,
     AlertService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
