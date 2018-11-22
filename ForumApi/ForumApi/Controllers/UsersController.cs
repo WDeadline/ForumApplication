@@ -17,13 +17,13 @@ namespace ForumApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
-        private readonly IUserService _userService;
+        private readonly IService<User> _userService;
         private readonly IService<Information> _informationService;
         private readonly IService<Education> _educationService;
         private readonly IService<Experience> _experienceService;
         private readonly IService<Objective> _objectiveService;
         private readonly IService<Question> _questionService;
-        public UsersController(ILogger<UsersController> logger, IUserService userService,
+        public UsersController(ILogger<UsersController> logger, IService<User> userService,
             IService<Education> educationService, IService<Information> informationService,
             IService<Objective> objectiveService, IService<Question> questionService,
             IService<Experience> experienceService)
@@ -42,16 +42,32 @@ namespace ForumApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return new OkObjectResult(await _userService.GetAll());
+            var users = await _userService.GetAll();
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+            var usersDto = users.Select(u => new {
+                id = u.Id,
+                firstName = u.FirstName,
+                lastName = u.LastName,
+                avatar = !string.IsNullOrEmpty(u.Avatar)? path + u.Avatar : "",
+                username = u.Username,
+                emailAddress = u.EmailAddress,
+                UpdateTime = u.UpdationTime,
+                roles = u.Roles,
+                active = u.Active
+            });
+            return new OkObjectResult(usersDto);
         }
 
         // GET: api/users/id
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
             var user = await _userService.GetById(id);
             if (user == null)
                 return new NotFoundResult();
+            if (!string.IsNullOrEmpty(user.Avatar))
+                user.Avatar = path + user.Avatar;
             return new OkObjectResult(user);
         }
 
@@ -95,33 +111,6 @@ namespace ForumApi.Controllers
             return new OkObjectResult(questions);
         }
 
-
-        // POST: api/users
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]User user)
-        {
-            await _userService.Add(user);
-            return new OkObjectResult(user);
-        }
-        // PUT: api/users/5
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Put(string id, [FromBody]User user)
-        {
-            /*var userFromDb = await _userService.GetByIdAsync(id);
-            if (userFromDb == null)
-                return new NotFoundResult();
-            user.Id = userFromDb.Id;
-            Password password = new Password
-            {
-                PasswordHash = userFromDb.PasswordHash,
-                PasswordSalt = userFromDb.PasswordSalt
-            }
-            user.PasswordHash = userFromDb.PasswordHash;
-            user.PasswordSalt = userFromDb.PasswordSalt;
-            user.UpdationTime = DateTime.UtcNow;
-            await _userService.UpdateAsync(user);*/
-            return new OkResult();
-        }
         // DELETE: api/users/5
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)

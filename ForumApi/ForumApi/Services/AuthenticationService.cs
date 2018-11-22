@@ -74,7 +74,7 @@ namespace ForumApi.SourceCode.Services
                     LastName = user.LastName,
                     Username = user.Username,
                     EmailAddress = user.EmailAddress,
-                    Avatar = !string.IsNullOrWhiteSpace(user.Avatar)?_env.ContentRootPath + user.Avatar : "",
+                    Avatar = user.Avatar,
                     Roles = user.Roles,
                     Token = GenerateJSONWebToken(user)
                 };

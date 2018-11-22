@@ -38,6 +38,11 @@ namespace ForumApi.Controllers
                     AddLogging(usernameOrEmailAddress);
                     return Unauthorized();
                 }
+                string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+                if (!string.IsNullOrEmpty(user.Avatar))
+                {
+                    user.Avatar = path + user.Avatar;
+                }
                 return new OkObjectResult(user);
             }
             catch (Exception e)

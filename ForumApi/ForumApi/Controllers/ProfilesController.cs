@@ -36,14 +36,18 @@ namespace ForumApi.Controllers
         [HttpPost, Route("avatar")]
         public async Task<IActionResult> UploadAvatar(IFormFile file)
         {
-            string userId = User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-            string id = HttpContext.User.Identity.Name;
-            //string b = HttpContext.User.Claims.;
-            string user = HttpContext.User.FindFirst("").Value;
-
-            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
-            var img = await _imageHandler.UploadAvatar(userId, file);
-            return new OkObjectResult(path + img);
+            try
+            {
+                string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+                var img = await _imageHandler.UploadAvatar(userId, file);
+                return new OkObjectResult(path + img);
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+            
         }
 
     }
