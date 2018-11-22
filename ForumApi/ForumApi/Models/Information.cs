@@ -13,7 +13,7 @@ namespace ForumApi.Models
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("uid"), BsonRequired, StringLength(24, MinimumLength = 24)]
+        [BsonElement("uid"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
         public string UserId { get; set; }
 
         public string FullName { get; set; }

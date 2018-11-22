@@ -9,7 +9,7 @@ namespace ForumApi.Models
 {
     public class View
     {
-        [BsonElement("by"), BsonRequired, StringLength(24, MinimumLength = 24)]
+        [BsonElement("by"), StringLength(24, MinimumLength = 24)]
         public string ViewBy { get; set; }
 
         [BsonElement("create")]

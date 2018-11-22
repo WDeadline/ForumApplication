@@ -37,6 +37,9 @@ namespace ForumApi.Controllers
         public async Task<IActionResult> UploadAvatar(IFormFile file)
         {
             string userId = User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+            string id = HttpContext.User.Identity.Name;
+            //string b = HttpContext.User.Claims.;
+            string user = HttpContext.User.FindFirst("").Value;
 
             string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
             var img = await _imageHandler.UploadAvatar(userId, file);

@@ -15,5 +15,6 @@ namespace ForumApi.Interfaces
         IMongoCollection<Experience> Experiences { get; }
         IMongoCollection<Objective> Objectives { get; }
         IMongoCollection<Information> Informations { get; }
+        IMongoCollection<Skill> Skills { get; }
     }
 }

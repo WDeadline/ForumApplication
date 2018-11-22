@@ -8,34 +8,23 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Models
 {
-    public class Question
+    public class Skill
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonId, BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+
         [BsonElement("uid"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
         public string UserId { get; set; }
 
         [BsonElement("title"), BsonRequired, Required]
         public string Title { get; set; }
 
-        [BsonElement("des"), BsonRequired, Required]
-        public string Description { get; set; }
-
-        [BsonElement("tags"), BsonRequired, Required]
-        public ICollection<string> Tags { get; set; }
-
-        [BsonElement("views")]
-        public ICollection<View> Views { get; set; }
-
-        [BsonElement("votes")]
-        public ICollection<Vote> Votes { get; set; }
-
-        [BsonElement("ans")]
-        public ICollection<Answer> Answers { get; set; }
+        [BsonElement("lvl"), Range(0, 5)]
+        public int Level { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("update")]
         public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
+
     }
 }

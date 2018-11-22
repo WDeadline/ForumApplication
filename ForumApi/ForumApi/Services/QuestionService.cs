@@ -59,6 +59,30 @@ namespace ForumApi.Services
             }
         }
 
+        public async Task<IEnumerable<string>> GetAllTagsAsync()
+        {
+            try
+            {
+                IList<string> tags = new List<string>();
+                foreach(var question in await _questionRepository.GetAll())
+                {
+                    foreach(var tag in question.Tags)
+                    {
+                        if (tags.IndexOf(tag) == -1) {
+                            tags.Add(tag);
+                        }
+                    }
+                    
+                }
+                return tags;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
         public Task<Question> GetById(string id)
         {
             try

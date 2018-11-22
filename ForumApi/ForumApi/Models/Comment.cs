@@ -10,10 +10,10 @@ namespace ForumApi.Models
 {
     public class Comment
     {
-        [BsonElement("by"), BsonRequired, StringLength(24, MinimumLength = 24)]
+        [BsonElement("by"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
         public string CommentBy { get; set; }
 
-        [BsonElement("cont"), BsonRequired]
+        [BsonElement("cont"), BsonRequired, Required]
         public string Content { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]

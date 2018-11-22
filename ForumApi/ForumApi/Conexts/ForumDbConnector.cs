@@ -31,5 +31,7 @@ namespace ForumApi.Contexts
         public IMongoCollection<Objective> Objectives => _db.GetCollection<Objective>("Objectives");
 
         public IMongoCollection<Information> Informations => _db.GetCollection<Information>("Informations");
+
+        public IMongoCollection<Skill> Skills => _db.GetCollection<Skill>("Skills");
     }
 }

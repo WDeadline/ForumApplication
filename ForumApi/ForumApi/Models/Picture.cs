@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,10 +14,10 @@ namespace ForumApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("name"), BsonRequired]
+        [BsonElement("name"), BsonRequired, Required]
         public string Name { get; set; }
 
-        [BsonElement("path"), BsonRequired]
+        [BsonElement("path"), BsonRequired, Required]
         public string Path { get; set; }
 
         [BsonElement("len")]
