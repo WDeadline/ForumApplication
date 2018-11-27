@@ -21,16 +21,17 @@
                     <a  class="btn btn-default"> top </a>
                   </div>
                   <div class="btn-group" role="group">
-                      <a  class="btn btn-default" (click)="getQuestionsOfMonth()">month </a>
+                      <a  class="btn btn-default" (click)="getQuestionsOfMonth()">week</a>
                   </div>
                   <div class="btn-group" role="group">
-                      <a  class="btn btn-default" (click)="getQuestionsOfYeah()"> yeah</a>
+                      <a  class="btn btn-default" (click)="getQuestionsOfYeah()"> month</a>
                   </div>
               </div>
           </div>
       </div>
       <br>
-        <!--start-question-->
+
+        <!--start-question that-->
       <div *ngFor="let question of questions">
         <div  class="panel panel-default questionHeight">
           <div class="panel-body" style ="max-height: 100%;">
@@ -38,18 +39,18 @@
               <tr>
                 <td rowspan="2"  style="width: 7%;" class="cellAlign" >
                   <p *ngIf="question.votes != null">{{question.votes}}</p>
-                  <p *ngIf="question.votes == null">0</p>
+                  <p *ngIf="question.votes == null">3</p>
                 </td>
                 <td rowspan="2" style="width: 7%;" class="cellAlign">
                   <p *ngIf="question.answers != null">{{question.answers}}</p>
-                  <p *ngIf="question.answers == null">0</p>
+                  <p *ngIf="question.answers == null">5</p>
                 </td> 
                 <td rowspan="2" style="width: 7%;" class="cellAlign">                 
                   <p *ngIf="question.views != null">{{question.views}}</p>
-                  <p *ngIf="question.views == null">0</p>
+                  <p *ngIf="question.views == null">2</p>
                 </td> 
                 <td colspan="2" rowspan="3" style="width: 79%; text-align: left;">
-                  <a>
+                  <a [routerLink]="['/showquestion']" [queryParams]="{id: question.id}">
                       {{question.title}}
                   </a>
                 </td>
@@ -71,6 +72,8 @@
         </div>
       </div>  
       <!--end-question-->
+
+      
     </div>
   
     <div class="col-md-3"><app-left-menu></app-left-menu></div>

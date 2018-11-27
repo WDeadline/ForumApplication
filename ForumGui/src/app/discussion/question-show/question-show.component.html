@@ -1,9 +1,8 @@
 <div class="row">
   <div class="col-md-1"></div>
   <div class="col-md-10">
-    <h1>Question</h1>
-    <h3>Tilte</h3>
-    <p>question content </p>
+    <h1 style="color:darkblue;"><b>{{question?.title}}</b></h1>
+    <div [innerHTML]="question?.description"></div>
     <div class="row">
         <div class="col-md-1">
             <a href="#">
@@ -42,7 +41,7 @@
     </div>
     <hr>
     <h5>Anwers</h5>
-    <app-ngx-editor [config]="editorConfig"  [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor>
+    
   </div>
   <div class="col-md-1"></div>
 </div>

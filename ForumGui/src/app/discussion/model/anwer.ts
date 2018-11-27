@@ -5,7 +5,7 @@ export class Anwer{
     content: string;
     creationTime: Date;
     updationTime: Date;
-    votes : Vote;
-    comment: Comment;
+    votes : Vote[];
+    comment: Comment[];
 }
 

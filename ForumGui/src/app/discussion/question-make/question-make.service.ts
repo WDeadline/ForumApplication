@@ -38,7 +38,14 @@ export class QuestionMakeService {
         catchError(this.handleErrorService.handleError('addQuestion',question))
       )
   }
-
+    /* GET: get  all tags from server */
+  getAllTag():Observable<string[]>{
+    const url = `${this.config}${this.apiGetAllTag}`;
+    return this.http.get<string[]>(url)
+    .pipe(
+      catchError(this.handleErrorService.handleError('getAllTag',[]))
+    )
+  }
 
   setTokenToHeader(){
     let tokenString :string;
@@ -49,4 +56,6 @@ export class QuestionMakeService {
       console.log("this.tokenString: " + tokenString);
     }
   }
+
+
 }

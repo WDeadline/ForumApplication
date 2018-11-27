@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Question } from '../discussion/question';
+import { Question } from '../discussion/model/question';
 import { HandleErrorService } from '../handle-error.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';

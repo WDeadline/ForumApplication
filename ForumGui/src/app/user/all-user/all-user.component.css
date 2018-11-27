@@ -1,0 +1,19 @@
+.avatar {
+    width: 60px;
+    height: 60px;
+    
+}
+
+.address{
+    font-size: 11px;
+}
+
+.tag{ 
+    font-size: 10px;
+}
+
+
+.info{
+    line-height: 1;
+    font-size: 13px;
+}

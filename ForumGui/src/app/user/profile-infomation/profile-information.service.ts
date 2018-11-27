@@ -48,12 +48,22 @@ export class ProfileInformationService {
 
   /*PUT: update the Information on the server. Return the updated object upon success */
   updateInformation(information : Information): Observable<Information>{
-    const url = `${this.config}${this.apiInformation}/${information.id}`;
-    this.setTokenToHeader();
-    return this.http.put<Information>(url,information,httpOptions)
-    .pipe(
-      catchError(this.handleErrorService.handleError('updateInformation',information))
-    );
+    if(information.id != null){
+      const url = `${this.config}${this.apiInformation}/${information.id}`;
+      this.setTokenToHeader();
+      return this.http.put<Information>(url,information,httpOptions)
+      .pipe(
+        catchError(this.handleErrorService.handleError('updateInformation',information))
+      );
+    }else{
+      const url = `${this.config}${this.apiInformation}`;
+      this.setTokenToHeader();
+      return this.http.post<Information>(url,information,httpOptions)
+      .pipe(
+        catchError(this.handleErrorService.handleError('updateInformation',information))
+      );
+    }
+    
   }
 
 

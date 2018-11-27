@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HomeService} from './home.service';
-import {Question} from '../discussion/question';
+import {Question} from '../discussion/model/question';
 const now = new Date();
 @Component({
   selector: 'app-home-content',
@@ -22,6 +22,9 @@ export class HomeContentComponent implements OnInit {
     this.homeService.getQuestions()
     .subscribe(questions => {
       this.questions = questions;
+      this.questions.sort((a:Question,b:Question) => {
+        return <any>new Date(b.updationTime) - <any>new Date(a.updationTime);
+      })
       
     });
   }

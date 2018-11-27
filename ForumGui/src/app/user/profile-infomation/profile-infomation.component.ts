@@ -15,8 +15,8 @@ export class ProfileInfomationComponent implements OnInit {
   isEdit = false;
   currentUserId : string;
   information : Information[] = [];
-  editInformation: Information;
-  gender : boolean;
+  editInformation: Information = new Information();
+  gender : boolean = false;
   selectedGender : boolean;
   birthDay : Date;
   constructor(
@@ -40,6 +40,7 @@ export class ProfileInfomationComponent implements OnInit {
   getInformation(){
     this.profileInformationService.getInformationOfCurrentUser(this.currentUserId)
       .subscribe(data => {
+        //console.log(data);
         this.information.push(data);
       });
   }
@@ -48,7 +49,7 @@ export class ProfileInfomationComponent implements OnInit {
     if(information){
       this.editInformation = information;
       this.setValidator(this.editInformation.fullName, this.editInformation.address,this.editInformation.phoneNumber);
-      if(this.editInformation.gender != null){
+      if(this.editInformation != null && this.editInformation.gender != null){
         this.gender = this.editInformation.gender;
       }
     }
@@ -70,6 +71,7 @@ export class ProfileInfomationComponent implements OnInit {
     let address = this.f.addressEdit.value;
 
     this.editInformation.fullName = fullName;
+    this.editInformation.userId = this.authenticationService.getCurrentUser().id;
     if(this.birthDay){
       this.editInformation.dateOfBirth = this.birthDay;
     }else{

@@ -9,13 +9,16 @@ import {TestComponent} from './test/test.component';
 import {QuestionMakeComponent} from './discussion/question-make/question-make.component';
 import {ProfileComponent} from './user/profile/profile.component';
 import {QuestionShowComponent} from './discussion/question-show/question-show.component';
-
+import {TagComponent} from './tag/tag.component';
+import {JobComponent} from './job/job.component';
 const routes: Routes = [
   { path: 'home', component: HomeContentComponent },
   { path: 'test', component: TestComponent ,canActivate: [AuthGuard]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'users', component: AllUserComponent},
+  { path: 'tags', component: TagComponent},
+  { path: 'jobs', component: JobComponent},
   { path: 'register', component: RegisterComponent },
   { path: 'makequestion', component: QuestionMakeComponent,canActivate: [AuthGuard] },
   { path: 'showquestion', component: QuestionShowComponent,canActivate: [AuthGuard] },

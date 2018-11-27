@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label for="lastName" class="col-sm-3 control-label">Last name</label>
                 <div class="col-sm-9">
-                  <input type="text" pattern="[a-zA-Z]*" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" placeholder="Please enter last name">
+                  <input type="text" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" placeholder="Please enter last name">
                   <div *ngIf="submitted && f.lastName.errors" class="error">
                       <div *ngIf="f.lastName.errors.required">Sorry, last name is required</div>
                       <div *ngIf="f.lastName.errors.pattern">Sorry, last name doesn't contain whitespace</div>
@@ -26,7 +26,7 @@
             <div class="form-group">
                 <label for="username" class="col-sm-3 control-label">Username</label>
                 <div class="col-sm-9">
-                  <input type="text" pattern="[a-zA-Z0-9]*" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Please enter username">
+                  <input type="text" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Please enter username">
                   <div *ngIf="submitted && f.username.errors" class="error">
                       <div *ngIf="f.username.errors.required">Sorry, username is required</div>
                       <div *ngIf="f.username.errors.pattern">Sorry, username doesn't contain whitespace</div>
@@ -46,7 +46,7 @@
             <div class="form-group">
               <label for="password" class="col-sm-3 control-label">Password</label>
               <div class="col-sm-9">
-                <input type="password" maxlength="24" minlength="6" pattern="^([a-zA-Z0-9]+[^])$" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Please enter password">
+                <input type="password" maxlength="24" minlength="6" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Please enter password">
                 <div *ngIf="submitted && f.password.errors" class="error">
                     <div *ngIf="f.password.errors.required">>Sorry, password is required</div>
                     <div *ngIf="f.password.errors.pattern">Sory, password is not valid</div>
@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label for="passwordConfirm" class="col-sm-3 control-label">Password Confirm</label>
                 <div class="col-sm-9">
-                  <input type="password" maxlength="24" minlength="6" pattern="^([a-zA-Z0-9]+[^])$" formControlName="passwordConfirm" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.passwordConfirm.errors }" placeholder="Please enter password confirm">
+                  <input type="password" maxlength="24" minlength="6" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$" formControlName="passwordConfirm" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.passwordConfirm.errors }" placeholder="Please enter password confirm">
                   <div *ngIf="submitted && f.passwordConfirm.errors" class="error">
                       <div *ngIf="f.passwordConfirm.errors.required">Sorry, password confirm is required</div>
                       <div *ngIf="f.passwordConfirm.errors.pattern">Sory, password confirm is not valid</div>

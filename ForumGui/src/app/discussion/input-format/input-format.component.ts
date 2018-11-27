@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InputFormatComponent implements OnInit {
 
-  editorConfig ={};
+
   text: string;
   constructor() { 
   }

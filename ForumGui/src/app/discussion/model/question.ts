@@ -8,9 +8,9 @@ export class Question{
     title : string;
     description: string;
     tags : string[];
-    views : View;
-    votes : Vote;
-    anwers : Anwer;
+    views : View[];
+    votes : Vote[];
+    anwers : Anwer[];
     updationTime: Date;
 }
 
