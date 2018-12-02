@@ -19,6 +19,7 @@ export class ProfileInfomationComponent implements OnInit {
   gender : boolean = false;
   selectedGender : boolean;
   birthDay : Date;
+  editBirthDay : Date;
   constructor(
     private authenticationService : AuthenticationService,
     private profileInformationService : ProfileInformationService,
@@ -40,7 +41,6 @@ export class ProfileInfomationComponent implements OnInit {
   getInformation(){
     this.profileInformationService.getInformationOfCurrentUser(this.currentUserId)
       .subscribe(data => {
-        //console.log(data);
         this.information.push(data);
       });
   }
@@ -52,6 +52,8 @@ export class ProfileInfomationComponent implements OnInit {
       if(this.editInformation != null && this.editInformation.gender != null){
         this.gender = this.editInformation.gender;
       }
+      this.editBirthDay = new Date(this.editInformation.dateOfBirth);
+
     }
   }
 
@@ -74,11 +76,10 @@ export class ProfileInfomationComponent implements OnInit {
     this.editInformation.userId = this.authenticationService.getCurrentUser().id;
     if(this.birthDay){
       this.editInformation.dateOfBirth = this.birthDay;
-    }else{
-      //set ngay trong in put
     }
     this.editInformation.phoneNumber = phoneNumber;
     this.editInformation.address = address;
+    this.editInformation.updationTime = new Date();
 
     this.profileInformationService.updateInformation(this.editInformation)
       .subscribe(data => {
@@ -103,17 +104,13 @@ export class ProfileInfomationComponent implements OnInit {
   handelRadioMale(event){
     if(event.target.value == "true"){
       this.selectedGender = true;
-    }
-    
-    console.log(typeof(this.selectedGender));
-    console.log("male");
+    }   
   }
 
   handelRadioFemale(event){
     if(event.target.value == "false"){
       this.selectedGender = false;
     }
-    console.log("female");
   }
 
   onValueChangeEdit(value: Date){

@@ -78,16 +78,13 @@ export class ProfileEducationComponent implements OnInit {
 
     if(this.startDateAdd) {
       this.newEducation.startTime = this.startDateAdd;
-    }else{
-      //this.newEducation.startTime = new Date();
     }
 
     if(this.endDateAdd) {
       this.newEducation.endTime = this.endDateAdd;
-    }else{
-      //this.newEducation.startTime = new Date();
     }
-    //con UpdationTime
+
+    this.newEducation.updationTime = new Date();
 
     this.profileEducationService.addEducation(this.newEducation)
     .subscribe(data => {
@@ -121,22 +118,13 @@ export class ProfileEducationComponent implements OnInit {
 
     if(this.startDateEdit) {
       this.editEducation.startTime = this.startDateEdit;
-    }else{
-      //this.newEducation.startTime = new Date();
     }
 
     if(this.endDateEdit) {
       this.editEducation.endTime = this.endDateEdit;
-    }else{
-      //this.newEducation.startTime = new Date();
     }
 
-    // this.profileEducationService.addEducation(this.newEducation)
-    // .subscribe(data => {
-    //   console.log("add Objective sussectfule");
-    //   this.educations.push(data);
-    //   this.isAdd = false;
-    // });
+    this.editEducation.updationTime = new Date();
 
     this.profileEducationService.updateEducation(this.editEducation)
     .subscribe(data => {

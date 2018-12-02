@@ -18,7 +18,7 @@
           <td style="width:65%;">GPA: {{education.gpa}}</td> 
         </tr>      
   </table>
-  <hr> 
+  <hr>
   </div>
   <table>
     <tr>
@@ -89,6 +89,8 @@
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-primary" (click)="updateEducation();">Save</button>
+      <span  style="padding-left:3px;"></span>
+      <button type="submit" class="btn btn-primary" (click)="isEdit= false;">Cancle</button>
     </div>
   </div>
 </form>
@@ -156,6 +158,7 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" class="btn btn-primary" (click)="addEducation()">Save</button>
+          <span  style="padding-left:3px;"></span>
           <button type="submit" class="btn btn-primary" (click)="isAdd = false;">Cancle</button>
         </div>
       </div>

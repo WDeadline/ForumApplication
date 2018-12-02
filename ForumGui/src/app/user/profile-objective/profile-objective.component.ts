@@ -53,6 +53,7 @@ export class ProfileObjectiveComponent implements OnInit {
     let des = this.f.descriptionAdd.value;
     this.newObjective.userId = userId;
     this.newObjective.description = des;
+    this.newObjective.updationTime = new Date();
     this.profileObjectiveService.addObjective(this.newObjective)
       .subscribe(data => {
         console.log("add Objective sussectfule");
@@ -87,6 +88,7 @@ export class ProfileObjectiveComponent implements OnInit {
     if(this.editObjective){
       let des = this.formEdit.descriptionEdit.value;
       this.editObjective.description = des;
+      this.editObjective.updationTime = new Date();
       this.profileObjectiveService.updateObjective(this.editObjective)
       .subscribe(data => {
         console.log("edit objective succesfull");
