@@ -13,8 +13,9 @@ namespace ForumApi.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+
         [BsonElement("uid"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
-        public string UserId { get; set; }
+        public string QuestionBy { get; set; }
 
         [BsonElement("title"), BsonRequired, Required]
         public string Title { get; set; }
@@ -23,16 +24,19 @@ namespace ForumApi.Models
         public string Description { get; set; }
 
         [BsonElement("tags"), BsonRequired, Required]
-        public ICollection<string> Tags { get; set; }
-
-        [BsonElement("views")]
-        public ICollection<View> Views { get; set; }
+        public ICollection<Tag> Tags { get; set; }
 
         [BsonElement("votes")]
         public ICollection<Vote> Votes { get; set; }
 
+        [BsonElement("reports")]
+        public ICollection<Report> Reports { get; set; }
+
         [BsonElement("ans")]
         public ICollection<Answer> Answers { get; set; }
+
+        [BsonElement("views")]
+        public ICollection<View> Views { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("update")]

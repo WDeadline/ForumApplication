@@ -41,8 +41,7 @@ namespace ForumApi.Services
                 PasswordManager.CreatePasswordHash(register.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 User user = new User
                 {
-                    FirstName = register.FirstName,
-                    LastName = register.LastName,
+                    Name = register.Name,
                     Username = register.Username,
                     EmailAddress = register.EmailAddress,
                     PasswordHash = passwordHash,

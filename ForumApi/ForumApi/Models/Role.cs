@@ -8,7 +8,6 @@ namespace ForumApi.Models
     public enum Role
     {
         Administrator,
-        Teacher,
         Student,
         Company
     }

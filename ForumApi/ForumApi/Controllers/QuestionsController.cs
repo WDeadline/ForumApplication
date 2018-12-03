@@ -90,7 +90,7 @@ namespace ForumApi.Controllers
         [HttpGet, Route("tags")]
         public async Task<IActionResult> GetTags([FromQuery(Name = "input")] string input)
         {
-            IEnumerable<string> tag = await ((QuestionService)_questionService).GetAllTagsAsync();
+            IEnumerable<Tag> tag = await ((QuestionService)_questionService).GetAllTagsAsync();
             return new OkObjectResult(tag);
         }
 

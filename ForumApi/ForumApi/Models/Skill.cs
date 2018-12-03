@@ -11,19 +11,19 @@ namespace ForumApi.Models
     public class Skill
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id { get; set; } = new ObjectId().ToString();
 
-        [BsonElement("uid"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
-        public string UserId { get; set; }
+        [BsonElement("n"), BsonRequired, Required]
+        public string Name { get; set; }
 
-        [BsonElement("title"), BsonRequired, Required]
-        public string Title { get; set; }
+        [BsonElement("tech")]
+        public bool IsTechnical { get; set; } = true;
 
         [BsonElement("lvl"), Range(0, 5)]
-        public int Level { get; set; }
+        public int Level { get; set; } = 0;
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("update")]
+        [BsonElement("update"), DataType(DataType.DateTime)]
         public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
 
     }

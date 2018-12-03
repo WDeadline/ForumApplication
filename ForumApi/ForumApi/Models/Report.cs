@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Models
 {
-    public class Comment
+    public class Report
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = new ObjectId().ToString();
 
         [BsonElement("by"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
-        public string CommentBy { get; set; }
+        public string ReportBy { get; set; }
 
-        [BsonElement("cont"), BsonRequired, Required]
-        public string Content { get; set; }
+        [BsonElement("des"), BsonRequired, Required]
+        public string Description { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("update"), DataType(DataType.DateTime)]
-        public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
+        [BsonElement("create"), DataType(DataType.DateTime)]
+        public DateTime CreationTime { get; set; } = DateTime.UtcNow;
     }
 }

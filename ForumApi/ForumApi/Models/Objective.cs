@@ -11,16 +11,13 @@ namespace ForumApi.Models
     public class Objective
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
-        [BsonElement("uid"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
-        public string UserId { get; set; }
+        public string Id { get; set; } = new ObjectId().ToString();
 
         [BsonElement("des"), BsonRequired, Required]
         public string Description { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("update")]
-        public DateTime? UpdationTime { get; set; }
+        [BsonElement("update"), DataType(DataType.DateTime)]
+        public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
     }
 }

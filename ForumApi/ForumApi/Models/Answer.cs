@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,9 @@ namespace ForumApi.Models
 {
     public class Answer
     {
+        [BsonId, BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } = new ObjectId().ToString();
+
         [BsonElement("by"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
         public string AnswerBy { get; set; }
 
@@ -16,15 +20,11 @@ namespace ForumApi.Models
         public string Content { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("create")]
-        public DateTime CreationTime { get; set; } = DateTime.UtcNow;
-
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("create")]
-        public DateTime? UpdationTime { get; set; }
+        [BsonElement("update"), DataType(DataType.DateTime)]
+        public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
 
         [BsonElement("votes")]
-        public IEnumerable<Vote> Votes { get; set; }
+        public ICollection<Vote> Votes { get; set; }
 
         [BsonElement("cmts")]
         public IEnumerable<Comment> Comments { get; set; }

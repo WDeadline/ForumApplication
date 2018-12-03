@@ -72,18 +72,6 @@ namespace ForumApi.Services
             }
         }
 
-        public Task<IEnumerable<Education>> GetByUserId(string userId)
-        {
-            try
-            {
-                return _educationRepository.GetMany(e => e.UserId == userId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message, userId);
-                throw ex;
-            }
-        }
 
         public Task<bool> Update(Education entity)
         {

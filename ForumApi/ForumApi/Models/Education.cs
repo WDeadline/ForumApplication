@@ -12,31 +12,28 @@ namespace ForumApi.Models
     public class Education
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
-        [BsonElement("uid"), BsonRequired, Required, StringLength(24,MinimumLength = 24)]
-        public string UserId { get; set; }
+        public string Id { get; set; } = new ObjectId().ToString();
 
         [BsonElement("maj"), BsonRequired, Required]
         public string Major { get; set; }
 
-        [BsonElement("uni"), BsonRequired, Required]
+        [BsonElement("univ"), BsonRequired, Required]
         public string University { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("start"), BsonRequired, Required]
+        [BsonElement("start"), BsonRequired, Required, DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [DateGreaterThan("StartTime", ErrorMessage = "End date has to be later than start date")]
-        [BsonElement("end"), BsonRequired, Required]
+        [BsonElement("end"), BsonRequired, Required, DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
 
         [BsonElement("gpa"), BsonRequired, Required, Range(0, 4)]
         public float GPA { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        [BsonElement("update")]
-        public DateTime? UpdationTime { get; set; }
+        [BsonElement("update"), DataType(DataType.DateTime)]
+        public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
     }
 }

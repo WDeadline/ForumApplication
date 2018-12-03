@@ -24,14 +24,10 @@ namespace ForumApi.Contexts
 
         public IMongoCollection<Question> Questions => _db.GetCollection<Question>("Questions");
 
-        public IMongoCollection<Education> Educations => _db.GetCollection<Education>("Educations");
+        public IMongoCollection<Work> Works => _db.GetCollection<Work>("Works");
 
-        public IMongoCollection<Experience> Experiences => _db.GetCollection<Experience>("Experiences");
+        public IMongoCollection<Recruitment> Recruitments => _db.GetCollection<Recruitment>("Recruitments");
 
-        public IMongoCollection<Objective> Objectives => _db.GetCollection<Objective>("Objectives");
-
-        public IMongoCollection<Information> Informations => _db.GetCollection<Information>("Informations");
-
-        public IMongoCollection<Skill> Skills => _db.GetCollection<Skill>("Skills");
+        public IMongoCollection<Interview> Interviews => _db.GetCollection<Interview>("Interviews");
     }
 }
