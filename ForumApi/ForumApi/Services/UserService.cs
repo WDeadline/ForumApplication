@@ -147,15 +147,5 @@ namespace ForumApi.Services
             }
         }
 
-        public Task UpdateUser(User user, UpdationUser updationUser)
-        {
-            user.Name = updationUser.Name;
-            user.Birthday = updationUser.Birthday;
-            user.PhoneNumber = updationUser.PhoneNumber;
-            user.Address = updationUser.Address;
-            user.Position = updationUser.Position;
-            user.UpdationTime = DateTime.UtcNow;
-            return _userRepository.Update(user);
-        }
     }
 }

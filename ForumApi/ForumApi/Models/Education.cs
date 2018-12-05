@@ -12,7 +12,7 @@ namespace ForumApi.Models
     public class Education
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new ObjectId().ToString();
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("maj"), BsonRequired, Required]
         public string Major { get; set; }
@@ -30,7 +30,7 @@ namespace ForumApi.Models
         public DateTime EndTime { get; set; }
 
         [BsonElement("gpa"), BsonRequired, Required, Range(0, 4)]
-        public float GPA { get; set; }
+        public float GPA { get; set; } = 0;
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("update"), DataType(DataType.DateTime)]

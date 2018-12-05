@@ -11,11 +11,11 @@ namespace ForumApi.Interfaces
     {
         Task<User> GetById(string id);
         Task<IEnumerable<User>> GetAll();
-        Task UpdateUser(User user, UpdationUser updationUser);
+        Task<bool> Update(User user);
         Task CreateUser(CreationUser creationUser);
         bool RegisterAsync(Register register);
         Task<bool> IsExistedUsernameAsync(string username);
         Task<bool> IsExistedEmailAddressAsync(string emailAddress);
-        public Task<bool> Delete(string id);
+        Task<bool> Delete(string id);
     }
 }

@@ -61,18 +61,18 @@ namespace ForumApi.Models
         public IEnumerable<Role> Roles { get; set; } = new List<Role> { Role.Student };
 
         [BsonElement("objectives")]
-        public ICollection<Objective> Objectives { get; set; }
+        public ICollection<Objective> Objectives { get; set; } = new List<Objective>(); 
 
         [BsonElement("educations")]
-        public ICollection<Education> Educations { get; set; }
+        public ICollection<Education> Educations { get; set; } = new List<Education>();
 
         [BsonElement("skills")]
-        public ICollection<Skill> Skills { get; set; }
+        public ICollection<Skill> Skills { get; set; } = new List<Skill>();
 
         [BsonElement("experiences")]
-        public ICollection<Experience> Experiences { get; set; }
+        public ICollection<Experience> Experiences { get; set; } = new List<Experience>();
 
         [BsonElement("activities")]
-        public ICollection<Activity> Activities { get; set; }
+        public ICollection<Activity> Activities { get; set; } = new List<Activity>();
     }
 }

@@ -11,7 +11,7 @@ namespace ForumApi.Models
     public class Skill
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new ObjectId().ToString();
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("n"), BsonRequired, Required]
         public string Name { get; set; }
@@ -26,5 +26,14 @@ namespace ForumApi.Models
         [BsonElement("update"), DataType(DataType.DateTime)]
         public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (this.GetType() != obj.GetType()) return false;
+
+            Skill skill = (Skill)obj;
+            return this.Name == skill.Name;
+        }
     }
 }

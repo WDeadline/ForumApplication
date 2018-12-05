@@ -16,6 +16,7 @@ namespace ForumApi.Payloads
         [DataType(DataType.Date)]
         public DateTime? Birthday { get; set; }
 
+        [Phone]
         public string PhoneNumber { get; set; }
 
         public string Address { get; set; }

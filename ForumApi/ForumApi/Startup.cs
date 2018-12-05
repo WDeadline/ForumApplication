@@ -92,7 +92,7 @@ namespace ForumApi
             services.AddSingleton<IRepository<Interview>, InterviewRepository>();
             services.AddSingleton<IRepository<User>, UserRepository>();
 
-            services.AddTransient<IService<User>, UserService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IService<Education>, EducationService>();
             services.AddTransient<IService<Experience>, ExperienceService>();
             services.AddTransient<IService<Objective>, ObjectiveService>();
