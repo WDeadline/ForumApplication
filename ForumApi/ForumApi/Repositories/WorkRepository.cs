@@ -10,23 +10,22 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Repositories
 {
-    public class EducationRepository : IRepository<Education>
+    public class WorkRepository : IRepository<Work>
     {
-
-        private readonly ILogger<EducationRepository> _logger;
+        private readonly ILogger<WorkRepository> _logger;
         private readonly IForumDbConnector _db;
 
-        public EducationRepository(ILogger<EducationRepository> logger, IForumDbConnector db)
+        public WorkRepository(ILogger<WorkRepository> logger, IForumDbConnector db)
         {
             _logger = logger;
             _db = db;
         }
 
-        public Task Add(Education entity)
+        public Task Add(Work entity)
         {
             try
             {
-                return _db.Educations.InsertOneAsync(entity);
+                return _db.Works.InsertOneAsync(entity);
             }
             catch (Exception ex)
             {
@@ -39,8 +38,8 @@ namespace ForumApi.Repositories
         {
             try
             {
-                FilterDefinition<Education> filter = Builders<Education>.Filter.Eq(u => u.Id, id);
-                DeleteResult deleteResult = await _db.Educations.DeleteOneAsync(filter);
+                FilterDefinition<Work> filter = Builders<Work>.Filter.Eq(u => u.Id, id);
+                DeleteResult deleteResult = await _db.Works.DeleteOneAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -50,12 +49,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Delete(Expression<Func<Education, bool>> where)
+        public async Task<bool> Delete(Expression<Func<Work, bool>> where)
         {
             try
             {
-                FilterDefinition<Education> filter = Builders<Education>.Filter.Where(where);
-                DeleteResult deleteResult = await _db.Educations.DeleteManyAsync(filter);
+                FilterDefinition<Work> filter = Builders<Work>.Filter.Where(where);
+                DeleteResult deleteResult = await _db.Works.DeleteManyAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -65,12 +64,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<Education> Get(Expression<Func<Education, bool>> where)
+        public async Task<Work> Get(Expression<Func<Work, bool>> where)
         {
             try
             {
-                FilterDefinition<Education> filter = Builders<Education>.Filter.Where(where);
-                return await _db.Educations.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Work> filter = Builders<Work>.Filter.Where(where);
+                return await _db.Works.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -79,11 +78,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<Education>> GetAll()
+        public async Task<IEnumerable<Work>> GetAll()
         {
             try
             {
-                return await _db.Educations.Find(_ => true).ToListAsync();
+                return await _db.Works.Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -92,12 +91,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<Education> GetById(string id)
+        public async Task<Work> GetById(string id)
         {
             try
             {
-                FilterDefinition<Education> filter = Builders<Education>.Filter.Eq(u => u.Id, id);
-                return await _db.Educations.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Work> filter = Builders<Work>.Filter.Eq(u => u.Id, id);
+                return await _db.Works.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -106,12 +105,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<Education>> GetMany(Expression<Func<Education, bool>> where)
+        public async Task<IEnumerable<Work>> GetMany(Expression<Func<Work, bool>> where)
         {
             try
             {
-                FilterDefinition<Education> filter = Builders<Education>.Filter.Where(where);
-                return await _db.Educations.Find(filter).ToListAsync();
+                FilterDefinition<Work> filter = Builders<Work>.Filter.Where(where);
+                return await _db.Works.Find(filter).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -120,11 +119,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Update(Education entity)
+        public async Task<bool> Update(Work entity)
         {
             try
             {
-                ReplaceOneResult updateResult = await _db.Educations
+                ReplaceOneResult updateResult = await _db.Works
                     .ReplaceOneAsync(filter: g => g.Id == entity.Id, replacement: entity);
                 return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
             }

@@ -10,11 +10,13 @@ namespace ForumApi.Interfaces
     public interface IForumDbConnector
     {
         IMongoCollection<User> Users { get; }
+
         IMongoCollection<Question> Questions { get; }
-        IMongoCollection<Education> Educations { get; }
-        IMongoCollection<Experience> Experiences { get; }
-        IMongoCollection<Objective> Objectives { get; }
-        IMongoCollection<Information> Informations { get; }
-        IMongoCollection<Skill> Skills { get; }
+
+        IMongoCollection<Work> Works { get; }
+
+        IMongoCollection<Recruitment> Recruitments { get; }
+
+        IMongoCollection<Interview> Interviews { get; }
     }
 }

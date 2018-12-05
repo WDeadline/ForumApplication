@@ -72,19 +72,6 @@ namespace ForumApi.Services
             }
         }
 
-        public Task<IEnumerable<Skill>> GetByUserId(string userId)
-        {
-            try
-            {
-                return _skillRepository.GetMany(e => e.UserId == userId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message, userId);
-                throw ex;
-            }
-        }
-
         public Task<bool> Update(Skill entity)
         {
             try

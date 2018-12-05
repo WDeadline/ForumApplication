@@ -70,8 +70,7 @@ namespace ForumApi.SourceCode.Services
 
                 var currentUser = new CurrentUser {
                     Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    Name = user.Name,
                     Username = user.Username,
                     EmailAddress = user.EmailAddress,
                     Avatar = user.Avatar,

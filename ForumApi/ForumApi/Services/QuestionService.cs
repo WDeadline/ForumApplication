@@ -59,11 +59,11 @@ namespace ForumApi.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetAllTagsAsync()
+        public async Task<IEnumerable<Tag>> GetAllTagsAsync()
         {
             try
             {
-                IList<string> tags = new List<string>();
+                IList<Tag> tags = new List<Tag>();
                 foreach(var question in await _questionRepository.GetAll())
                 {
                     foreach(var tag in question.Tags)
@@ -96,18 +96,6 @@ namespace ForumApi.Services
             }
         }
 
-        public Task<IEnumerable<Question>> GetByUserId(string userId)
-        {
-            try
-            {
-                return _questionRepository.GetMany(e => e.UserId == userId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message, userId);
-                throw ex;
-            }
-        }
 
         public Task<bool> Update(Question entity)
         {

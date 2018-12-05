@@ -86,16 +86,15 @@ namespace ForumApi
             services.AddHttpContextAccessor();
 
             services.AddSingleton<IForumDbConnector, ForumDbConnector>();
-            services.AddTransient<IRepository<User>, UserRepository>();
-            services.AddTransient<IRepository<Education>, EducationRepository>();
-            services.AddTransient<IRepository<Experience>, ExperienceRepository>();
-            services.AddTransient<IRepository<Information>, InformationRepository>();
-            services.AddTransient<IRepository<Objective>, ObjectiveRepository>();
-            services.AddTransient<IRepository<Question>, QuestionRepository>();
+            services.AddSingleton<IRepository<User>, UserRepository>();
+            services.AddSingleton<IRepository<Question>, QuestionRepository>();
+            services.AddSingleton<IRepository<Work>, WorkRepository>();
+            services.AddSingleton<IRepository<Interview>, InterviewRepository>();
+            services.AddSingleton<IRepository<User>, UserRepository>();
+
             services.AddTransient<IService<User>, UserService>();
             services.AddTransient<IService<Education>, EducationService>();
             services.AddTransient<IService<Experience>, ExperienceService>();
-            services.AddTransient<IService<Information>, InformationService>();
             services.AddTransient<IService<Objective>, ObjectiveService>();
             services.AddTransient<IService<Question>, QuestionService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();

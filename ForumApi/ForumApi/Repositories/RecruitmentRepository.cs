@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Repositories
 {
-    public class SkillRepository
+    public class RecruitmentRepository : IRepository<Recruitment>
     {
-        private readonly ILogger<SkillRepository> _logger;
+        private readonly ILogger<RecruitmentRepository> _logger;
         private readonly IForumDbConnector _db;
 
-        public SkillRepository(ILogger<SkillRepository> logger, IForumDbConnector db)
+        public RecruitmentRepository(ILogger<RecruitmentRepository> logger, IForumDbConnector db)
         {
             _logger = logger;
             _db = db;
         }
 
-        public Task Add(Skill entity)
+        public Task Add(Recruitment entity)
         {
             try
             {
-                return _db.Skills.InsertOneAsync(entity);
+                return _db.Recruitments.InsertOneAsync(entity);
             }
             catch (Exception ex)
             {
@@ -38,8 +38,8 @@ namespace ForumApi.Repositories
         {
             try
             {
-                FilterDefinition<Skill> filter = Builders<Skill>.Filter.Eq(u => u.Id, id);
-                DeleteResult deleteResult = await _db.Skills.DeleteOneAsync(filter);
+                FilterDefinition<Recruitment> filter = Builders<Recruitment>.Filter.Eq(u => u.Id, id);
+                DeleteResult deleteResult = await _db.Recruitments.DeleteOneAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -49,12 +49,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Delete(Expression<Func<Skill, bool>> where)
+        public async Task<bool> Delete(Expression<Func<Recruitment, bool>> where)
         {
             try
             {
-                FilterDefinition<Skill> filter = Builders<Skill>.Filter.Where(where);
-                DeleteResult deleteResult = await _db.Skills.DeleteManyAsync(filter);
+                FilterDefinition<Recruitment> filter = Builders<Recruitment>.Filter.Where(where);
+                DeleteResult deleteResult = await _db.Recruitments.DeleteManyAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -64,12 +64,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<Skill> Get(Expression<Func<Skill, bool>> where)
+        public async Task<Recruitment> Get(Expression<Func<Recruitment, bool>> where)
         {
             try
             {
-                FilterDefinition<Skill> filter = Builders<Skill>.Filter.Where(where);
-                return await _db.Skills.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Recruitment> filter = Builders<Recruitment>.Filter.Where(where);
+                return await _db.Recruitments.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -78,11 +78,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<Skill>> GetAll()
+        public async Task<IEnumerable<Recruitment>> GetAll()
         {
             try
             {
-                return await _db.Skills.Find(_ => true).ToListAsync();
+                return await _db.Recruitments.Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -91,12 +91,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<Skill> GetById(string id)
+        public async Task<Recruitment> GetById(string id)
         {
             try
             {
-                FilterDefinition<Skill> filter = Builders<Skill>.Filter.Eq(u => u.Id, id);
-                return await _db.Skills.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Recruitment> filter = Builders<Recruitment>.Filter.Eq(u => u.Id, id);
+                return await _db.Recruitments.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -105,12 +105,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<Skill>> GetMany(Expression<Func<Skill, bool>> where)
+        public async Task<IEnumerable<Recruitment>> GetMany(Expression<Func<Recruitment, bool>> where)
         {
             try
             {
-                FilterDefinition<Skill> filter = Builders<Skill>.Filter.Where(where);
-                return await _db.Skills.Find(filter).ToListAsync();
+                FilterDefinition<Recruitment> filter = Builders<Recruitment>.Filter.Where(where);
+                return await _db.Recruitments.Find(filter).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -119,11 +119,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Update(Skill entity)
+        public async Task<bool> Update(Recruitment entity)
         {
             try
             {
-                ReplaceOneResult updateResult = await _db.Skills
+                ReplaceOneResult updateResult = await _db.Recruitments
                     .ReplaceOneAsync(filter: g => g.Id == entity.Id, replacement: entity);
                 return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
             }

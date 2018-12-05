@@ -9,16 +9,22 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Models
 {
-    public class Experience
+    public class Recruitment
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new ObjectId().ToString();
+        public string Id { get; set; }
 
-        [BsonElement("wkpl"), BsonRequired, Required]
-        public string Workplace { get; set; }
+        [BsonElement("cpnid"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
+        public string CompanyId { get; set; }
 
-        [BsonElement("pos"), BsonRequired, Required]
-        public string Position { get; set; }
+        [BsonElement("title"), BsonRequired, Required]
+        public string Title { get; set; }
+
+        [BsonElement("place"), BsonRequired, Required]
+        public string Place { get; set; }
+
+        [BsonElement("des"), BsonRequired, Required]
+        public string Description { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("start"), BsonRequired, Required, DataType(DataType.DateTime)]
@@ -29,8 +35,8 @@ namespace ForumApi.Models
         [BsonElement("end"), BsonRequired, Required, DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
 
-        [BsonElement("des"), BsonRequired, Required]
-        public string Description { get; set; }
+        [BsonElement("tags"), BsonRequired, Required]
+        public ICollection<Tag> Tags { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("update"), DataType(DataType.DateTime)]

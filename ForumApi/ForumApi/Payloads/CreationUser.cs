@@ -1,4 +1,4 @@
-﻿using ForumApi.Commons;
+﻿using ForumApi.Models;
 using ForumApi.Validations;
 using System;
 using System.Collections.Generic;
@@ -8,12 +8,21 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Payloads
 {
-    public class Register
+    public class CreationUser
     {
-        [Required, MaxLength(200), PersonName]
+        [Required, PersonName, MaxLength(200)]
         public string Name { get; set; }
 
-        [Required, MaxLength(20), Username]
+        [DataType(DataType.Date)]
+        public DateTime? Birthday { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public string Address { get; set; }
+
+        public string Position { get; set; }
+
+        [Required]
         public string Username { get; set; }
 
         [Required, EmailAddress]
@@ -21,5 +30,9 @@ namespace ForumApi.Payloads
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public IEnumerable<Role> Roles { get; set; }
+
     }
 }

@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Repositories
 {
-    public class ExperienceRepository : IRepository<Experience>
+    public class InterviewRepository : IRepository<Interview>
     {
-        private readonly ILogger<ExperienceRepository> _logger;
+        private readonly ILogger<InterviewRepository> _logger;
         private readonly IForumDbConnector _db;
 
-        public ExperienceRepository(ILogger<ExperienceRepository> logger, IForumDbConnector db)
+        public InterviewRepository(ILogger<InterviewRepository> logger, IForumDbConnector db)
         {
             _logger = logger;
             _db = db;
         }
 
-        public Task Add(Experience entity)
+        public Task Add(Interview entity)
         {
             try
             {
-                return _db.Experiences.InsertOneAsync(entity);
+                return _db.Interviews.InsertOneAsync(entity);
             }
             catch (Exception ex)
             {
@@ -38,8 +38,8 @@ namespace ForumApi.Repositories
         {
             try
             {
-                FilterDefinition<Experience> filter = Builders<Experience>.Filter.Eq(u => u.Id, id);
-                DeleteResult deleteResult = await _db.Experiences.DeleteOneAsync(filter);
+                FilterDefinition<Interview> filter = Builders<Interview>.Filter.Eq(u => u.Id, id);
+                DeleteResult deleteResult = await _db.Interviews.DeleteOneAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -49,12 +49,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Delete(Expression<Func<Experience, bool>> where)
+        public async Task<bool> Delete(Expression<Func<Interview, bool>> where)
         {
             try
             {
-                FilterDefinition<Experience> filter = Builders<Experience>.Filter.Where(where);
-                DeleteResult deleteResult = await _db.Experiences.DeleteManyAsync(filter);
+                FilterDefinition<Interview> filter = Builders<Interview>.Filter.Where(where);
+                DeleteResult deleteResult = await _db.Interviews.DeleteManyAsync(filter);
                 return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
@@ -64,12 +64,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<Experience> Get(Expression<Func<Experience, bool>> where)
+        public async Task<Interview> Get(Expression<Func<Interview, bool>> where)
         {
             try
             {
-                FilterDefinition<Experience> filter = Builders<Experience>.Filter.Where(where);
-                return await _db.Experiences.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Interview> filter = Builders<Interview>.Filter.Where(where);
+                return await _db.Interviews.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -78,11 +78,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<Experience>> GetAll()
+        public async Task<IEnumerable<Interview>> GetAll()
         {
             try
             {
-                return await _db.Experiences.Find(_ => true).ToListAsync();
+                return await _db.Interviews.Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -91,12 +91,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<Experience> GetById(string id)
+        public async Task<Interview> GetById(string id)
         {
             try
             {
-                FilterDefinition<Experience> filter = Builders<Experience>.Filter.Eq(u => u.Id, id);
-                return await _db.Experiences.Find(filter).FirstOrDefaultAsync();
+                FilterDefinition<Interview> filter = Builders<Interview>.Filter.Eq(u => u.Id, id);
+                return await _db.Interviews.Find(filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -105,12 +105,12 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<Experience>> GetMany(Expression<Func<Experience, bool>> where)
+        public async Task<IEnumerable<Interview>> GetMany(Expression<Func<Interview, bool>> where)
         {
             try
             {
-                FilterDefinition<Experience> filter = Builders<Experience>.Filter.Where(where);
-                return await _db.Experiences.Find(filter).ToListAsync();
+                FilterDefinition<Interview> filter = Builders<Interview>.Filter.Where(where);
+                return await _db.Interviews.Find(filter).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -119,11 +119,11 @@ namespace ForumApi.Repositories
             }
         }
 
-        public async Task<bool> Update(Experience entity)
+        public async Task<bool> Update(Interview entity)
         {
             try
             {
-                ReplaceOneResult updateResult = await _db.Experiences
+                ReplaceOneResult updateResult = await _db.Interviews
                     .ReplaceOneAsync(filter: g => g.Id == entity.Id, replacement: entity);
                 return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
             }
