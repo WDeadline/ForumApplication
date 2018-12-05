@@ -8,5 +8,5 @@ export class CurrentUserInfo{
     emailAddress: string;
     roles: string[];
     token: string;
-    //avatar: string;
+    avatar: string;
 }

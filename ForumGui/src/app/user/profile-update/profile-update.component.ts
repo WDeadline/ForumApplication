@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import {ProfileUpdateService} from './profile-update.service';
 import {User} from '../model/user';
 import {CurrentUserInfo} from '../../authentication/model/current-user-info';
+import {Skill} from '../model/skill';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { error } from 'util';
+class ImageSnippet {
+  constructor(public src: string, public file: File) {}
+}
 @Component({
   selector: 'app-profile-update',
   templateUrl: './profile-update.component.html',
@@ -9,8 +15,9 @@ import {CurrentUserInfo} from '../../authentication/model/current-user-info';
 })
 export class ProfileUpdateComponent implements OnInit {
 
-  imageUpload: any;
-  imageURL: any;
+  selectedFile: ImageSnippet;
+  imageURL: string = "assets/img/default.png";
+  fileToUpload : File = null;
   constructor(
     private profileUpdateService : ProfileUpdateService,
   ) { }
@@ -19,33 +26,30 @@ export class ProfileUpdateComponent implements OnInit {
   }
 
 
-  handleImageUpload(e) {
-    if(e.target.files && e.target.files.length > 0) {
-      this.imageUpload = e.target.files[0];
-      var reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.imageURL = event.target.result;
-      }
-      reader.readAsDataURL(this.imageUpload);
-  
-      let body = new FormData();
-      body.append("file", this.imageUpload);
-
-     this.profileUpdateService.changeAvatar(body).subscribe(
+  uploadPhoto(e:any){
+    this.fileToUpload = e.files[0];
+    const file: File = e.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+    reader.onload = (event: any) => {
+      this.imageURL = event.target.result;
+      this.selectedFile = new ImageSnippet(event.target.result, file);
+      this.profileUpdateService.changeAvatar(this.selectedFile.file).subscribe(
         data => {
-          //toast('Update avatar successfully', 1500);
-          let user: User = new User();
-          user = data;
-          var currentUser: CurrentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
-          //currentUser.avatar = user.avatar;
-          this.profileUpdateService.setUserInfo(currentUser);
-        }, error => console.log(error),
-        () => {
-          //this.loadInfoMentor();
+          console.log("thanh cong1");
+          console.log(data);
+          console.log("thanh cong2");
+          },
+        error => {
+          console.log("that bai1");
+          console.log(error);
+          console.log("that bai2");
         }
       )
     }
-
+    
+    
   }
+
 
 }

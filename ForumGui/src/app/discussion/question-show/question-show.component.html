@@ -32,16 +32,23 @@
                 Panel content
               </div>
           </div>
-          <a>add comment</a>
-          <div class="form-group">
-              <label for="comment">Comment:</label>
-              <textarea class="form-control" rows="5" id="comment"></textarea>
-          </div>
+          <a *ngIf="isAddComment" (click)="isComment = true;isAddComment = false">add comment</a>
+          <form *ngIf="isComment">
+            <div class="form-group" >
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" rows="3" id="comment"></textarea>
+                <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs">Post</button>
+                <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs" (click)="isComment = false;isAddComment = true">Cancle</button>
+            </div>
+        </form>
       </div>
     </div>
     <hr>
-    <h5>Anwers</h5>
-    
+    <form>
+      <h5><b>Anwer</b></h5>
+      <p-editor [(ngModel)]='discription' value={{discription}} (onTextChange)="onTextChange($event)" [style]="{'height':'200px'}"></p-editor>
+      <button style="margin:3px 2px;" type="submit" class="btn btn-primary">Post Anwer</button>
+  </form>  
   </div>
   <div class="col-md-1"></div>
 </div>

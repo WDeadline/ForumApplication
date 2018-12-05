@@ -5,16 +5,18 @@
           <div class="col-sm-5 col-md-3">
             <br>
             <div class="thumbnail" style="width:220px; height: 220px;">
-                <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png" alt="...">
+                <img class="avatar" [src]="imageURL" alt="...">
               <div class="caption">           
                 <div class="inputWrapper" style="height: 24px; width: 24px;">
                     <div class="glyphicon glyphicon-open">
-                        <input class="fileInput" type="file" (change)="handleImageUpload($event)"/>
+                            <form>
+                                    <input #imageInput class="fileInput" type="file" accept="image/*"  (change)="uploadPhoto(imageInput)" />
+                                    <!-- <input  class="fileInput" type="file" accept="image/*" (change)="uploadPhoto()" #fileInput/> -->
+                            </form>
                     </div>
                 </div>
               </div>
             </div>
-              
           </div>
 
           <div class="col-md-9">
@@ -25,6 +27,7 @@
               <app-profile-education></app-profile-education>
               <app-profile-experience></app-profile-experience>
               <app-profile-skill></app-profile-skill>
+              <app-profile-activity></app-profile-activity>
               
               <!--noidung-->  
           </div>

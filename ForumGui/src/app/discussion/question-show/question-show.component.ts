@@ -10,6 +10,8 @@ import {Question} from '../model/question';
 })
 export class QuestionShowComponent implements OnInit {
 
+  isComment = false;
+  isAddComment = true;
   question : Question;
   id : string;
   subscription : Subscription;

@@ -10,5 +10,4 @@ export class User{
     phoneNumber : string;
     birthDay : Date;
     emailAddress:string;
-
 }

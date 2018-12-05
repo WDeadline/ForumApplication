@@ -42,6 +42,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button  class="btn btn-primary" (click)="updateObjective();">Save</button>
+        <span  style="padding-left:3px;"></span>
         <button  class="btn btn-primary" (click)="isEdit = false;">Cancle</button>
       </div>
     </div>
@@ -62,6 +63,7 @@
               </textarea>
             <div *ngIf="submittedAdd && f.descriptionAdd.errors" class="error">
                 <div *ngIf="f.descriptionAdd.errors.required">Sorry, discription name is required</div>
+                <span  style="padding-left:3px;"></span>
                 <div *ngIf="f.descriptionAdd.errors.pattern">Sorry, discription can not empty</div>
             </div>
           </div>
@@ -70,6 +72,7 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button class="btn btn-primary" (click)="addObjective();">Save</button>
+          <span  style="padding-left:3px;"></span>
           <button class="btn btn-primary" (click)="isAdd = false;">Cancel</button>
         </div>
       </div>

@@ -11,6 +11,10 @@ import { ProfileExperienceComponent } from './profile-experience/profile-experie
 import {ProfileEducationComponent} from './profile-education/profile-education.component';
 import { ProfileSkillComponent } from './profile-skill/profile-skill.component';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+
+import { RatingModule } from 'ngx-bootstrap/rating';
+import { ProfileActivityComponent } from './profile-activity/profile-activity.component';
+
 @NgModule({
   declarations: [
     ProfileUpdateComponent,
@@ -19,13 +23,15 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
     ProfileObjectiveComponent,
     ProfileExperienceComponent,
     ProfileEducationComponent,
-    ProfileSkillComponent
+    ProfileSkillComponent,
+    ProfileActivityComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule, //su dung cho [formGroup] in html
-    BsDatepickerModule.forRoot(),
+    BsDatepickerModule.forRoot(), 
+    RatingModule.forRoot(), //ng-bootstrap rating
     ProfileUpdateRoutingModule
   ]
 })
