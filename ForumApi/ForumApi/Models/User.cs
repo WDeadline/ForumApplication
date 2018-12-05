@@ -17,7 +17,7 @@ namespace ForumApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("n"), BsonRequired, Required, PersonName]
+        [BsonElement("n"), BsonRequired, Required, PersonName, MaxLength(200)]
         public string Name { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
@@ -58,7 +58,7 @@ namespace ForumApi.Models
         public bool Active { get; set; } = true;
 
         [BsonElement("roles")]
-        public IEnumerable<Role> Roles { get; set; }
+        public IEnumerable<Role> Roles { get; set; } = new List<Role> { Role.Student };
 
         [BsonElement("objectives")]
         public ICollection<Objective> Objectives { get; set; }

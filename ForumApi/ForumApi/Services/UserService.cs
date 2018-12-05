@@ -1,6 +1,8 @@
 ﻿using ForumApi.Environments;
+using ForumApi.Helpers;
 using ForumApi.Interfaces;
 using ForumApi.Models;
+using ForumApi.Payloads;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ForumApi.Services
 {
-    public class UserService : IService<User>
+    public class UserService : IUserService
     {
         private readonly ILogger<UserService> _logger;
         private readonly IRepository<User> _userRepository;
@@ -25,15 +27,69 @@ namespace ForumApi.Services
 
         }
 
-        public Task Add(User entity)
+        public Task Add(User user)
         {
             try
             {
-                return _userRepository.Add(entity);
+                return _userRepository.Add(user);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message, entity);
+                _logger.LogError(ex, ex.Message, user);
+                throw ex;
+            }
+        }
+
+        public Task CreateUser(CreationUser creationUser)
+        {
+            PasswordManager.CreatePasswordHash(creationUser.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            User user = new User {
+                Name = creationUser.Name,
+                Birthday = creationUser.Birthday,
+                PhoneNumber = creationUser.PhoneNumber,
+                Address = creationUser.Address,
+                Position = creationUser.Position,
+                Username = creationUser.Username,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                EmailAddress = creationUser.EmailAddress,
+                Roles = creationUser.Roles,
+            };
+            return _userRepository.Add(user);
+        }
+
+        public async Task<bool> IsExistedEmailAddressAsync(string emailAddress)
+        {
+            var user = await _userRepository.Get(u => u.EmailAddress == emailAddress);
+            return (user != null);
+        }
+
+        public async Task<bool> IsExistedUsernameAsync(string username)
+        {
+            var user = await _userRepository.Get(u => u.Username == username);
+            return (user != null);
+        }
+
+        public bool RegisterAsync(Register register)
+        {
+            try
+            {
+                PasswordManager.CreatePasswordHash(register.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                User user = new User
+                {
+                    Name = register.Name,
+                    Username = register.Username,
+                    EmailAddress = register.EmailAddress,
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
+                    Roles = new List<Role> { Role.Student }
+                };
+                _userRepository.Add(user);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, register);
                 throw ex;
             }
         }
@@ -89,6 +145,17 @@ namespace ForumApi.Services
                 _logger.LogError(ex, ex.Message, entity);
                 throw ex;
             }
+        }
+
+        public Task UpdateUser(User user, UpdationUser updationUser)
+        {
+            user.Name = updationUser.Name;
+            user.Birthday = updationUser.Birthday;
+            user.PhoneNumber = updationUser.PhoneNumber;
+            user.Address = updationUser.Address;
+            user.Position = updationUser.Position;
+            user.UpdationTime = DateTime.UtcNow;
+            return _userRepository.Update(user);
         }
     }
 }
