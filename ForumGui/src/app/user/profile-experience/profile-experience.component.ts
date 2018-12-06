@@ -41,11 +41,6 @@ export class ProfileExperienceComponent implements OnInit {
       description: ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
     }); 
 
-    this.experienceEditForm = this.formBuilder.group({
-      workPlaceEdit : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      positionEdit : ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      descriptionEdit: ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],      
-    })
   }
 
   get formAdd() { return this.experienceAddForm.controls; }
@@ -79,20 +74,19 @@ export class ProfileExperienceComponent implements OnInit {
     if(this.endDate){
       this.newExperience.endTime = this.endDate;
     }
-    this.newExperience.updationTime = new Date();
-    console.log("this.newExperience.updationTime"+this.newExperience.updationTime);
     this.profileExperienceService.addExperience(this.newExperience)
       .subscribe(data => {
         this.experiences.push(data);
+        //this.formAdd.workPlace.
         this.isAdd = false;
       });
   }
 
-  setValidator(workPlace: string ,position : string, description:string){
+  setValidator(str1: string ,str2 : string, str3:string){
     this.experienceEditForm = this.formBuilder.group({
-      workPlaceEdit : [ workPlace ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      positionEdit : [position ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      descriptionEdit: [description ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],      
+      workPlaceEdit : [ str1 ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      positionEdit : [str2 ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      descriptionEdit: [str3 ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],      
     }); 
   }
 
@@ -122,7 +116,6 @@ export class ProfileExperienceComponent implements OnInit {
     if(this.valueChangeEditEndDate){
       this.editExperience.endTime = this.valueChangeEditEndDate;
     }
-    this.editExperience.updationTime = new Date();
     this.profileExperienceService.updateExperience(this.editExperience)
     .subscribe(data => {
       console.log("edit experience succesfull");

@@ -2,8 +2,7 @@
 
 export class CurrentUserInfo{
     id: string;
-    firstName: string;
-    lastName: string;
+    name: string;
     username: string;
     emailAddress: string;
     roles: string[];

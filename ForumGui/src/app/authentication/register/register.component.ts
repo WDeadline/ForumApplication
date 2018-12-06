@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
 
-      firstName : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],
+      //firstName : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],
       lastName : ['',  [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],
       username : ['', [Validators.required,Validators.pattern('[a-zA-Z0-9]*')]],
       emailAddress : ['',[Validators.required, Validators.email]],
@@ -57,7 +57,7 @@ export class RegisterComponent implements OnInit {
     let passwordHash = shaObj.getHash("HEX");
     console.log("hash1:"+ passwordHash);
     //this.f.firstName.value, this.f.lastName.value,
-    this.authenticationService.register(this.f.firstName.value,this.f.lastName.value,
+    this.authenticationService.register(this.f.lastName.value,
       this.f.username.value,this.f.emailAddress.value, passwordHash)
         .pipe(first())
           .subscribe(

@@ -3,6 +3,7 @@ import{ProfileInformationService} from './profile-information.service';
 import {Information} from '../model/information';
 import {AuthenticationService} from '../../authentication/service/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {User} from  '../model1/user';
 @Component({
   selector: 'app-profile-infomation',
   templateUrl: './profile-infomation.component.html',
@@ -14,8 +15,9 @@ export class ProfileInfomationComponent implements OnInit {
   informationFormEdit: FormGroup;
   isEdit = false;
   currentUserId : string;
-  information : Information[] = [];
-  editInformation: Information = new Information();
+  information : User[] = [];
+
+  editInformation: User = new User();
   gender : boolean = false;
   selectedGender : boolean;
   birthDay : Date;
@@ -27,12 +29,13 @@ export class ProfileInfomationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCurrentUserId();
+    this.currentUserId = this.authenticationService.getCurrentUser().id;
     this.getInformation();
     this.informationFormEdit = this.formBuilder.group({
-      fullNameEdit : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      nameEdit : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       addressEdit : ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       numberPhoneEdit :['',[Validators.required,Validators.pattern('^([0-9]*)$')]], 
+      positionEdit : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
     }); 
   }
 
@@ -45,14 +48,14 @@ export class ProfileInfomationComponent implements OnInit {
       });
   }
 
-  edit(information: Information){
+  edit(information: User){
     if(information){
       this.editInformation = information;
-      this.setValidator(this.editInformation.fullName, this.editInformation.address,this.editInformation.phoneNumber);
+      this.setValidator(this.editInformation.name, this.editInformation.address,this.editInformation.phoneNumber, this.editInformation.position);
       if(this.editInformation != null && this.editInformation.gender != null){
         this.gender = this.editInformation.gender;
       }
-      this.editBirthDay = new Date(this.editInformation.dateOfBirth);
+      this.editBirthDay = new Date(this.editInformation.birthday);
 
     }
   }
@@ -63,7 +66,7 @@ export class ProfileInfomationComponent implements OnInit {
     if (this.informationFormEdit.invalid) {
       return;
     }
-    let fullName = this.f.fullNameEdit.value;
+    let name = this.f.nameEdit.value;
     if(this.selectedGender != null){
       this.editInformation.gender = this.selectedGender;
       this.gender = this.selectedGender;
@@ -71,15 +74,15 @@ export class ProfileInfomationComponent implements OnInit {
      
     let phoneNumber = this.f.numberPhoneEdit.value;
     let address = this.f.addressEdit.value;
+    let position = this.f.positionEdit.value;
 
-    this.editInformation.fullName = fullName;
-    this.editInformation.userId = this.authenticationService.getCurrentUser().id;
+    this.editInformation.name = name;
     if(this.birthDay){
-      this.editInformation.dateOfBirth = this.birthDay;
+      this.editInformation.birthday = this.birthDay;
     }
     this.editInformation.phoneNumber = phoneNumber;
     this.editInformation.address = address;
-    this.editInformation.updationTime = new Date();
+    this.editInformation.position = position;
 
     this.profileInformationService.updateInformation(this.editInformation)
       .subscribe(data => {
@@ -88,18 +91,16 @@ export class ProfileInfomationComponent implements OnInit {
     })
   }
 
-  setValidator(fullName: string ,address : string, numberPhone:string){
+  setValidator(name: string ,address : string, numberPhone:string, position:string ){
     this.informationFormEdit = this.formBuilder.group({
-      fullNameEdit : [ fullName ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      nameEdit : [ name ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       addressEdit : [address ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       numberPhoneEdit :[numberPhone,[Validators.required,Validators.pattern('^([0-9]*)$')]], 
+      positionEdit : [ position ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
     }); 
   }
 
-  getCurrentUserId(){
-    this.currentUserId = this.authenticationService.getCurrentUser().id;
-    console.log("getCurrentUserId: "+ this.currentUserId);
-  }
+
 
   handelRadioMale(event){
     if(event.target.value == "true"){

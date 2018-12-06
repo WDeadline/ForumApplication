@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {AuthenticationService} from '../../authentication/service/authentication.service'; 
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import {Education} from '../model/educaton';
+import {Education} from '../model1/education';
 import { HandleErrorService } from '../../handle-error.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -18,8 +18,10 @@ const httpOptions = {
 })
 export class ProfileEducationService {
 
+  private apiUser ='/users';
   private apiEducation = '/educations';
   private config = 'https://localhost:44375/api';
+  private currentUserId = this.anthenticationService.getCurrentUser().id;
 
   constructor(
     private handleErrorService: HandleErrorService,
@@ -27,9 +29,9 @@ export class ProfileEducationService {
     private anthenticationService :AuthenticationService,
   ) { }
 
-    /** POST: add a new Education to the database */
+    /** POST: add a new Education to the database */ // api/users/userId/educations
     addEducation(education: Education):Observable<Education>{
-      const url = `${this.config}${this.apiEducation}`;
+      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}`;
       this.setTokenToHeader();
       return this.http.post<Education>(url,education,httpOptions)
       .pipe(
@@ -39,7 +41,7 @@ export class ProfileEducationService {
 
     /*PUT: update the Education on the server. Return the updated object upon success */
     updateEducation(education: Education): Observable<Education>{
-      const url = `${this.config}${this.apiEducation}/${education.id}`;
+      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}/${education.id}`;
       this.setTokenToHeader();
       return this.http.put<Education>(url, education, httpOptions)
       .pipe(
@@ -49,7 +51,7 @@ export class ProfileEducationService {
 
     /** DELETE: delete the education from the server */
     deleteEducation(id:string) : Observable<{}>{
-      const url = `${this.config}${this.apiEducation}/${id}`;
+      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}/${id}`;
       this.setTokenToHeader();
       return this.http.delete(url,httpOptions)
       .pipe(
@@ -57,9 +59,9 @@ export class ProfileEducationService {
       );
     }
 
-    /* GET: get Educations of all users from server */
+    /* GET: get Education of user from server */
     getEducations():Observable<Education[]>{
-      const url =  `${this.config}${this.apiEducation}`;
+      const url =  `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}`;
       this.setTokenToHeader();
       return this.http.get<Education[]>(url,httpOptions)
       .pipe(

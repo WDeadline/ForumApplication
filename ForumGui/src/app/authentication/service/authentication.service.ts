@@ -38,9 +38,9 @@ export class AuthenticationService {
                 return user;
             }));
     }
-
-    register( FirstName:string,LastName:string,Username:string, EmailAddress: string, Password: string){
-        return this.http.post<any>(`${this.config}${this.apiRegister}`,{FirstName,LastName,Username,EmailAddress,Password});
+    // FirstName:string,
+    register(Name:string,Username:string, EmailAddress: string, Password: string){
+        return this.http.post<any>(`${this.config}${this.apiRegister}`,{Name,Username,EmailAddress,Password});
     }
 
     logOut() {

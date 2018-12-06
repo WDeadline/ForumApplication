@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ProfileEducationService} from './profile-education.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AuthenticationService} from '../../authentication/service/authentication.service';
-import { Education } from '../model/educaton';
-import {ProfileUpdateService} from '../profile-update/profile-update.service';
+import { Education } from '../model1/education';
+
 @Component({
   selector: 'app-profile-education',
   templateUrl: './profile-education.component.html',
@@ -69,8 +69,6 @@ export class ProfileEducationComponent implements OnInit {
     let major = this.formAdd.majorAdd.value;
     let GPA = this.formAdd.GPAAdd.value;
     
-
-    this.newEducation.userId = userId;
     this.newEducation.university = university;
     this.newEducation.major = major;
     this.newEducation.gpa = GPA;
@@ -83,7 +81,6 @@ export class ProfileEducationComponent implements OnInit {
       this.newEducation.endTime = this.endDateAdd;
     }
 
-    this.newEducation.updationTime = new Date();
 
     this.profileEducationService.addEducation(this.newEducation)
     .subscribe(data => {
@@ -109,8 +106,7 @@ export class ProfileEducationComponent implements OnInit {
     let university = this.formEdit.universityEdit.value;
     let major = this.formEdit.majorEdit.value;
     let GPA = this.formEdit.GPAEdit.value;
-    
-    this.editEducation.userId = userId;
+
     this.editEducation.university = university;
     this.editEducation.major = major;
     this.editEducation.gpa = GPA;
@@ -122,8 +118,6 @@ export class ProfileEducationComponent implements OnInit {
     if(this.endDateEdit) {
       this.editEducation.endTime = this.endDateEdit;
     }
-
-    this.editEducation.updationTime = new Date();
 
     this.profileEducationService.updateEducation(this.editEducation)
     .subscribe(data => {
@@ -156,11 +150,8 @@ export class ProfileEducationComponent implements OnInit {
 
   edit(education:Education){
     this.editEducation = education;
-    this.startDateEdit = education.startTime;
-    this.endDateEdit = education.endTime;
-    let temp = new Date();
-    console.log("time" + temp);
-    console.log("start tiem" + this.editEducation.startTime);
+    this.startDateEdit = new Date(education.startTime);
+    this.endDateEdit = new Date(education.endTime);
     this.editForm(this.editEducation.university, this.editEducation.major, this.editEducation.gpa);
   }
 

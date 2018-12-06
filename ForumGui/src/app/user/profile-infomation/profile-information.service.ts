@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { HandleErrorService } from '../../handle-error.service';
 import {Information} from '../model/information';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {CurrentUserInfo} from '../../authentication/model/current-user-info';
+import {User} from '../model1/user';
 const httpOptions = {
   headers: new HttpHeaders({ 
     'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ const httpOptions = {
 })
 export class ProfileInformationService {
   private config = 'https://localhost:44375/api';
-  private apiInformation ="/informations";
+  private apiUser ="/users";
   constructor(
     private http: HttpClient,
     private anthenticationService :AuthenticationService,
@@ -25,14 +25,13 @@ export class ProfileInformationService {
   ) { }
 
 
-  /* GET: get Educations of all users from server */
-  getInformationOfCurrentUser(id: string):Observable<Information>{
-    const url = `${this.config}/users/${id}/information`;
+  /* GET: get information of user from server */
+  getInformationOfCurrentUser(id: string):Observable<User>{
+    const url = `${this.config}${this.apiUser}/${id}`;
     this.setTokenToHeader();
-    return this.http.get<Information>(url,httpOptions)
+    return this.http.get<User>(url,httpOptions)
     .pipe(
-      //catchError(this.handleErrorService.log("dsds"))
-      
+      //catchError(this.handleErrorService.log('getInformationOfCurrentUser'))
     );
   }
 
@@ -47,23 +46,15 @@ export class ProfileInformationService {
   }
 
   /*PUT: update the Information on the server. Return the updated object upon success */
-  updateInformation(information : Information): Observable<Information>{
-    if(information.id != null){
-      const url = `${this.config}${this.apiInformation}/${information.id}`;
+  updateInformation(user : User): Observable<User>{
+    if(user.id != null){
+      const url = `${this.config}${this.apiUser}/${user.id}`;
       this.setTokenToHeader();
-      return this.http.put<Information>(url,information,httpOptions)
+      return this.http.put<User>(url,user,httpOptions)
       .pipe(
-        catchError(this.handleErrorService.handleError('updateInformation',information))
+        catchError(this.handleErrorService.handleError('updateInformation',user))
       );
-    }else{
-      const url = `${this.config}${this.apiInformation}`;
-      this.setTokenToHeader();
-      return this.http.post<Information>(url,information,httpOptions)
-      .pipe(
-        catchError(this.handleErrorService.handleError('updateInformation',information))
-      );
-    }
-    
+    }  
   }
 
 

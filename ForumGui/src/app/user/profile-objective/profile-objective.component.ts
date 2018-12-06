@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ProfileObjectiveService} from './profile-objective.service';
-import {Objective} from '../model/objective';
+import {Objective} from '../model1/objective';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AuthenticationService} from '../../authentication/service/authentication.service';
 
@@ -49,16 +49,17 @@ export class ProfileObjectiveComponent implements OnInit {
     if (this.objectiveFormAdd.invalid) {
       return;
     }
-    let userId = this.authenticationService.getCurrentUser().id;
     let des = this.f.descriptionAdd.value;
-    this.newObjective.userId = userId;
     this.newObjective.description = des;
-    this.newObjective.updationTime = new Date();
     this.profileObjectiveService.addObjective(this.newObjective)
       .subscribe(data => {
         console.log("add Objective sussectfule");
         this.objectives.push(data);
+        this.objectiveFormAdd = this.formBuilder.group({
+          descriptionAdd : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],      
+        });
         this.isAdd = false;
+        this.submittedAdd = false;
       });
   }
 
@@ -70,13 +71,13 @@ export class ProfileObjectiveComponent implements OnInit {
 
   edit(objective){
     this.editObjective=objective;
-    this.adD(this.editObjective.description);
+    this.setValidation(this.editObjective.description);
     console.log("this.editObjective.dis: "+this.editObjective.description);
   }
 
-  adD(str: string){
+  setValidation(description: string){
     this.objectiveFormEdit = this.formBuilder.group({
-      descriptionEdit : [ str ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      descriptionEdit : [ description ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
     }); 
   }
 
@@ -88,7 +89,6 @@ export class ProfileObjectiveComponent implements OnInit {
     if(this.editObjective){
       let des = this.formEdit.descriptionEdit.value;
       this.editObjective.description = des;
-      this.editObjective.updationTime = new Date();
       this.profileObjectiveService.updateObjective(this.editObjective)
       .subscribe(data => {
         console.log("edit objective succesfull");
