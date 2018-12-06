@@ -12,7 +12,7 @@ namespace ForumApi.Models
     public class Experience
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new ObjectId().ToString();
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("wkpl"), BsonRequired, Required]
         public string Workplace { get; set; }

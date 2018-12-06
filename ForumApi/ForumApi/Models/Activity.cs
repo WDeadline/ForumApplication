@@ -11,7 +11,7 @@ namespace ForumApi.Models
     public class Activity
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new ObjectId().ToString();
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("n"), BsonRequired, Required]
         public string Name { get; set; }

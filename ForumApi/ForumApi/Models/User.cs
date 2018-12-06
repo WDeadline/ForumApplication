@@ -20,6 +20,9 @@ namespace ForumApi.Models
         [BsonElement("n"), BsonRequired, Required, PersonName, MaxLength(200)]
         public string Name { get; set; }
 
+        [BsonElement("gender")]
+        public bool? Gender { get; set; }
+
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("bd"), DataType(DataType.Date)]
         public DateTime? Birthday { get; set; }

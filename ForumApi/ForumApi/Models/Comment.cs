@@ -11,7 +11,7 @@ namespace ForumApi.Models
     public class Comment
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new ObjectId().ToString();
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("by"), BsonRequired, Required, StringLength(24, MinimumLength = 24)]
         public string CommentBy { get; set; }

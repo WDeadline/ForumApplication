@@ -11,7 +11,7 @@ namespace ForumApi.Models
     public class Objective
     {
         [BsonId, BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new ObjectId().ToString();
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("des"), BsonRequired, Required]
         public string Description { get; set; }

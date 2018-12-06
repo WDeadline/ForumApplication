@@ -41,7 +41,7 @@ namespace ForumApi.Controllers
                 string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
                 var img = await _imageHandler.UploadAvatar(userId, file);
-                return new OkObjectResult(path + img);
+                return new OkObjectResult(new { Path = path + img });
             }
             catch(Exception e)
             {

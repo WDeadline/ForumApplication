@@ -70,6 +70,11 @@ namespace ForumApi.SourceCode.Services
 
                 var currentUser = new CurrentUser {
                     Id = user.Id,
+                    Gender = user.Gender,
+                    Birthday = user.Birthday,
+                    Address = user.Address,
+                    PhoneNumber = user.PhoneNumber,
+                    Position = user.Position,
                     Name = user.Name,
                     Username = user.Username,
                     EmailAddress = user.EmailAddress,
