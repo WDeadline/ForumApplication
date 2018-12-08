@@ -5,7 +5,7 @@
           <div class="col-sm-5 col-md-3">
             <br>
             <div class="thumbnail" style="width:220px; height: 220px;">
-                <img class="avatar" [src]="imageURL" alt="...">
+                <img class="avatar" [src]="currentUser.avatar? currentUser.avatar : imageURL" alt="...">
               <div class="caption">           
                 <div class="inputWrapper" style="height: 24px; width: 24px;">
                     <div class="glyphicon glyphicon-open">

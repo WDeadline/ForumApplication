@@ -17,7 +17,7 @@
     </tr>
     <tr>
       <td style="height: 30px;"><b>Birthdate</b></td>
-      <td >{{infor?.birthday | date : 'shortDate'}}</td> 
+      <td >{{infor?.birthday | date : 'dd-MM-yyyy'}}</td> 
     </tr>
     <tr>
       <td style="height: 30px;"><b>Phone number</b></td>
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Gender</label>
+        <label for="inlineRadioOptions" class="col-sm-2 control-label">Gender</label>
         <div class="col-sm-10">
             <label class="radio-inline">
                 <input type="radio" name="inlineRadioOptions" id="inlineRadio1" [checked]="gender != null && gender" (change)="handelRadioMale($event)" value=true>Male 
@@ -59,15 +59,20 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Birthdate</label>
+        <label for="birthdayEdit" class="col-sm-2 control-label">Birthdate</label>
         <div class="col-sm-10">
           <input
           class="form-control"
-          placeholder="1/1/2018"
+          placeholder="01-01-1996"
           bsDatepicker
           (bsValueChange)="onValueChangeEdit($event)"
+          formControlName="birthdayEdit"
           [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"
           [bsValue]="editBirthDay"/>
+          <div *ngIf="submitted" class="error">
+              <div *ngIf="f.birthdayEdit.errors && f.birthdayEdit.errors.required">Sorry, birthday is required</div>
+              <div *ngIf="isBirthDayError">The birthday must be less than the today</div>
+          </div>
         </div>
       </div>
     <div class="form-group">
@@ -92,7 +97,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="positionEdit" class="col-sm-2 control-label">Address</label>
+      <label for="positionEdit" class="col-sm-2 control-label">Position</label>
       <div class="col-sm-10">
         <input type="text" class="form-control"  placeholder="Please enter Address" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="positionEdit" [ngClass]="{ 'is-invalid': submitted && f.positionEdit.errors }">
         <div *ngIf="submitted && f.positionEdit.errors" class="error">

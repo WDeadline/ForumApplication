@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { HandleErrorService } from '../../handle-error.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Skill} from '../model/skill';
+import {Skill} from '../model1/skill';
 
 const httpOptions = {
   headers: new HttpHeaders({ 
@@ -17,7 +17,8 @@ const httpOptions = {
 })
 export class ProfileSkillService {
 
-  private apiSkill = '/Skills';
+  private apiUser ='/users';
+  private apiSkill = '/skills';
   private config = 'https://localhost:44375/api';
   constructor(
     private handleErrorService: HandleErrorService,
@@ -25,9 +26,10 @@ export class ProfileSkillService {
     private anthenticationService :AuthenticationService,
   ) { }
 
-  /* GET: get Skill of all users from server */
+  /* GET: get Skill of all users from server */ //api/users/userId/skills
   getSkills():Observable<Skill[]>{ 
-    const url = `${this.config}${this.apiSkill}`;
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiSkill}`;
     this.setTokenToHeader();
     return this.http.get<Skill[]>(url,httpOptions)
       .pipe(
@@ -37,7 +39,8 @@ export class ProfileSkillService {
 
   /** POST: add a new skill to the database */
   addSkill(skill: Skill): Observable<Skill>{
-    const url = `${this.config}${this.apiSkill}`
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiSkill}`
     this.setTokenToHeader();
     return this.http.post<Skill>(url, skill, httpOptions)
       .pipe(
@@ -47,7 +50,8 @@ export class ProfileSkillService {
 
   /*PUT: update the skill on the server. Return the updated object upon success */
   updateSkill(skill: Skill): Observable<Skill>{
-    const url = `${this.config}${this.apiSkill}/${skill.id}`;
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiSkill}/${skill.id}`;
     this.setTokenToHeader();
     return this.http.put<Skill>(url, skill, httpOptions)
       .pipe(
@@ -57,7 +61,8 @@ export class ProfileSkillService {
 
   /** DELETE: delete the skill from the server */
   deleteSkill(skill: Skill): Observable<{}>{
-    const url = `${this.config}${this.apiSkill}/${skill.id}`;
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiSkill}/${skill.id}`;
     this.setTokenToHeader();
     return this.http.delete(url, httpOptions)
       .pipe(

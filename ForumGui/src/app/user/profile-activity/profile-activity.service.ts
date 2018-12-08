@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { HandleErrorService } from '../../handle-error.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Activity} from '../model/activity';
+import {Activity} from '../model1/activity';
 
 const httpOptions = {
   headers: new HttpHeaders({ 
@@ -17,18 +17,20 @@ const httpOptions = {
 })
 export class ProfileActivityService {
 
-  private apiActivity = '/Activity';
+  private apiUser ='/users';
+  private apiActivity = '/activities';
   private config = 'https://localhost:44375/api';
-
+  
   constructor(
     private handleErrorService: HandleErrorService,
     private http: HttpClient,
     private anthenticationService :AuthenticationService,
   ) { }
 
-  /* GET: get activity of all users from server */
+  /* GET: get activity of user from server */  //api/users/userId/activities
   getActivities():Observable<Activity[]>{ 
-    const url = `${this.config}${this.apiActivity}`;
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiActivity}`;
     this.setTokenToHeader();
     return this.http.get<Activity[]>(url,httpOptions)
       .pipe(
@@ -38,7 +40,8 @@ export class ProfileActivityService {
 
   /** POST: add a new activity to the database */
   addActivity(activity: Activity): Observable<Activity>{
-    const url = `${this.config}${this.apiActivity}`
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiActivity}`
     this.setTokenToHeader();
     return this.http.post<Activity>(url, activity, httpOptions)
       .pipe(
@@ -48,7 +51,8 @@ export class ProfileActivityService {
 
   /*PUT: update the activity on the server. Return the updated object upon success */
   updateActivity(activity: Activity): Observable<Activity>{
-    const url = `${this.config}${this.apiActivity}/${activity.id}`;
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo}${this.apiActivity}/${activity.id}`;
     this.setTokenToHeader();
     return this.http.put<Activity>(url, activity, httpOptions)
       .pipe(
@@ -58,7 +62,8 @@ export class ProfileActivityService {
 
   /** DELETE: delete the activity from the server */
   deleteActivity(activity: Activity): Observable<{}>{
-    const url = `${this.config}${this.apiActivity}/${activity.id}`;
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiActivity}/${activity.id}`;
     this.setTokenToHeader();
     return this.http.delete(url, httpOptions)
       .pipe(

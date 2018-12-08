@@ -20,7 +20,6 @@ export class ProfileExperienceService {
   private apiUser = '/users'; //api/users/userId/experiences
   private apiExperience = '/experiences';
   private config = 'https://localhost:44375/api';
-  private currentUserId = this.anthenticationService.getCurrentUser().id;
   constructor(
     private handleErrorService: HandleErrorService,
     private http: HttpClient,
@@ -29,7 +28,8 @@ export class ProfileExperienceService {
 
     /* GET: get Experience of user from server */
     getExperiences(): Observable<Experience[]>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiExperience}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiExperience}`;
       this.setTokenToHeader();
       return this.http.get<Experience[]>(url,httpOptions )
         .pipe(
@@ -38,7 +38,8 @@ export class ProfileExperienceService {
     }
     /** POST: add a new Experience to the database */
     addExperience(experience: Experience): Observable<Experience>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiExperience}`
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiExperience}`
       this.setTokenToHeader();
       return this.http.post<Experience>(url, experience, httpOptions)
         .pipe(
@@ -48,7 +49,8 @@ export class ProfileExperienceService {
 
     /*PUT: update the experience on the server. Return the updated object upon success */
     updateExperience(experience: Experience): Observable<Experience>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiExperience}/${experience.id}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiExperience}/${experience.id}`;
       this.setTokenToHeader();
       return this.http.put<Experience>(url, experience, httpOptions)
         .pipe(
@@ -58,7 +60,8 @@ export class ProfileExperienceService {
 
     /** DELETE: delete the experience from the server */
     deleteExperience(experience: Experience): Observable<{}>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiExperience}/${experience.id}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiExperience}/${experience.id}`;
       this.setTokenToHeader();
       return this.http.delete(url, httpOptions)
         .pipe(

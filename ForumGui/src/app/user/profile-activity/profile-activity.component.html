@@ -1,111 +1,110 @@
-<div *ngIf="!isEdit && !isAdd">
+<div>
   <h3>Activity</h3>
   <hr style="border: 1px solid ">
   <table style="width:100%; ">
-      <tr >
-        <td style="width:75%">
-          <p style="text-align: justify" >
-            <span  style="padding-left:35px;"></span>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-          </p>
-        </td> 
-        <td  style="width:20%; text-align: center;" >
-          <b>18-8-2018</b>
-        </td>
-        <td style="width:5%">
-          <a class="update-link update-link-color" (click)="edit() ;isEdit=true;"><span class="glyphicon glyphicon-pencil"></span></a>
-          <a class="update-link update-link-color" (click)="deleteActivity();" ><span class="glyphicon glyphicon-remove"></span></a>
+    <tr *ngFor='let activity of activities'>
+      <td style="width:75%">
+        <p style="text-align: justify">
+          <span style="padding-left:35px;"></span>
+          {{activity?.name}}
+        </p>
       </td>
-      </tr>
+      <td style="width:20%; text-align: center;">
+        <b>{{activity?.joinDate | date : 'dd-MM-yyy'}}</b>
+      </td>
+      <td style="width:5%">
+        <a *ngIf ="!isAdd && !isEdit" class="update-link update-link-color" (click)="edit(activity); isEdit=true; isAdd=false;"><span class="glyphicon glyphicon-pencil"></span></a>
+        <span style="padding-left:5px;"></span>
+        <a *ngIf ="!isAdd && !isEdit" class="update-link update-link-color" (click)="deleteActivity(activity);"><span class="glyphicon glyphicon-remove"></span></a>
+      </td>
+    </tr>
   </table>
   <hr>
-  <p><a (click)="isAdd = true;">Add</a></p>
-</div>
+  <p *ngIf="!isEdit && !isAdd"><a (click)="isAdd = true; isEdit = false;">Add</a></p>
 
-
-
-<!--Edit-->
-<div  *ngIf="isEdit">
-<h3>Activity</h3>
-<hr style="border: 1px solid ">
-<form class="form-horizontal" [formGroup]="activityFormEdit">
-  <div class="form-group">
-    <label for="activityNameEdit" class="col-sm-2 control-label">Activity name</label>
-    <div class="col-sm-10">
-        <textarea type="text"  rows="3" class="form-control" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="activityNameEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.activityNameEdit.errors }">
-            </textarea>
-        <div *ngIf="submittedEdit && formEdit.activityNameEdit.errors" class="error">
-            <div *ngIf="formEdit.activityNameEdit.errors.required">Sorry, discription name is required</div>
-            <div *ngIf="formEdit.activityNameEdit.errors.pattern">Sorry, discription can not empty</div>
-        </div>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="joinDateEdit" class="col-sm-2 control-label">Join date</label>
-    <div class="col-sm-10">
-        <input
-        class="form-control"
-        placeholder="1/1/2018"
-        bsDatepicker
-        (bsValueChange)="onValueChangeEdit($event)"
-        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
-      </div>
-      <!--[bsValue]="temp"-->
-  </div>
-
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button  class="btn btn-primary" (click)="updateActivity();">Save</button>
-      <span  style="padding-left:3px;"></span>
-      <button  class="btn btn-primary" (click)="isEdit = false;">Cancle</button>
-    </div>
-  </div>
-</form>
-</div>
-
-
-<!--Add-->
-
-<div  *ngIf="isAdd">
-  <h3>Activity</h3>
-  <hr style="border: 1px solid ">
-  <form class="form-horizontal" [formGroup]="activityFormAdd" >
-    <div class="form-group">
-        <label for="activityNameAdd" class="col-sm-2 control-label">Activity name</label>
+  <!--Edit-->
+  <div *ngIf="isEdit">
+    <form class="form-horizontal" [formGroup]="activityFormEdit">
+      <div class="form-group">
+        <label for="activityNameEdit" class="col-sm-2 control-label">Activity name</label>
         <div class="col-sm-10">
-            <textarea class="form-control" rows="3" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="activityNameAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.activityNameAdd.errors }"> 
-            </textarea>
-          <div *ngIf="submittedAdd && formAdd.activityNameAdd.errors" class="error">
-              <div *ngIf="formAdd.activityNameAdd.errors.required">Sorry, discription name is required</div>
-              <span  style="padding-left:3px;"></span>
-              <div *ngIf="formAdd.activityNameAdd.errors.pattern">Sorry, discription can not empty</div>
+          <textarea type="text" rows="3" class="form-control" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="activityNameEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.activityNameEdit.errors }">
+              </textarea>
+          <div *ngIf="submittedEdit" class="error">
+            <div *ngIf="formEdit.activityNameEdit.errors && formEdit.activityNameEdit.errors.required">Sorry, discription name is required</div>
+            <div *ngIf="formEdit.activityNameEdit.errors && formEdit.activityNameEdit.errors.pattern">Sorry, discription can not empty</div>
           </div>
         </div>
-    </div>
+      </div>
 
-    <div class="form-group">
-      <label for="joinDateAdd" class="col-sm-2 control-label">Join date</label>
-      <div class="col-sm-10">
-          <input
-          class="form-control"
-          placeholder="1/1/2018"
-          bsDatepicker
-          (bsValueChange)="onValueChangeAdd($event)"
-          [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
+      <div class="form-group">
+        <label for="joinDateEdit" class="col-sm-2 control-label">Join date</label>
+        <div class="col-sm-10">
+          <input class="form-control" 
+           placeholder="01-01-2018" 
+            bsDatepicker 
+            (bsValueChange)="onValueChangeEdit($event)" 
+            [bsValue]="joinDateEdit" 
+            formControlName="joinDateEdit"
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" />
+            <div *ngIf="submittedEdit" class="error">
+                <div *ngIf="formEdit.joinDateEdit.errors && formEdit.joinDateEdit.errors.required">Sorry, discription name is required</div>
+                <div *ngIf="isErrorJoinDayEdit">The join date must be less than the today</div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button class="btn btn-primary" (click)="updateActivity();">Save</button>
+          <span style="padding-left:3px;"></span>
+          <button class="btn btn-primary" (click)="isEdit = false;">Cancle</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <!--Add-->
+
+  <div *ngIf="isAdd">
+    <form class="form-horizontal" [formGroup]="activityFormAdd">
+      <div class="form-group">
+        <label for="activityNameAdd" class="col-sm-2 control-label">Activity name</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" rows="3" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="activityNameAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.activityNameAdd.errors }">
+              </textarea>
+          <div *ngIf="submittedAdd && formAdd.activityNameAdd.errors" class="error">
+            <div *ngIf="formAdd.activityNameAdd.errors.required">Sorry, discription name is required</div>
+            <div *ngIf="formAdd.activityNameAdd.errors.pattern">Sorry, discription can not empty</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="joinDateAdd" class="col-sm-2 control-label">Join date</label>
+        <div class="col-sm-10">
+          <input class="form-control"
+           placeholder="01-01-2018"
+           bsDatepicker (bsValueChange)="onValueChangeAdd($event)"
+           formControlName="joinDateAdd"
+           [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" />
+           <div *ngIf="submittedAdd" class="error">
+              <div *ngIf="formAdd.joinDateAdd.errors && formAdd.joinDateAdd.errors.required">Sorry, discription name is required</div>
+              <div *ngIf="isErrorJoinDayAdd">The join date must be less than the today</div>
+            </div>
         </div>
         <!--[bsValue]="temp"-->
-    </div>
-
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button class="btn btn-primary" (click)="addActivity();">Save</button>
-        <span  style="padding-left:3px;"></span>
-        <button class="btn btn-primary" (click)="isAdd = false;">Cancel</button>
       </div>
-    </div>
-  </form>
-</div> 
 
-
-
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button class="btn btn-primary" (click)="addActivity();">Save</button>
+          <span style="padding-left:3px;"></span>
+          <button class="btn btn-primary" (click)="isAdd = false;">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

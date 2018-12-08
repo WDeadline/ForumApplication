@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Tag} from '../discussion/model/tag';
+import {TagService} from './tag.service';
 
 @Component({
   selector: 'app-tag',
@@ -7,9 +9,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TagComponent implements OnInit {
 
-  constructor() { }
+  tags : Tag[];
+  tagView : Tag[];
+  constructor(
+    private tagService :TagService,
+  ) { }
 
   ngOnInit() {
+    this.getAllTag();
   }
+
+  getAllTag(){
+    this.tagService.getAllTag()
+      .subscribe(data => {
+        this.tags = data;
+        this.tagView = data;
+        console.log("get all tag successful");
+      })
+  }
+
+  onSearchChange(searchValue : string){
+    if(searchValue != ''){
+      this.tagView = this.tags.filter(u => u.value.toLowerCase().indexOf(searchValue.toLowerCase())> -1);
+    }else{
+      this.tagView = this.tags;
+    }
+    console.log(searchValue);
+  }
+
 
 }

@@ -32,9 +32,7 @@ export class ProfileObjectiveComponent implements OnInit {
       descriptionAdd : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],      
     });
 
-    this.objectiveFormEdit = this.formBuilder.group({
-      descriptionEdit : [this.editObjective.description, [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-    }); 
+
 
   }
 

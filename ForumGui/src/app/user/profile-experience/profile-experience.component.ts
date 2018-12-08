@@ -18,13 +18,21 @@ export class ProfileExperienceComponent implements OnInit {
   experienceEditForm: FormGroup;
   newExperience : Experience = new Experience();
   editExperience: Experience = new Experience();
-  startDate : Date;
-  endDate: Date;
+
+  startDateAdd : Date = new Date();
+  endDateAdd: Date = new Date();
+  isErrorDateAdd : boolean = false; 
+  isErrorDateEdit : boolean = false; 
+
+  isErrorStartDayAdd: boolean = false;
+  isErrorEndDayAdd: boolean = false;
+  isErrorStartDayEdit: boolean = false;
+  isErrorEndDayEdit: boolean = false;
+
   experiences : Experience[] = [];
-  editStartDate : Date;
-  editEndDate : Date;
-  valueChangeEditStartDate :Date;
-  valueChangeEditEndDate: Date;
+  editStartDate = new Date();
+  editEndDate = new Date();
+
   errEdit : string ;
   errAdd: string;
   constructor(
@@ -35,12 +43,7 @@ export class ProfileExperienceComponent implements OnInit {
 
   ngOnInit() {
     this.getExperiences();
-    this.experienceAddForm = this.formBuilder.group({
-      workPlace : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      position : ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      description: ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-    }); 
-
+    this.setValidatorAdd();
   }
 
   get formAdd() { return this.experienceAddForm.controls; }
@@ -56,66 +59,84 @@ export class ProfileExperienceComponent implements OnInit {
 
     this.submittedAdd = true;
 
-    if (this.experienceAddForm.invalid) {
-      return;
+    var isError = false;
+
+    if(this.startDateAdd < new Date(1990,1,1) || this.startDateAdd > new Date()){
+      this.isErrorStartDayAdd = true;
+      isError = true;
     }
 
-    if(this.endDate <= this.startDate){
-      this.errAdd ="The end date must be greater than the start date";
+    if(this.endDateAdd < new Date(1990,1,1) || this.endDateAdd > new Date()){
+      this.isErrorEndDayAdd = true;
+      isError = true;
+    }
+
+    if(this.experienceAddForm.invalid){
+      isError = true;
+    }
+    if(this.endDateAdd < this.startDateAdd){
+      this.isErrorDateEdit = true;
+      isError = true;
+    }
+    if(isError){
       return;
     }
 
     this.newExperience.workplace =  this.formAdd.workPlace.value;
     this.newExperience.position = this.formAdd.position.value;
     this.newExperience.description =  this.formAdd.description.value;
-    if(this.startDate){
-      this.newExperience.startTime = this.startDate;
-    }
-    if(this.endDate){
-      this.newExperience.endTime = this.endDate;
-    }
+    this.newExperience.startTime = this.startDateAdd;
+    this.newExperience.endTime = this.endDateAdd;
+
     this.profileExperienceService.addExperience(this.newExperience)
       .subscribe(data => {
         this.experiences.push(data);
-        //this.formAdd.workPlace.
+        console.log("add experience sussecful");
+        this.setValidatorAdd();
         this.isAdd = false;
+        this.submittedAdd = false;
       });
   }
 
-  setValidator(str1: string ,str2 : string, str3:string){
-    this.experienceEditForm = this.formBuilder.group({
-      workPlaceEdit : [ str1 ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      positionEdit : [str2 ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
-      descriptionEdit: [str3 ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],      
-    }); 
-  }
 
   edit(experience){
     this.editExperience=experience;
-    this.setValidator(this.editExperience.workplace, this.editExperience.position, this.editExperience.description);
-    this.editStartDate = new Date(this.editExperience.startTime);
-    this.editEndDate = new Date (this.editExperience.endTime);
+    this.editStartDate = new Date(experience.startTime);
+    this.editEndDate = new Date(experience.endTime);
+    this.setValidatorEdit(this.editExperience.workplace, this.editExperience.position, this.editExperience.description, new Date(this.editExperience.startTime), new Date(this.editExperience.endTime));
   }
 
   updateExperience(){
     this.submittedEdit = true;
-    if(this.experienceEditForm.invalid){
-      return;
+    var isError = false;
+
+    if(this.editStartDate < new Date(1990,1,1) || this.editStartDate > new Date()){
+      this.isErrorStartDayEdit = true;
+      isError = true;
     }
-    if(this.valueChangeEditEndDate <= this.valueChangeEditStartDate){
-      this.errEdit ="The end date must be greater than the start date";
+
+    if(this.editEndDate < new Date(1990,1,1) || this.editEndDate > new Date()){
+      this.isErrorEndDayEdit = true;
+      isError = true;
+    }
+
+    if(this.experienceEditForm.invalid){
+      isError = true;
+    }
+    if(this.editEndDate < this.editStartDate){
+      this.isErrorDateEdit = true;
+      isError = true;
+    }
+    if(isError){
       return;
     }
 
     this.editExperience.workplace = this.formEdit.workPlaceEdit.value;
     this.editExperience.position = this.formEdit.positionEdit.value;
     this.editExperience.description = this.formEdit.descriptionEdit.value;
-    if(this.valueChangeEditStartDate){
-      this.editExperience.startTime = this.valueChangeEditStartDate;
-    }
-    if(this.valueChangeEditEndDate){
-      this.editExperience.endTime = this.valueChangeEditEndDate;
-    }
+    this.editExperience.startTime = this.editStartDate;
+    this.editExperience.endTime = this.editEndDate;
+
     this.profileExperienceService.updateExperience(this.editExperience)
     .subscribe(data => {
       console.log("edit experience succesfull");
@@ -133,19 +154,49 @@ export class ProfileExperienceComponent implements OnInit {
   }
 
   onValueChangeStartDateEdit(value: Date){
-    this.valueChangeEditStartDate = value;
+    this.editStartDate = value;
+    this.isErrorDateEdit =  this.submittedEdit && this.editEndDate < this.editStartDate;
+    this.isErrorStartDayEdit = this.submittedEdit && ( this.editStartDate < new Date(1990,1,1) || this.editStartDate > new Date());
   }
 
   onValueChangeEndDateEdit(value: Date){
-    this.valueChangeEditEndDate = value;
+    this.editEndDate = value;
+    this.isErrorDateEdit =  this.submittedEdit && this.editEndDate < this.editStartDate;
+    this.isErrorEndDayEdit = this.submittedEdit && ( this.editEndDate < new Date(1990,1,1) ||  this.editEndDate > new Date());
   }
 
   onValueChangeStartDate(value: Date){
-    this.startDate = value;
+    this.startDateAdd = value;
+    this.isErrorDateAdd = this.submittedAdd && this.endDateAdd < this.startDateAdd;
+    this.isErrorStartDayAdd = this.submittedAdd && ( this.startDateAdd < new Date(1990,1,1) ||  this.startDateAdd > new Date());
+
   }
 
   onValueChangeEndDate(value: Date){
-    this.endDate = value;
+    this.endDateAdd = value;
+    this.isErrorDateAdd = this.submittedAdd && this.endDateAdd < this.startDateAdd;
+    this.isErrorEndDayAdd = this.submittedAdd && (this.endDateAdd < new Date(1990,1,1) ||  this.endDateAdd > new Date());
+  }
+
+  setValidatorAdd(){
+    this.experienceAddForm = this.formBuilder.group({
+      workPlace : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      position : ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      description: ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      fStartDateAdd :  ['', [Validators.required]],
+      fEndDateAdd: ['', [Validators.required]],
+    }); 
+  }
+
+  
+  setValidatorEdit(workPlace: string ,position : string, description:string, startDate:Date, endDate:Date){
+    this.experienceEditForm = this.formBuilder.group({
+      workPlaceEdit : [ workPlace ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      positionEdit : [position ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      descriptionEdit: [description ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],      
+      fStartDateEdit : [startDate, [Validators.required]],
+      fEndDateEdit : [endDate, [Validators.required]],
+    }); 
   }
 
 }

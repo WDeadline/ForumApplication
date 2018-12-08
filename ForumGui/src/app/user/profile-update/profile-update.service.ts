@@ -1,7 +1,7 @@
 import { Injectable,EventEmitter,Output } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {User} from '../model/user';
+import {Avatar} from '../model1/avatar';
 import { catchError, map, tap } from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication/service/authentication.service';
 import {CurrentUserInfo} from '../../authentication/model/current-user-info';
@@ -29,11 +29,11 @@ export class ProfileUpdateService {
     return this.http.get<User>(`${this.config}/${id}`, {headers: this.header});
   }*/  
 
-  changeAvatar(image: File):Observable<Response>  {
+  changeAvatar(image: File):Observable<Avatar>  {
     this.setTokenToHeader();
     const formData:  FormData = new FormData();
     formData.append('file',image);
-    return this.http.post<Response>(`${this.config}${this.apiProfile}/avatar`, formData, httpOptions);
+    return this.http.post<Avatar>(`${this.config}${this.apiProfile}/avatar`, formData, httpOptions);
   }
 
   setUserInfo(currentUser: CurrentUserInfo) {

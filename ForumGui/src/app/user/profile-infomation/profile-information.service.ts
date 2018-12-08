@@ -18,6 +18,7 @@ const httpOptions = {
 export class ProfileInformationService {
   private config = 'https://localhost:44375/api';
   private apiUser ="/users";
+  private currentUserId = this.anthenticationService.getCurrentUser().id;
   constructor(
     private http: HttpClient,
     private anthenticationService :AuthenticationService,
@@ -26,12 +27,14 @@ export class ProfileInformationService {
 
 
   /* GET: get information of user from server */
-  getInformationOfCurrentUser(id: string):Observable<User>{
-    const url = `${this.config}${this.apiUser}/${id}`;
+  getInformationOfCurrentUser() :Observable<User>{
+    var user = new User();
+    this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}`;
     this.setTokenToHeader();
     return this.http.get<User>(url,httpOptions)
     .pipe(
-      //catchError(this.handleErrorService.log('getInformationOfCurrentUser'))
+      catchError(this.handleErrorService.handleError('updateInformation', user))
     );
   }
 

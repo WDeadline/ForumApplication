@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AuthenticationService} from '../../authentication/service/authentication.service';
 import {Question} from '../model/question';
 import { Router, ActivatedRoute } from '@angular/router';
+import {Tag} from '../model/tag'
 @Component({
   selector: 'app-question-make',
   templateUrl: './question-make.component.html',
@@ -18,7 +19,8 @@ export class QuestionMakeComponent implements OnInit {
   errorTitle: string = '';
   errorTag: string = '';
   errorDiscription: string = '';
-  tags:string[] = [];
+  //tags:string[] = [];
+  tags : Tag[] = [];
   allTag : string[];
   newQuestion : Question = new Question();
   constructor(
@@ -61,7 +63,7 @@ export class QuestionMakeComponent implements OnInit {
     console.log("discription: "+ this.newQuestion.description);
 
     this.items.forEach(h=>{
-      this.tags.push(h.value);
+      this.tags.push(h);
     })
     this.newQuestion.tags = this.tags;
     console.log("tag: " + this.tags);

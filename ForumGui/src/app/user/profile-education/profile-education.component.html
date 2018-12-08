@@ -1,166 +1,185 @@
-<div *ngIf ="!isEdit && !isAdd">
+<div>
     <h3>Education</h3>
     <hr style="border: 1px solid ">
     <div  *ngFor="let education of educations">
     <table style="width:100%; ">
         <tr>
-          <td style="width:30%;height: 30px;" rowspan="3"><b>{{education.startTime | date : 'shortDate' }}--{{education.endTime | date : 'shortDate'}}</b></td>
+          <td style="width:30%;height: 30px;" rowspan="3"><b> {{education.startTime | date : 'MM/yyyy' }} - {{education.endTime | date : 'MM/yyyy'}}</b></td>
           <td style="width:65%;"><b>University: {{education.university}} </b></td> 
           <td style="width:5%;">
-              <a class="update-link-color update-link" (click)="isEdit = true;edit(education)" ><span class="glyphicon glyphicon-pencil"></span></a>
-              <a class="update-link-color update-link" (click)="deleteEducation(education)"><span class="glyphicon glyphicon-remove"></span></a>
+              <a *ngIf ="!isAdd && !isEdit" class="update-link-color update-link" (click)="isEdit = true;edit(education)" ><span class="glyphicon glyphicon-pencil"></span></a>
+              <span style="padding-left:5px;"></span>
+              <a *ngIf ="!isAdd && !isEdit" class="update-link-color update-link" (click)="deleteEducation(education)"><span class="glyphicon glyphicon-remove"></span></a>
           </td>
         </tr> 
         <tr>
           <td style="width:65%;">Major: {{education.major}}</td> 
         </tr>
         <tr>
-          <td style="width:65%;">GPA: {{education.gpa}}</td> 
+          <td style="width:65%;">GPA: {{education.gpa | number:'1.0-2'}}</td> 
         </tr>      
   </table>
   <hr>
   </div>
   <table>
-    <tr>
+    <tr *ngIf ="!isAdd && !isEdit">
       <td style="height: 30px;"><a (click)="isAdd = true;">Add</a></td>
     </tr>
   </table>
-</div>
 
-<!--edit-->
-<div *ngIf ="isEdit">
-<h3>Education</h3>
-<hr style="border: 1px solid ">
-<form class="form-horizontal" [formGroup]="educationFormEdit">
-  <div class="form-group">
-    <label for="universityEdit" class="col-sm-2 control-label">University</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control"  placeholder="Please enter university" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="universityEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.universityEdit.errors }">
-      <div *ngIf="submittedEdit && formEdit.universityEdit.errors" class="error">
-          <div *ngIf="formEdit.universityEdit.errors.required">Sorry, university name is required</div>
-          <div *ngIf="formEdit.universityEdit.errors.pattern">Sorry, university can not empty</div>
-      </div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="majorEdit" class="col-sm-2 control-label">Major</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control"  placeholder="Please enter major" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="majorEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.majorEdit.errors }">
-      <div *ngIf="submittedEdit && formEdit.majorEdit.errors" class="error">
-          <div *ngIf="formEdit.majorEdit.errors.required">Sorry, major name is required</div>
-          <div *ngIf="formEdit.majorEdit.errors.pattern">Sorry, major can not empty</div>
-      </div>
-    </div>
-  </div>
-  <div class="form-group">
-      <label for="GPAEdit" class="col-sm-2 control-label">GPA</label>
-      <div class="col-sm-10">
-          <input type="number" class="form-control"  placeholder="Please enter GPA from 0 - 4" formControlName="GPAEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.GPAEdit.errors }">
-          <div *ngIf="submittedEdit && formEdit.GPAEdit.errors" class="error">
-              <div *ngIf="formEdit.GPAEdit.errors.required">Sorry, major name is required</div>
-          </div>
-        </div>
-  </div>
-  <div class="form-group">
-      <label for="inputPassword3" class="col-sm-2 control-label">Start Date</label>
-      <div class="col-sm-10"><!---->
-          <input
-          class="form-control"
-          placeholder="1/1/2018"
-          bsDatepicker
-          (bsValueChange)="onValueChangeStartEdit($event)"
-          [bsValue]="startDateEdit" 
-          [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
-      </div>
-  </div>
-  <div class="form-group">
-      <label for="inputPassword3" class="col-sm-2 control-label">End Date</label>
-      <div class="col-sm-10">
-          <input
-          class="form-control"
-          placeholder="1/1/2018"
-          bsDatepicker
-          (bsValueChange)="onValueChangeEndEdit($event)"
-          [bsValue]="endDateEdit"
-          [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
-        </div>
-  </div>
-
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-primary" (click)="updateEducation();">Save</button>
-      <span  style="padding-left:3px;"></span>
-      <button type="submit" class="btn btn-primary" (click)="isEdit= false;">Cancle</button>
-    </div>
-  </div>
-</form>
-</div>
-
-
-<!--add-->
+  <!--add-->
 <div *ngIf ="isAdd">
-    <h3>Education</h3>
-    <hr style="border: 1px solid ">
-    <form class="form-horizontal" [formGroup]="educationFormAdd">
-      <div class="form-group">
-        <label for="universityAdd" class="col-sm-2 control-label">University</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control"  placeholder="Please enter university" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="universityAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.universityAdd.errors }">
-          <div *ngIf="submittedAdd && formAdd.universityAdd.errors" class="error">
-              <div *ngIf="formAdd.universityAdd.errors.required">Sorry, university name is required</div>
-              <div *ngIf="formAdd.universityAdd.errors.pattern">Sorry, university can not empty</div>
-          </div>
+  <form class="form-horizontal" [formGroup]="educationFormAdd">
+    <div class="form-group">
+      <label for="universityAdd" class="col-sm-2 control-label">University</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control"  placeholder="Please enter university" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="universityAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.universityAdd.errors }">
+        <div *ngIf="submittedAdd && formAdd.universityAdd.errors" class="error">
+            <div *ngIf="formAdd.universityAdd.errors.required">Sorry, university name is required</div>
+            <div *ngIf="formAdd.universityAdd.errors.pattern">Sorry, university can not empty</div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="majorAdd" class="col-sm-2 control-label">Major</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control"  placeholder="Please enter major" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="majorAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.majorAdd.errors }">
-          <div *ngIf="submittedAdd && formAdd.majorAdd.errors" class="error">
-              <div *ngIf="formAdd.majorAdd.errors.required">Sorry, major name is required</div>
-              <div *ngIf="formAdd.majorAdd.errors.pattern">Sorry, major can not empty</div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-          <label for="GPAAdd" class="col-sm-2 control-label">GPA</label>
-          <div class="col-sm-10">
-              <input type="number" class="form-control"  placeholder="Please enter GPA from 0 - 4" formControlName="GPAAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.GPAAdd.errors }">
-              <div *ngIf="submittedAdd && formAdd.GPAAdd.errors" class="error">
-                  <div *ngIf="formAdd.GPAAdd.errors.required">Sorry, major name is required</div>
-              </div>
-            </div>
-      </div>
-      <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-10">
-              <input
-              class="form-control"
-              placeholder="1/1/2018"
-              bsDatepicker
-              (bsValueChange)="onValueChangeStartAdd($event)" 
-              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-10">
-              <input
-              class="form-control"
-              placeholder="1/1/2018"
-              bsDatepicker
-              (bsValueChange)="onValueChangeEndAdd($event)" 
-              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
-              <p class="error">{{errAdd}}</p>
-            </div>
-      </div>
-    
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-primary" (click)="addEducation()">Save</button>
-          <span  style="padding-left:3px;"></span>
-          <button type="submit" class="btn btn-primary" (click)="isAdd = false;">Cancle</button>
-        </div>
-      </div>
-    </form>
     </div>
+    <div class="form-group">
+      <label for="majorAdd" class="col-sm-2 control-label">Major</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control"  placeholder="Please enter major" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="majorAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.majorAdd.errors }">
+        <div *ngIf="submittedAdd && formAdd.majorAdd.errors" class="error">
+            <div *ngIf="formAdd.majorAdd.errors.required">Sorry, major name is required</div>
+            <div *ngIf="formAdd.majorAdd.errors.pattern">Sorry, major can not empty</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="GPAAdd" class="col-sm-2 control-label">GPA</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" min="0" max="4"  placeholder="Please enter GPA from 0 - 4" formControlName="GPAAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.GPAAdd.errors }">
+            <div *ngIf="submittedAdd && formAdd.GPAAdd.errors" class="error">
+                <div *ngIf="formAdd.GPAAdd.errors.required">Sorry, GPA is number</div>
+                <div *ngIf="formAdd.GPAAdd.errors.min">Sorry, min GPA is 0</div>
+                <div *ngIf="formAdd.GPAAdd.errors.max">Sorry, max GPA is 4</div>
+            </div>
+          </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Start Date</label>
+        <div class="col-sm-10">
+            <input
+            class="form-control"
+            placeholder="01-01-2018"
+            bsDatepicker
+            (bsValueChange)="onValueChangeStartAdd($event)" 
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"
+            formControlName="startDateAdd"/>
+            <div *ngIf="submittedAdd" class="error">
+              <div *ngIf="formAdd.startDateAdd.errors && formAdd.startDateAdd.errors.required">Sorry, start date is required</div>
+              <div *ngIf="isErrorStartDayAdd">The start date must be less than the today</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">End Date</label>
+        <div class="col-sm-10">
+            <input
+            class="form-control"
+            placeholder="01-01-2018"
+            bsDatepicker
+            (bsValueChange)="onValueChangeEndAdd($event)" 
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"
+            formControlName="endDateAdd"/>
+            <div *ngIf="submittedAdd" class="error">
+              <div *ngIf="formAdd.endDateAdd.errors && formAdd.endDateAdd.errors.required">Sorry, end date is required</div>
+              <div *ngIf="isErrorDateAdd">The end date must be greater than the start day</div>
+            </div>
+          </div>
+    </div>
+  
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" (click)="addEducation()">Save</button>
+        <span  style="padding-left:3px;"></span>
+        <button type="submit" class="btn btn-primary" (click)="isAdd = false;">Cancle</button>
+      </div>
+    </div>
+  </form>
+  </div>
+
+  <!--edit-->
+<div *ngIf ="isEdit">
+  <form class="form-horizontal" [formGroup]="educationFormEdit">
+    <div class="form-group">
+      <label for="universityEdit" class="col-sm-2 control-label">University</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control"  placeholder="Please enter university" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="universityEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.universityEdit.errors }">
+        <div *ngIf="submittedEdit && formEdit.universityEdit.errors" class="error">
+            <div *ngIf="formEdit.universityEdit.errors.required">Sorry, university name is required</div>
+            <div *ngIf="formEdit.universityEdit.errors.pattern">Sorry, university can not empty</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="majorEdit" class="col-sm-2 control-label">Major</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control"  placeholder="Please enter major" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="majorEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.majorEdit.errors }">
+        <div *ngIf="submittedEdit && formEdit.majorEdit.errors" class="error">
+            <div *ngIf="formEdit.majorEdit.errors.required">Sorry, major name is required</div>
+            <div *ngIf="formEdit.majorEdit.errors.pattern">Sorry, major can not empty</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="GPAEdit" class="col-sm-2 control-label">GPA</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" min="0" max="4" placeholder="Please enter GPA from 0 - 4" formControlName="GPAEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.GPAEdit.errors }">
+            <div *ngIf="submittedEdit && formEdit.GPAEdit.errors" class="error">
+                <div *ngIf="formEdit.GPAEdit.errors.required">Sorry, major name is required</div>
+                <div *ngIf="formEdit.GPAEdit.errors.min">Sorry, min GPA is 0</div>
+                <div *ngIf="formEdit.GPAEdit.errors.max">Sorry, max GPA is 4</div>
+            </div>
+          </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Start Date</label>
+        <div class="col-sm-10"><!---->
+            <input
+            class="form-control"
+            placeholder="01-01-2018"
+            bsDatepicker
+            (bsValueChange)="onValueChangeStartEdit($event)"
+            value="{{ startDateEdit | date:'dd-MM-yyyy' }}" 
+            formControlName="fStartDateEdit"
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
+            <div *ngIf="submittedEdit" class="error">
+              <div *ngIf="formEdit.fStartDateEdit.errors && formEdit.fStartDateEdit.errors.required">Sorry, start date is required</div>
+              <div *ngIf="isErrorStartDayEdit">The start date must be less than the today</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">End Date</label>
+        <div class="col-sm-10">
+            <input
+            class="form-control"
+            placeholder="01-01-2018"
+            bsDatepicker
+            (bsValueChange)="onValueChangeEndEdit($event)"
+            value="{{ endDateEdit | date:'dd-MM-yyyy' }}" 
+            formControlName="fEndDateEdit"
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"/>
+            <div *ngIf="submittedEdit" class="error">
+              <div *ngIf="formEdit.fEndDateEdit.errors && formEdit.fEndDateEdit.errors.required">Sorry, end date is required</div>
+              <div *ngIf="isErrorDateEdit">The end date must be greater than the start day</div>
+            </div>
+          </div>
+    </div>
+  
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" (click)="updateEducation();">Save</button>
+        <span  style="padding-left:3px;"></span>
+        <button type="submit" class="btn btn-primary" (click)="isEdit= false;">Cancle</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>

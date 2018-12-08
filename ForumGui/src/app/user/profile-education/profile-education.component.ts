@@ -20,33 +20,34 @@ export class ProfileEducationComponent implements OnInit {
   newEducation :Education = new Education();
   editEducation : Education = new Education();
   educations : Education[];
-  startDateAdd : Date ;
-  endDateAdd : Date ;
-  startDateEdit : Date;
-  endDateEdit : Date;
+  startDateAdd : Date = new Date();
+  endDateAdd : Date = new Date();
+  startDateEdit : Date= new Date();
+  endDateEdit : Date= new Date();
   bsValue : Date = new Date();
   
-  errAdd:string;
+  isErrorDateAdd: boolean = false;
+  isErrorDateEdit: boolean = false;
+  isErrorStartDayAdd: boolean = false;
+  isErrorStartDayEdit: boolean = false;
+
+  errEdit:string;
   constructor(
     private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService,
     private profileEducationService :ProfileEducationService,
   ) { }
 
   ngOnInit() {
     this.getObjectives();
-    this.educationFormAdd = this.formBuilder.group({
-      universityAdd : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],
-      majorAdd : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],        
-      GPAAdd :  ['', Validators.required], 
-    });
+    this.setValidateAdd();
   }
 
 
   get formAdd() { return this.educationFormAdd.controls; }
   
   get formEdit(){return this.educationFormEdit.controls; }
-  //get tat ca Objective của các users
+  
+  //get Objectives of user
   getObjectives(){
     this.profileEducationService.getEducations()
       .subscribe(data => this.educations = data);
@@ -54,70 +55,66 @@ export class ProfileEducationComponent implements OnInit {
 
   addEducation(){
     this.submittedAdd = true;
+    var isError = false;
+    if(this.startDateAdd < new Date(1990,1,1) || this.startDateAdd > new Date()){
+      this.isErrorStartDayAdd = true;
+      isError = true;
+    }
+    if(this.endDateAdd < this.startDateAdd){
+      this.isErrorDateAdd = true;
+      isError = true;
+    }
 
     if(this.educationFormAdd.invalid){
+      isError = true;
+    }
+
+    if(isError){
       return;
     }
 
-    if(this.endDateAdd <= this.startDateAdd){
-      this.errAdd ="The end date must be greater than the start day";
-      return;
-    }
-
-    let userId = this.authenticationService.getCurrentUser().id;
-    let university = this.formAdd.universityAdd.value;
-    let major = this.formAdd.majorAdd.value;
-    let GPA = this.formAdd.GPAAdd.value;
     
-    this.newEducation.university = university;
-    this.newEducation.major = major;
-    this.newEducation.gpa = GPA;
-
-    if(this.startDateAdd) {
-      this.newEducation.startTime = this.startDateAdd;
-    }
-
-    if(this.endDateAdd) {
-      this.newEducation.endTime = this.endDateAdd;
-    }
-
+    this.newEducation.university = this.formAdd.universityAdd.value;
+    this.newEducation.major = this.formAdd.majorAdd.value;
+    this.newEducation.gpa = this.formAdd.GPAAdd.value;
+    this.newEducation.startTime = this.startDateAdd;
+    this.newEducation.endTime = this.endDateAdd;
 
     this.profileEducationService.addEducation(this.newEducation)
     .subscribe(data => {
       console.log("add Objective sussectfule");
       this.educations.push(data);
+      this.setValidateAdd();
       this.isAdd = false;
+      this.submittedAdd = false;
     });
 
   }
 
   updateEducation(){
     this.submittedEdit = true;
+    var isError = false;
+    if(this.startDateEdit < new Date(1990,1,1) || this.startDateEdit > new Date()){
+      this.isErrorStartDayEdit = true;
+      isError = true;
+    }
+    if(this.endDateEdit < this.startDateEdit){
+      this.isErrorDateEdit = true;
+      isError = true;
+    }
     if(this.educationFormEdit.invalid){
+      isError = true;
+    }
+
+    if(isError){
       return;
     }
 
-    if(this.endDateEdit <= this.startDateEdit){
-      this.errAdd ="The end date must be greater than the start day";
-      return;
-    }
-
-    let userId = this.authenticationService.getCurrentUser().id;
-    let university = this.formEdit.universityEdit.value;
-    let major = this.formEdit.majorEdit.value;
-    let GPA = this.formEdit.GPAEdit.value;
-
-    this.editEducation.university = university;
-    this.editEducation.major = major;
-    this.editEducation.gpa = GPA;
-
-    if(this.startDateEdit) {
-      this.editEducation.startTime = this.startDateEdit;
-    }
-
-    if(this.endDateEdit) {
-      this.editEducation.endTime = this.endDateEdit;
-    }
+    this.editEducation.university = this.formEdit.universityEdit.value;
+    this.editEducation.major = this.formEdit.majorEdit.value;
+    this.editEducation.gpa = this.formEdit.GPAEdit.value;
+    this.editEducation.startTime = this.startDateEdit;
+    this.editEducation.endTime = this.endDateEdit;
 
     this.profileEducationService.updateEducation(this.editEducation)
     .subscribe(data => {
@@ -134,25 +131,29 @@ export class ProfileEducationComponent implements OnInit {
 
   onValueChangeStartAdd(value: Date){
     this.startDateAdd = value;
+    this.isErrorDateAdd = this.submittedAdd && this.endDateAdd < this.startDateAdd;
+    this.isErrorStartDayAdd = this.submittedAdd && ( this.startDateAdd < new Date(1990,1,1) || this.startDateAdd > new Date());
   }
   onValueChangeEndAdd(value: Date){
     this.endDateAdd = value;
+    this.isErrorDateAdd = this.submittedAdd && this.endDateAdd < this.startDateAdd;
   }
 
   onValueChangeStartEdit(value: Date){
-    console.log("timest " + value);
     this.startDateEdit = value;
+    this.isErrorDateEdit = this.submittedEdit && this.endDateEdit < this.startDateEdit;
+    this.isErrorStartDayEdit = this.submittedEdit && (this.startDateEdit < new Date(1990,1,1) || this.startDateEdit > new Date());
   }
   onValueChangeEndEdit(value: Date){
-    console.log("timest " + value);
     this.endDateEdit = value;
+    this.isErrorDateEdit = this.submittedEdit && this.endDateEdit < this.startDateEdit;
   }
 
   edit(education:Education){
     this.editEducation = education;
     this.startDateEdit = new Date(education.startTime);
     this.endDateEdit = new Date(education.endTime);
-    this.editForm(this.editEducation.university, this.editEducation.major, this.editEducation.gpa);
+    this.setValidateEdit(this.editEducation.university, this.editEducation.major, this.editEducation.gpa, new Date(this.editEducation.startTime), new Date(this.editEducation.endTime));
   }
 
   getStartDate(){
@@ -161,11 +162,22 @@ export class ProfileEducationComponent implements OnInit {
     return today;
   }
 
-  editForm(university: string, major:string , gpa :number,){
+  setValidateAdd(){
+    this.educationFormAdd = this.formBuilder.group({
+      universityAdd : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],
+      majorAdd : ['', [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],        
+      GPAAdd :  ['', [Validators.required, Validators.min(0), Validators.max(4)]],
+      startDateAdd :  ['', [Validators.required]],
+      endDateAdd :  ['', [Validators.required]],
+    });
+  }
+  setValidateEdit(university: string, major:string , gpa :number,startDate:Date, endDate:Date){
     this.educationFormEdit = this.formBuilder.group({
       universityEdit : [university, [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],
       majorEdit : [major, [Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]],        
-      GPAEdit :  [gpa, Validators.required], 
+      GPAEdit :  [gpa, [Validators.required, Validators.min(0), Validators.max(4)]],
+      fStartDateEdit :  [startDate, [Validators.required]],
+      fEndDateEdit :  [endDate, [Validators.required]],
     }); 
   }
 }

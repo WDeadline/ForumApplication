@@ -3,10 +3,13 @@ import {Education} from '../model1/education';
 import {Experience} from '../model1/experience';
 import {Objective} from '../model1/objective';
 import {Skill} from '../model1/skill';
+import {Role} from '../model1/role';
 
 export class User{
     id : string;
     name : string;
+    active : boolean;
+    roles : Role[];
     gender : boolean; 
     birthday : Date;
     phoneNumber : string;
@@ -17,10 +20,10 @@ export class User{
     avatar : string;
     updationTime : Date;
     objectives : Objective [];
-    Educations : Education[] ;
-    Skills : Skill[];
-    Experiences : Experience [];
-    Activities : Activity[];
+    educations : Education[] ;
+    skills : Skill[];
+    experiences : Experience [];
+    activities : Activity[];
 }
 
 
