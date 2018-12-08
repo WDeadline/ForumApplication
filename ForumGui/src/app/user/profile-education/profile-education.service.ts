@@ -21,7 +21,6 @@ export class ProfileEducationService {
   private apiUser ='/users';
   private apiEducation = '/educations';
   private config = 'https://localhost:44375/api';
-  private currentUserId = this.anthenticationService.getCurrentUser().id;
 
   constructor(
     private handleErrorService: HandleErrorService,
@@ -31,7 +30,8 @@ export class ProfileEducationService {
 
     /** POST: add a new Education to the database */ // api/users/userId/educations
     addEducation(education: Education):Observable<Education>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiEducation}`;
       this.setTokenToHeader();
       return this.http.post<Education>(url,education,httpOptions)
       .pipe(
@@ -41,7 +41,8 @@ export class ProfileEducationService {
 
     /*PUT: update the Education on the server. Return the updated object upon success */
     updateEducation(education: Education): Observable<Education>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}/${education.id}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiEducation}/${education.id}`;
       this.setTokenToHeader();
       return this.http.put<Education>(url, education, httpOptions)
       .pipe(
@@ -51,7 +52,8 @@ export class ProfileEducationService {
 
     /** DELETE: delete the education from the server */
     deleteEducation(id:string) : Observable<{}>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}/${id}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiEducation}/${id}`;
       this.setTokenToHeader();
       return this.http.delete(url,httpOptions)
       .pipe(
@@ -61,7 +63,8 @@ export class ProfileEducationService {
 
     /* GET: get Education of user from server */
     getEducations():Observable<Education[]>{
-      const url =  `${this.config}${this.apiUser}/${this.currentUserId}${this.apiEducation}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url =  `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiEducation}`;
       this.setTokenToHeader();
       return this.http.get<Education[]>(url,httpOptions)
       .pipe(

@@ -22,6 +22,8 @@ export class ProfileInfomationComponent implements OnInit {
   selectedGender : boolean;
   birthDay : Date;
   editBirthDay : Date;
+
+  isBirthDayError : boolean = false;
   constructor(
     private authenticationService : AuthenticationService,
     private profileInformationService : ProfileInformationService,
@@ -29,20 +31,20 @@ export class ProfileInfomationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUserId = this.authenticationService.getCurrentUser().id;
     this.getInformation();
     this.informationFormEdit = this.formBuilder.group({
       nameEdit : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       addressEdit : ['' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       numberPhoneEdit :['',[Validators.required,Validators.pattern('^([0-9]*)$')]], 
       positionEdit : [ '' ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      inputBirthdayEdit : ['', [Validators.required]],
     }); 
   }
 
   get f() { return this.informationFormEdit.controls; }
 
   getInformation(){
-    this.profileInformationService.getInformationOfCurrentUser(this.currentUserId)
+    this.profileInformationService.getInformationOfCurrentUser()
       .subscribe(data => {
         this.information.push(data);
       });
@@ -51,7 +53,7 @@ export class ProfileInfomationComponent implements OnInit {
   edit(information: User){
     if(information){
       this.editInformation = information;
-      this.setValidator(this.editInformation.name, this.editInformation.address,this.editInformation.phoneNumber, this.editInformation.position);
+      this.setValidator(this.editInformation.name, this.editInformation.address,this.editInformation.phoneNumber, this.editInformation.position, new Date(this.editInformation.birthday));
       if(this.editInformation != null && this.editInformation.gender != null){
         this.gender = this.editInformation.gender;
       }
@@ -91,12 +93,13 @@ export class ProfileInfomationComponent implements OnInit {
     })
   }
 
-  setValidator(name: string ,address : string, numberPhone:string, position:string ){
+  setValidator(name: string ,address : string, numberPhone:string, position:string, date: Date){
     this.informationFormEdit = this.formBuilder.group({
       nameEdit : [ name ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       addressEdit : [address ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
       numberPhoneEdit :[numberPhone,[Validators.required,Validators.pattern('^([0-9]*)$')]], 
       positionEdit : [ position ,[Validators.required,Validators.pattern('^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$')]], 
+      birthdayEdit : [date, [Validators.required]],
     }); 
   }
 
@@ -116,5 +119,6 @@ export class ProfileInfomationComponent implements OnInit {
 
   onValueChangeEdit(value: Date){
     this.birthDay = value;
+    this.isBirthDayError = this.isEdit && (this.birthDay < new Date(1900,1,1) || this.birthDay > new Date());
   }
 }

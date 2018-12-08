@@ -20,7 +20,6 @@ export class ProfileObjectiveService {
   private apiUser = '/users'; //api/users/userId/objectives
   private apiObjective = '/objectives';
   private config = 'https://localhost:44375/api';
-  private currentUserId = this.anthenticationService.getCurrentUser().id;
   objectives : Objective[];
   constructor(
     private handleErrorService: HandleErrorService,
@@ -30,8 +29,9 @@ export class ProfileObjectiveService {
 
     /** POST: add a new Objective to the database */
     addObjective(objective: Objective): Observable<Objective>{
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
       this.setTokenToHeader();
-      return this.http.post<Objective>(`${this.config}${this.apiUser}/${this.currentUserId}${this.apiObjective}`, objective, httpOptions)
+      return this.http.post<Objective>(`${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiObjective}`, objective, httpOptions)
         .pipe(
           catchError(this.handleErrorService.handleError('addObjective',objective))
         );
@@ -39,8 +39,9 @@ export class ProfileObjectiveService {
 
     /* GET: get Objectives of all users from server */
     getObjectives(): Observable<Objective[]>{
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
       this.setTokenToHeader();
-      return this.http.get<Objective[]>(`${this.config}${this.apiUser}/${this.currentUserId}${this.apiObjective}`, httpOptions)
+      return this.http.get<Objective[]>(`${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiObjective}`, httpOptions)
         .pipe(
           catchError(this.handleErrorService.handleError('getObjectives',[]))
         )
@@ -48,7 +49,8 @@ export class ProfileObjectiveService {
 
     /*PUT: update the Object on the server. Return the updated object upon success */
     updateObjective(objective: Objective): Observable<Objective>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiObjective}/${objective.id}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiObjective}/${objective.id}`;
       console.log("edit url:" + url);
       this.setTokenToHeader();
       return this.http.put<Objective>(url,objective,httpOptions)
@@ -59,7 +61,8 @@ export class ProfileObjectiveService {
 
       /** DELETE: delete the objective from the server */
     deleteObject(id: string) :  Observable<{}>{
-      const url = `${this.config}${this.apiUser}/${this.currentUserId}${this.apiObjective}/${id}`;
+      this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+      const url = `${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiObjective}/${id}`;
       this.setTokenToHeader();
       return this.http.delete(url, httpOptions)
         .pipe(

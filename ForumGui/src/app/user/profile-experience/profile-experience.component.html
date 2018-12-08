@@ -1,176 +1,179 @@
-<div *ngIf ="!isEdit && !isAdd">
-    <h3>Work Exprience </h3> 
-    <hr style="border: 1px solid ">
-    <div  *ngFor="let experience of experiences">
+<div >
+  <h3>Work Exprience </h3>
+  <hr style="border: 1px solid ">
+  <div *ngFor="let experience of experiences">
     <table style="width:100%; ">
-        <tr>
-          <td style="width:30%;height: 30px;" rowspan="3"><b>{{experience?.startTime | date : 'shortDate'}} - {{experience?.endTime | date : 'shortDate'}}</b></td>
-          <td style="width:65%;"><b>{{experience?.workplace}}</b></td> 
-          <td style="width:5%;">
-            <a class="update-link-color update-link" (click)="isEdit = true; edit(experience); "><span class="glyphicon glyphicon-pencil"></span></a>
-            <a class="update-link update-link-color" (click)="deleteExperience(experience);" ><span class="glyphicon glyphicon-remove"></span></a>
-          </td> 
-        </tr> 
-        <tr>
-          <td style="width:65%;">{{experience?.position}}</td> 
-        </tr>
-        <tr>
-          <td style="width:65%;">{{experience?.description}}</td> 
-        </tr>  
-        <tr>
-          <td >
+      <tr>
+        <td style="width:30%;height: 30px;" rowspan="3"><b> {{experience?.startTime | date : 'MM/yyyy'}} - 
+            {{experience?.endTime | date : 'MM/yyyy'}}</b></td>
+        <td style="width:65%;"><b>Workplace: {{experience?.workplace}}</b></td>
+        <td style="width:5%;">
+          <a *ngIf="!isEdit && !isAdd" class="update-link-color update-link" (click)="isEdit = true; edit(experience); "><span class="glyphicon glyphicon-pencil"></span></a>
 
-          </td>
-          
-        </tr>
-  </table>
-  <hr>
-</div>
-  <a (click)="isAdd = true;">
-      Add
+          <a *ngIf="!isEdit && !isAdd" class="update-link update-link-color" (click)="deleteExperience(experience);"><span class="glyphicon glyphicon-remove"></span></a>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:65%;">Position: {{experience?.position}}</td>
+      </tr>
+      <tr>
+        <td style="width:65%;">Description: {{experience?.description}}</td>
+      </tr>
+    </table>
+    <hr>
+  </div>
+  <a *ngIf="!isEdit && !isAdd" (click)="isAdd = true;">
+    Add
   </a>
   <br>
-</div>
 
+  <!--Add-->
+  <div *ngIf="isAdd">
+    <form class="form-horizontal" [formGroup]="experienceAddForm">
+      <div class="form-group">
+        <label for="workPlace" class="col-sm-2 control-label">Work place</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Please enter work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="workPlace" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.workPlace.errors }">
+          <div *ngIf="submittedAdd && formAdd.workPlace.errors" class="error">
+            <div *ngIf="formAdd.workPlace.errors.required">Sorry, work place is required</div>
+            <div *ngIf="formAdd.workPlace.errors.pattern">Sorry, work place can not empty</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="position" class="col-sm-2 control-label">Position</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Please enter position in work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="position" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.position.errors }">
+          <div *ngIf="submittedAdd && formAdd.position.errors" class="error">
+            <div *ngIf="formAdd.position.errors.required">Sorry, position is required</div>
+            <div *ngIf="formAdd.position.errors.pattern">Sorry, position can not empty</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" rows="3" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="description" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.description.errors }"></textarea>
+          <div *ngIf="submittedAdd && formAdd.description.errors" class="error">
+            <div *ngIf="formAdd.description.errors.required">Sorry, description is required</div>
+            <div *ngIf="formAdd.description.errors.pattern">Sorry, description can not empty</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="startDay" class="col-sm-2 control-label">Start Date</label>
+        <div class="col-sm-10">
+          <input class="form-control"
+           placeholder="01-01-2018"
+           bsDatepicker
+           (bsValueChange)="onValueChangeStartDate($event)"
+           formControlName="fStartDateAdd"
+           [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" />
+           <div *ngIf="submittedAdd" class="error">
+            <div *ngIf="formAdd.fStartDateAdd.errors && formAdd.fStartDateAdd.errors.required">Sorry, start date is required</div>
+            <div *ngIf="isErrorStartDayAdd">The start date must be less than the today</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="endDate" class="col-sm-2 control-label">End Date</label>
+        <div class="col-sm-10">
+          <input class="form-control"
+           placeholder="01-01-2018"
+           bsDatepicker
+           (bsValueChange)="onValueChangeEndDate($event)"
+           formControlName="fEndDateAdd"
+           [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" />
+          <div *ngIf="submittedAdd" class="error">
+            <div *ngIf="formAdd.fEndDateAdd.errors && formAdd.fEndDateAdd.errors.required">Sorry, end date is required</div>
+            <div *ngIf="isErrorDateAdd">The end date must be greater than the start day</div>
+            <div *ngIf="isErrorEndDayAdd">The end date must be less than the today</div>
+          </div>
+        </div>
+      </div>
 
-<!--Edit-->
-<div *ngIf="isEdit">
-  <h3>Work Exprience</h3>
-    <hr>
-    <form class="form-horizontal"  [formGroup]="experienceEditForm" >
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary" (click)="addExperience();">Save</button>
+          <span style="padding-left:3px;"></span>
+          <button type="submit" class="btn btn-primary" (click)="isAdd = false;">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--Edit-->
+  <div *ngIf="isEdit">
+    <form class="form-horizontal" [formGroup]="experienceEditForm">
       <div class="form-group">
         <label for="workPlaceEdit" class="col-sm-2 control-label">Company</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" placeholder="Please enter work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="workPlaceEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.workPlaceEdit.errors }">
+          <input type="text" class="form-control" placeholder="Please enter work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="workPlaceEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.workPlaceEdit.errors }">
           <div *ngIf="submittedEdit && formEdit.workPlaceEdit.errors" class="error">
             <div *ngIf="formEdit.workPlaceEdit.errors.required">Sorry, work place is required</div>
+            <span style="padding-left:5px;"></span>
             <div *ngIf="formEdit.workPlaceEdit.errors.pattern">Sorry, work place can not empty</div>
-        </div>
+          </div>
         </div>
       </div>
       <div class="form-group">
         <label for="positionEdit" class="col-sm-2 control-label">Position</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" placeholder="Please enter position in work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="positionEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.positionEdit.errors }">
+          <input type="text" class="form-control" placeholder="Please enter position in work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="positionEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.positionEdit.errors }">
           <div *ngIf="submittedEdit && formEdit.positionEdit.errors" class="error">
-              <div *ngIf="formEdit.positionEdit.errors.required">Sorry, position is required</div>
-              <div *ngIf="formEdit.positionEdit.errors.pattern">Sorry, position can not empty</div>
+            <div *ngIf="formEdit.positionEdit.errors.required">Sorry, position is required</div>
+            <div *ngIf="formEdit.positionEdit.errors.pattern">Sorry, position can not empty</div>
           </div>
         </div>
       </div>
       <div class="form-group">
-          <label for="descriptionEdit" class="col-sm-2 control-label">Description</label>
-          <div class="col-sm-10">
-            <textarea class="form-control" rows="3" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="descriptionEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.descriptionEdit.errors }"></textarea>
-            <div *ngIf="submittedEdit && formEdit.descriptionEdit.errors" class="error">
-                <div *ngIf="formEdit.descriptionEdit.errors.required">Sorry, description is required</div>
-                <div *ngIf="formEdit.descriptionEdit.errors.pattern">Sorry, description can not empty</div>
+        <label for="descriptionEdit" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" rows="3" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+            formControlName="descriptionEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.descriptionEdit.errors }"></textarea>
+          <div *ngIf="submittedEdit && formEdit.descriptionEdit.errors" class="error">
+            <div *ngIf="formEdit.descriptionEdit.errors.required">Sorry, description is required</div>
+            <div *ngIf="formEdit.descriptionEdit.errors.pattern">Sorry, description can not empty</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Start Date</label>
+        <div class="col-sm-10">
+          <input class="form-control" placeholder="1-1-2018" bsDatepicker (bsValueChange)="onValueChangeStartDateEdit($event)"
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" [bsValue]="editStartDate"
+            formControlName="fStartDateEdit" value="{{ editStartDate | date:'dd-MM-yyyy' }}" />
+            <div *ngIf="submittedEdit" class="error">
+              <div *ngIf="formEdit.fStartDateEdit.errors && formEdit.fStartDateEdit.errors.required">Sorry, start date is required</div>
+              <div *ngIf="isErrorStartDayEdit">The start date must be less than the today</div>
             </div>
-          </div>
+        </div>
       </div>
       <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-10">
-            <input
-            class="form-control"
-            placeholder="1/1/2018"
-            bsDatepicker
-            (bsValueChange)="onValueChangeStartDateEdit($event)"
-            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" 
-            [bsValue]="editStartDate"/>
+        <label for="inputPassword3" class="col-sm-2 control-label">End Date</label>
+        <div class="col-sm-10">
+          <input class="form-control" placeholder="01-01-2018" bsDatepicker (bsValueChange)="onValueChangeEndDateEdit($event)"
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" [bsValue]="editEndDate"
+            formControlName="fEndDateEdit" value="{{ editEndDate | date:'dd-MM-yyyy' }}"  />
+          <div *ngIf="submittedEdit" class="error">
+            <div *ngIf="formEdit.fEndDateEdit.errors && formEdit.fEndDateEdit.errors.required">Sorry, end date is required</div>
+            <div *ngIf="isErrorDateEdit">The end date must be greater than the start day</div>
+            <div *ngIf="isErrorEndDayEdit">The end date must be less than the today</div>
           </div>
-      </div>
-      <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-10">
-            <input
-            class="form-control"
-            placeholder="1/1/2018"
-            bsDatepicker
-            (bsValueChange)="onValueChangeEndDateEdit($event)"
-            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"
-            [bsValue]="editEndDate"/>
-            <p class="error">{{errEdit}}</p>
-          </div>
+        </div>
       </div>
 
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" class="btn btn-primary" (click)="updateExperience();">Save</button>
-          <span  style="padding-left:3px;"></span>
+          <span style="padding-left:3px;"></span>
           <button type="submit" class="btn btn-primary" (click)="isEdit = false;">Cancel</button>
         </div>
       </div>
-  </form>
-</div>
-
-<!--Add-->
-<div *ngIf="isAdd">
-    <h3>Work Exprience</h3>
-      <hr>
-      <form class="form-horizontal" [formGroup]="experienceAddForm">
-        <div class="form-group">
-          <label for="workPlace" class="col-sm-2 control-label">Work place</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" placeholder="Please enter work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="workPlace" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.workPlace.errors }">
-            <div *ngIf="submittedAdd && formAdd.workPlace.errors" class="error">
-                <div *ngIf="formAdd.workPlace.errors.required">Sorry, work place is required</div>
-                <div *ngIf="formAdd.workPlace.errors.pattern">Sorry, work place can not empty</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="position" class="col-sm-2 control-label">Position</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" placeholder="Please enter position in work place" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="position" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.position.errors }">
-            <div *ngIf="submittedAdd && formAdd.position.errors" class="error">
-                <div *ngIf="formAdd.position.errors.required">Sorry, position is required</div>
-                <div *ngIf="formAdd.position.errors.pattern">Sorry, position can not empty</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-            <label for="description" class="col-sm-2 control-label" >Description</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" rows="3" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$" formControlName="description" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.description.errors }"></textarea>
-                <div *ngIf="submittedAdd && formAdd.description.errors" class="error">
-                    <div *ngIf="formAdd.description.errors.required">Sorry, description is required</div>
-                    <div *ngIf="formAdd.description.errors.pattern">Sorry, description can not empty</div>
-                </div>
-              </div>
-        </div>
-        <div class="form-group">
-            <label for="startDay" class="col-sm-2 control-label">Start Date</label>
-            <div class="col-sm-10">
-                <input
-                class="form-control"
-                placeholder="1/1/2018"
-                bsDatepicker
-                (bsValueChange)="onValueChangeStartDate($event)"
-                [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"
-                />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="endDate" class="col-sm-2 control-label">End Date</label>
-            <div class="col-sm-10">
-                <input
-                class="form-control"
-                placeholder="1/1/2018"
-                bsDatepicker
-                (bsValueChange)="onValueChangeEndDate($event)"
-                [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }"
-                />
-                <p class="error">{{errAdd}}</p>
-            </div>
-        </div>
-  
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary" (click)="addExperience();">Save</button>
-            <span  style="padding-left:3px;"></span>
-            <button type="submit" class="btn btn-primary" (click)="isAdd = false;">Cancel</button>
-          </div>
-        </div>
     </form>
   </div>
+</div>

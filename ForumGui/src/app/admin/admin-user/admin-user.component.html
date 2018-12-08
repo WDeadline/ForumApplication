@@ -1,5 +1,5 @@
-<!--
-<div class="row">
+<!-- Addd-->
+<div *ngIf="isAdd" class="row">
   <div class="col-md-3"></div>
   <div class="col-md-6">
     <h3>Add user</h3>
@@ -35,13 +35,15 @@
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-primary">Submit</button>
+              <span style="padding-left:3px;"></span>
+              <button type="submit" class="btn btn-primary" (click) = "isAdd = false;">Cancle</button>
             </div>
           </div>
         </form>
   </div>
   <div class="col-md-3"></div>
 </div>
--->
+
 <!--
 <div class="row">
     <div class="col-md-3"></div>
@@ -96,126 +98,59 @@
 </div>
 -->
 <div class="row">
-  <div class="col-md-1"></div>
-  <div class="col-md-10">
-    <div class="row">
-      <div class="col-md-6">
-        <h2>Users</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-3">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Users</h2>
         </div>
       </div>
-      <div class="col-md-7"></div>
-      <div class="col-md-2">
-        <div class="btn-group btn-group-justified" role="group" aria-label="...">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary">Add User</button>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+        </div>
+        <div class="col-md-7"></div>
+        <div class="col-md-2">
+          <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-primary" (click)="isAdd = true;">Add User</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <!--Noi dung-->
-      <div>
-        <table class="table table-hover">
-          <tr>
-            <th style="width:5%;">Stt</th>
-            <th style="width:25%;">Name</th>
-            <th style="width:25%;">Email</th>
-            <th style="width:15%;">Username</th>
-            <th style="width:10%;">Active</th>      
-            <th style="width:10%;">Role</th>         
-            <th style="width:5%;">Edit</th>
-            <th style="width:5%;">Move</th>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Đoàn Quốc Trí</td>
-            <td>quoctri@gmail.com</td>
-            <td>doantri</td>
-            <td>yes</td>
-            <td>student</td>
-            <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-            <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Nguyễn Thị Bích Ngọc</td>
-            <td>bichngoc@gmail.com</td>
-            <td>bichngoc</td>
-            <td>yes</td>
-            <td>student</td>
-            <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-            <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>
-          <tr>
-              <td>3</td>
-              <td>Nguyễn Văn Bình</td>
-              <td>administrator@gmail.com</td>
-              <td>administrator</td>
-              <td>yes</td>
-              <td>admin</td>
+      <div class="row">
+        <!--Noi dung-->
+        <div>
+          <table class="table table-hover">
+            <tr>
+              <th style="width:5%;">Stt</th>
+              <th style="width:25%;">Name</th>
+              <th style="width:25%;">Email</th>
+              <th style="width:15%;">Username</th>
+              <th style="width:10%;">Active</th>      
+              <th style="width:10%;">Role</th>         
+              <th style="width:5%;">Edit</th>
+              <th style="width:5%;">Move</th>
+            </tr>
+            <tr *ngFor= "let user of users; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{user?.name}}</td>
+              <td>{{user?.emailAddress}}</td>
+              <td>{{user?.username}}</td>
+              <td *ngIf="user.active && user.active == true"> yes</td>
+              <td *ngIf="user.active && user.active == false"> no</td>
+              <td *ngIf ="user.roles[0] == 0">Administrator</td>
+              <td *ngIf ="user.roles[0] == 1">Student</td>
+              <td *ngIf ="user.roles[0] == 2">Company</td>
               <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
               <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>   
-          <tr>
-              <td>4</td>
-              <td>Phan Văn Vui</td>
-              <td>vanvui@gmail.com</td>
-              <td>vanvui123</td>
-              <td>yes</td>
-              <td>student</td>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>    
-          <tr>
-              <td>5</td>
-              <td>Hồ Thị Tuyết Sang</td>
-              <td>tuyetsang@gmail.com</td>
-              <td>tuyetsang452</td>
-              <td>yes</td>
-              <td>student</td>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>  
-          <tr>
-              <td>6</td>
-              <td>Trần Thị Thủy Tiên</td>
-              <td>thuytien@gmail.com</td>
-              <td>thuytien</td>
-              <td>yes</td>
-              <td>student</td>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>  
-          <tr>
-              <td>7</td>
-              <td>Phan Như Ngọc</td>
-              <td>nhungoc@gmail.com</td>
-              <td>nhungoc333</td>
-              <td>yes</td>
-              <td>student</td>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>     
-          <tr>
-              <td>8</td>
-              <td>Đoàn Ngọc Như Ý</td>
-              <td>nhuy@gmail.com</td>
-              <td>nhuy2018</td>
-              <td>yes</td>
-              <td>student</td>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-              <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
-          </tr>                              
-        </table>
+            </tr>                            
+          </table>
+        </div>
+        <!--Noi dung-->
       </div>
-      <!--Noi dung-->
     </div>
+    <div class="col-md-1"></div>
   </div>
-  <div class="col-md-1"></div>
-</div>

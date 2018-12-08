@@ -38,16 +38,13 @@
             <table style="width:100%; max-height: 100%;">
               <tr>
                 <td rowspan="2"  style="width: 7%;" class="cellAlign" >
-                  <p *ngIf="question.votes != null">{{question.votes}}</p>
-                  <p *ngIf="question.votes == null">3</p>
+                  <p *ngIf="question.votes.length != null">{{question.votes.length}}</p>
                 </td>
                 <td rowspan="2" style="width: 7%;" class="cellAlign">
-                  <p *ngIf="question.answers != null">{{question.answers}}</p>
-                  <p *ngIf="question.answers == null">5</p>
+                  <p *ngIf="question.answers.length != null">{{question.answers.length}}</p>
                 </td> 
                 <td rowspan="2" style="width: 7%;" class="cellAlign">                 
-                  <p *ngIf="question.views != null">{{question.views}}</p>
-                  <p *ngIf="question.views == null">2</p>
+                  <p *ngIf="question.views.length != null">{{question.views.length}}</p>
                 </td> 
                 <td colspan="2" rowspan="3" style="width: 79%; text-align: left;">
                   <a [routerLink]="['/showquestion']" [queryParams]="{id: question.id}">
@@ -62,8 +59,8 @@
                 <td rowspan="2" class="cellAlign"><strong><i>Views</i></strong></td>
               </tr>
               <tr>
-                  <td class="tag" >                 
-                      <a *ngFor="let tag of question.tags" class="btn btn-primary btn-xs">{{tag}}</a><span  style="padding-left:3px;"></span>
+                  <td>
+                    <a *ngFor="let tag of question.tags" class="btn btn-primary btn-xs" style="margin-left: 3px;">{{tag.value}}</a>
                   </td>
                   <td class="date">{{question.updationTime | date : 'short'}}</td>
               </tr>

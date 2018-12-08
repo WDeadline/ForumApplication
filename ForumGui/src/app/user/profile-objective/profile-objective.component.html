@@ -6,26 +6,22 @@
       <td style="width:95%">
         <p style="text-align: justify">
           <span style="padding-left:35px;"></span>
-          {{objective.description}}Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-          Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-          of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-          leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-          release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-          software like Aldus PageMaker including versions of Lorem Ipsum.
+          {{objective.description}}
         </p>
       </td>
-      <td style="width:95%">
-        <a class="update-link update-link-color" (click)="edit(objective) ;isEdit=true;"><span class="glyphicon glyphicon-pencil"></span></a>
-        <a class="update-link update-link-color" (click)="deleteObjective(objective);"><span class="glyphicon glyphicon-remove"></span></a>
+      <td style="width:5%;" >
+        <span style="padding-left:5px;"></span>
+        <a style="margin-right: 0px;" *ngIf="!isAdd && !isEdit" class="update-link update-link-color" (click)="edit(objective) ;isEdit=true;"><span class="glyphicon glyphicon-pencil"></span></a>
+        <span style="padding-left:5px;"></span>
+        <a style="margin-right: 0px;"  *ngIf="!isAdd && !isEdit" class="update-link update-link-color" (click)="deleteObjective(objective);"><span class="glyphicon glyphicon-remove"></span></a>
       </td>
     </tr>
-    <tr *ngIf="!isAdd">
-      <td style="height: 30px;"><a (click)="isAdd = true;">Add</a></td>
-    </tr>
   </table>
+  <hr>
+  <a *ngIf="!isAdd && !isEdit" (click)="isAdd = true;">Add</a>
   <!--Add-->
   <div *ngIf="isAdd">
-    <hr style="border: 1px solid ">
+    <hr>
     <form class="form-horizontal" [formGroup]="objectiveFormAdd">
       <div class="form-group">
         <label for="descriptionAdd" class="col-sm-2 control-label">Objective</label>
@@ -53,15 +49,15 @@
 
   <!--Edit-->
   <div *ngIf="isEdit">
-    <hr style="border: 1px solid ">
+    <hr>
     <form class="form-horizontal" [formGroup]="objectiveFormEdit">
       <div class="form-group">
         <label for="descriptionEdit" class="col-sm-2 control-label">Objective</label>
         <div class="col-sm-10">
           <textarea type="text" rows="3" class="form-control" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
-            formControlName="descriptionEdit" [ngClass]="{ 'is-invalid': submittedAdd && formEdit.descriptionEdit.errors }">
+            formControlName="descriptionEdit" [ngClass]="{ 'is-invalid': submittesEdit && formEdit.descriptionEdit.errors }">
               </textarea>
-          <div *ngIf="submittedAdd && formEdit.descriptionEdit.errors" class="error">
+          <div *ngIf="submittesEdit && formEdit.descriptionEdit.errors" class="error">
             <div *ngIf="formEdit.descriptionEdit.errors.required">Sorry, discription name is required</div>
             <div *ngIf="formEdit.descriptionEdit.errors.pattern">Sorry, discription can not empty</div>
           </div>

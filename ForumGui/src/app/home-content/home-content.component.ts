@@ -21,6 +21,7 @@ export class HomeContentComponent implements OnInit {
   getQuestions(): void {
     this.homeService.getQuestions()
     .subscribe(questions => {
+      console.log("lengh:" + questions[0].tags.length);
       this.questions = questions;
       this.questions.sort((a:Question,b:Question) => {
         return <any>new Date(b.updationTime) - <any>new Date(a.updationTime);
