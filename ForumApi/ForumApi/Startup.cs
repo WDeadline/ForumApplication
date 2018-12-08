@@ -90,6 +90,7 @@ namespace ForumApi
             services.AddSingleton<IRepository<Question>, QuestionRepository>();
             services.AddSingleton<IRepository<Work>, WorkRepository>();
             services.AddSingleton<IRepository<Interview>, InterviewRepository>();
+            services.AddSingleton<IRepository<Recruitment>, RecruitmentRepository>();
             services.AddSingleton<IRepository<User>, UserRepository>();
 
             services.AddTransient<IUserService, UserService>();
