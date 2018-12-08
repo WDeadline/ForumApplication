@@ -9,8 +9,8 @@ namespace ForumApi.Models
 {
     public class Tag
     {
-        [BsonElement("desplay"), BsonRequired, Required]
-        public string Desplay { get; set; }
+        [BsonElement("display"), BsonRequired, Required]
+        public string Display { get; set; }
 
         [BsonElement("val"), BsonRequired, Required]
         public string Value { get; set; }

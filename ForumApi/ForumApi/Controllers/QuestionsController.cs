@@ -32,35 +32,195 @@ namespace ForumApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IList<QuestionResponse> questionResponses = new List<QuestionResponse>();
+            IList<object> questionResponses = new List<object>();
             string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
             var questions = await _questionService.GetAll();
+            
             foreach(var question in questions)
             {
-                var userFromDb = await _userService.GetById(question.QuestionBy);
-                userFromDb.Avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "";
-                QuestionResponse questionResponse = new QuestionResponse
-                {
-                    Id = question.Id,
-                    UserView = new UserView
-                    {
-                        Id = userFromDb.Id,
-                        Name = userFromDb.Name,
-                        Avatar = userFromDb.Avatar,
-                    },
-                    Title = question.Title,
-                    Description = question.Description,
-                    Tags = question.Tags,
-                    Votes = question.Votes,
-                    Views = question.Views,
-                    Reports = question.Reports,
-                    Answers = question.Answers,
-                    UpdationTime = question.UpdationTime
-                };
-                questionResponses.Add(questionResponse);
+                questionResponses.Add(GetQuestionView(question).Result);
             }
             return new OkObjectResult(questionResponses);
         }
+
+        #region getView
+        public async Task<object> GetQuestionView(Question question)
+        {
+            var userFromDb = await _userService.GetById(question.QuestionBy);
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+            userFromDb.Avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "";
+            var questionView = new
+            {
+                id = question.Id,
+                userView = new
+                {
+                    id = userFromDb.Id,
+                    name = userFromDb.Name,
+                    avatar = userFromDb.Avatar,
+                },
+                title = question.Title,
+                description = question.Description,
+                tags = question.Tags,
+                votes = GetVotesView(question.Votes).Result,
+                views = GetViewsView(question.Views).Result,
+                reports = GetReportsView(question.Reports).Result,
+                answers = GetAnswersView(question.Answers).Result,
+                updationTime = question.UpdationTime
+            };
+            return questionView;
+        }
+
+        public async Task<List<object>> GetVotesView(ICollection<Vote> votes)
+        {
+                string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+                List<object> votesView = new List<object>();
+
+                foreach (var vote in votes)
+                {
+                    votesView.Add(GetVoteView(vote).Result);
+                }
+                return votesView;
+        }
+
+        public async Task<object> GetVoteView(Vote vote)
+        {
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+            var userFromDb = await _userService.GetById(vote.VoteBy);
+            object voteView = new
+            {
+                id = vote.Id,
+                userView = new
+                {
+                    id = userFromDb.Id,
+                    name = userFromDb.Name,
+                    avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "",
+                },
+                creationTime = vote.CreationTime
+            };
+            return voteView;
+        }
+
+
+        public async Task<List<object>> GetViewsView(ICollection<View> views)
+        {
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+            List<object> viewsView = new List<object>();
+            foreach (var view in views)
+            {
+                viewsView.Add(GetViewView(view).Result);
+            }
+            return viewsView;
+        }
+
+        public async Task<object> GetViewView(View view)
+        {
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+                var userFromDb = await _userService.GetById(view.ViewBy);
+                object viewView = new
+                {
+                    id = view.Id,
+                    userView = new
+                    {
+                        id = userFromDb.Id,
+                        name = userFromDb.Name,
+                        avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "",
+                    },
+                    creationTime = view.CreationTime
+                };
+            return viewView;
+        }
+
+        public async Task<List<object>> GetReportsView(ICollection<Report> reports)
+        {
+            List<object> viewsView = new List<object>();
+            foreach (var report in reports)
+            {
+                viewsView.Add(GetReportView(report).Result);
+            }
+            return viewsView;
+        }
+
+        public async Task<object> GetReportView(Report report)
+        {
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+                var userFromDb = await _userService.GetById(report.ReportBy);
+                object reportView = new
+                {
+                    id = report.Id,
+                    UserView = new
+                    {
+                        id = userFromDb.Id,
+                        name = userFromDb.Name,
+                        avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "",
+                    },
+                    description = report.Description,
+                    creationTime = report.CreationTime
+                };
+            return reportView;
+        }
+
+
+        public async Task<List<object>> GetAnswersView(ICollection<Answer> answers)
+        {
+            List<object> viewsView = new List<object>();
+            foreach (var answer in answers)
+            {
+                viewsView.Add(GetAnswerView(answer).Result);
+            }
+            return viewsView;
+        }
+
+        public async Task<object> GetAnswerView(Answer answer)
+        {
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+                var userFromDb = await _userService.GetById(answer.AnswerBy);
+                object answerView = new
+                {
+                    id = answer.Id,
+                    UserView = new
+                    {
+                        id = userFromDb.Id,
+                        name = userFromDb.Name,
+                        avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "",
+                    },
+                    content = answer.Content,
+                    votes = GetVotesView(answer.Votes).Result,
+                    comments = GetCommentsView(answer.Comments).Result,
+                    updationTime = answer.UpdationTime
+                };
+            
+            return answerView;
+        }
+
+        public async Task<List<object>> GetCommentsView(ICollection<Comment> comments)
+        {
+            List<object> viewsView = new List<object>();
+            foreach (var comment in comments)
+            {
+                viewsView.Add(GetCommentView(comment).Result);
+            }
+            return viewsView;
+        }
+
+        public async Task<object> GetCommentView(Comment comment)
+        {
+            string path = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), "/images/avatars/");
+                var userFromDb = await _userService.GetById(comment.CommentBy);
+                object commentView = new
+                {
+                    id = comment.Id,
+                    UserView = new
+                    {
+                        id = userFromDb.Id,
+                        name = userFromDb.Name,
+                        avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "",
+                    },
+                    content = comment.Content,
+                    updationTime = comment.UpdationTime
+                };
+            return commentView;
+        }
+        #endregion
 
         // GET: api/questions/id
         [HttpGet("{id:length(24)}")]
@@ -75,67 +235,100 @@ namespace ForumApi.Controllers
             {
                 View view = new View
                 {
+                    Id = ObjectId.GenerateNewId().ToString(),
                     ViewBy = userId
                 };
-                question.Views.Append(view);
+                question.Views.Add(view);
                 _questionService.Update(question);
             }
-            var userFromDb = await _userService.GetById(question.QuestionBy);
-            userFromDb.Avatar = !string.IsNullOrEmpty(userFromDb.Avatar) ? path + userFromDb.Avatar : "";
-            QuestionResponse questionResponse = new QuestionResponse
-            {
-                Id = question.Id,
-                UserView = new UserView
-                {
-                    Id = userFromDb.Id,
-                    Name = userFromDb.Name,
-                    Avatar = userFromDb.Avatar,
-                },
-                Title = question.Title,
-                Description = question.Description,
-                Tags = question.Tags,
-                Votes = question.Votes,
-                Views = question.Views,
-                Reports = question.Reports,
-                Answers = question.Answers,
-                UpdationTime = question.UpdationTime
-            };
-            return new OkObjectResult(questionResponse);
+            return new OkObjectResult(GetQuestionView(question).Result);
         }
 
+        [Authorize]
         // POST: api/questions/id/vote
-        [HttpPost("{id:length(24)}/vote")]
+        [HttpPost("{id:length(24)}/votes")]
         public async Task<IActionResult> PostVote(string id)
         {
             string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
             var questionFromDb = await _questionService.GetById(id);
             if (questionFromDb == null)
-                return new NotFoundResult();
-            if (!string.IsNullOrEmpty(userId) && !questionFromDb.Votes.Any(v => v.VoteBy == userId))
+            return new NotFoundResult();
+            Vote vote = questionFromDb.Votes.FirstOrDefault(v => v.VoteBy == userId);
+            if(vote == null)
             {
-                Vote vote = new Vote
+                vote = new Vote
                 {
                     VoteBy = userId,
                 };
-                questionFromDb.Votes.Append(vote);
+                questionFromDb.Votes.Add(vote);
+                _questionService.Update(questionFromDb);
+            }
+            
+            return new OkObjectResult(GetVoteView(vote).Result);
+        }
+
+        [Authorize]
+        // DELETE: api/questions/id/vote
+        [HttpDelete("{id:length(24)}/votes")]
+        public async Task<IActionResult> DeteleVote(string id)
+        {
+            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            Vote vote = questionFromDb.Votes.FirstOrDefault(v => v.VoteBy == userId);
+            if(vote != null)
+            {
+                questionFromDb.Votes.Remove(vote);
                 _questionService.Update(questionFromDb);
             }
             return new OkResult();
         }
 
+        [Authorize]
         // POST: api/questions/id/vote
-        [HttpDelete("{id:length(24)}/vote")]
-        public async Task<IActionResult> DeteleVote(string id)
+        [HttpPost("{id:length(24)}/answer/{answerId:length(24)}/votes")]
+        public async Task<IActionResult> PostAnswerVote(string id, string answerId)
         {
-            string userId = HttpContext.User?.Identity.Name;
-
+            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var questionFromDb = await _questionService.GetById(id);
             if (questionFromDb == null)
                 return new NotFoundResult();
-            Vote vote = questionFromDb.Votes.FirstOrDefault(v => v.VoteBy == userId);
-            questionFromDb.Votes.Remove(vote);
-            _questionService.Update(questionFromDb);
+            Answer answer = questionFromDb.Answers.FirstOrDefault(a => a.Id == answerId);
+            if (answer == null)
+                return new NotFoundResult();
+            Vote vote = answer.Votes.FirstOrDefault(v => v.VoteBy == userId);
+            if (vote == null)
+            {
+                vote = new Vote
+                {
+                    VoteBy = userId,
+                };
+                answer.Votes.Add(vote);
+                _questionService.Update(questionFromDb);
+            }
+
+            return new OkObjectResult(GetVoteView(vote).Result);
+        }
+
+        [Authorize]
+        // DELETE: api/questions/id/vote
+        [HttpDelete("{id:length(24)}/answer/{answerId:length(24)}/votes")]
+        public async Task<IActionResult> DeteleAnswerVote(string id, string answerId)
+        {
+            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            Answer answer = questionFromDb.Answers.FirstOrDefault(a => a.Id == answerId);
+            if (answer == null)
+                return new NotFoundResult();
+            Vote vote = answer.Votes.FirstOrDefault(v => v.VoteBy == userId);
+            if (vote != null)
+            {
+                questionFromDb.Votes.Remove(vote);
+                _questionService.Update(questionFromDb);
+            }
             return new OkResult();
         }
 
@@ -165,25 +358,7 @@ namespace ForumApi.Controllers
             };
 
             await _questionService.Add(question);
-            QuestionResponse questionResponse = new QuestionResponse
-            {
-                Id = question.Id,
-                UserView = new UserView
-                {
-                    Id = userFromDb.Id,
-                    Name = userFromDb.Name,
-                    Avatar = userFromDb.Avatar,
-                },
-                Title = question.Title,
-                Description = question.Description,
-                Tags = question.Tags,
-                Votes = question.Votes,
-                Views = question.Views,
-                Reports = question.Reports,
-                Answers = question.Answers,
-                UpdationTime = question.UpdationTime
-            };
-            return new OkObjectResult(questionResponse);
+            return new OkObjectResult(GetQuestionView(question).Result);
         }
         [Authorize]
         // PUT: api/questions/5
@@ -233,7 +408,7 @@ namespace ForumApi.Controllers
             var questionFromDb = await _questionService.GetById(id);
             if (questionFromDb == null)
                 return new NotFoundResult();
-            return new OkObjectResult(questionFromDb.Answers);
+            return new OkObjectResult(GetAnswersView(questionFromDb.Answers).Result);
         }
 
         [Authorize]
@@ -247,12 +422,13 @@ namespace ForumApi.Controllers
                 return new NotFoundResult();
             Answer answer = new Answer
             {
+                AnswerBy = userId,
                 Content = answerRequest.Content
             };
             questionFromDb.Answers.Add(answer);
             _questionService.Update(questionFromDb);
 
-            return new OkObjectResult(answer);
+            return new OkObjectResult(GetAnswerView(answer).Result);
         }
 
         [Authorize]
@@ -277,7 +453,7 @@ namespace ForumApi.Controllers
             questionAnswer.Content = answerRequest.Content;
             questionAnswer.UpdationTime = DateTime.UtcNow;
             _questionService.Update(questionFromDb);
-            return new OkObjectResult(questionAnswer);
+            return new OkObjectResult(GetAnswerView(questionAnswer).Result);
         }
 
         [Authorize]

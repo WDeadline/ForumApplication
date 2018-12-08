@@ -24,9 +24,9 @@ namespace ForumApi.Models
         public DateTime UpdationTime { get; set; } = DateTime.UtcNow;
 
         [BsonElement("votes")]
-        public ICollection<Vote> Votes { get; set; }
+        public ICollection<Vote> Votes { get; set; } = new List<Vote>();
 
         [BsonElement("cmts")]
-        public IEnumerable<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
