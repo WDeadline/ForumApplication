@@ -40,3 +40,17 @@ D:\Projects\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.
 D:\Projects\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorTargetAssemblyInfo.cache
 D:\Projects\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.dll
 D:\Projects\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.pdb
+E:\angular\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.deps.json
+E:\angular\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.runtimeconfig.json
+E:\angular\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.runtimeconfig.dev.json
+E:\angular\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.dll
+E:\angular\ForumApplication\ForumApi\ForumApi\bin\Debug\netcoreapp2.1\ForumApi.pdb
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.csprojAssemblyReference.cache
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.csproj.CoreCompileInputs.cache
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorAssemblyInfo.cache
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorAssemblyInfo.cs
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.AssemblyInfoInputs.cache
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.AssemblyInfo.cs
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.RazorTargetAssemblyInfo.cache
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.dll
+E:\angular\ForumApplication\ForumApi\ForumApi\obj\Debug\netcoreapp2.1\ForumApi.pdb
