@@ -24,7 +24,7 @@ export class AdminUserService {
     private anthenticationService :AuthenticationService,
   ) { }
 
-      /* GET: get Experience of user from server */
+      /* GET: get all users from server */
       getAllUser(): Observable<User[]>{
         const url = `${this.config}${this.apiUser}`;
         this.setTokenToHeader();
@@ -42,4 +42,34 @@ export class AdminUserService {
           console.log("this.tokenString: " + tokenString);
         }
       }
+    /** POST: add a new user to the database */
+    addUser(user: User): Observable<User>{
+      const url = `${this.config}${this.apiUser}`;
+      this.setTokenToHeader();
+      console.log(user);
+      return this.http.post<User>(url, user, httpOptions)
+        .pipe(
+          catchError(this.handleErrorService.handleError('addUser', user))
+        );
+    }
+
+    /*PUT: update the user on the server. Return the updated object upon success */    
+    updateUser(user: User): Observable<User>{
+      const url = `${this.config}${this.apiUser}/${user.id}`;
+      this.setTokenToHeader();
+      return this.http.put<User>(url, user, httpOptions)
+        .pipe(
+          catchError(this.handleErrorService.handleError('updateUser',user))
+        );
+    }
+
+    /** DELETE: delete the user from the server */
+    deleteUser(user: User): Observable<{}>{
+    const url = `${this.config}${this.apiUser}/${user.id}`;
+    this.setTokenToHeader();
+    return this.http.delete(url, httpOptions)
+      .pipe(
+        catchError(this.handleErrorService.handleError('deleteUser'))
+      );
+    }
 }

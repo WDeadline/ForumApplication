@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule,ReactiveFormsModule }    from '@angular/forms';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminUserComponent } from './admin-user/admin-user.component';
@@ -19,6 +20,8 @@ import { AdminInterviewComponent } from './admin-interview/admin-interview.compo
   declarations: [AdminUserComponent, AdminTagComponent, AdminQuestionComponent, AdminVoteComponent, AdminViewComponent, AdminReportComponent, AdminAnwerComponent, AdminCommentComponent, AdminWorkComponent, AdminRecruitmentComponent, AdminInterviewComponent ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule, //su dung cho [formGroup] in html
     AdminRoutingModule
   ]
 })

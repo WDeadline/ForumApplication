@@ -9,21 +9,22 @@ export class User{
     id : string;
     name : string;
     active : boolean;
-    roles : Role[];
+    roles : Role[] = [];
     gender : boolean; 
     birthday : Date;
     phoneNumber : string;
     address : string;
     position : string;
+    password :string;
     username : string;
     emailAddress : string;
     avatar : string;
     updationTime : Date;
-    objectives : Objective [];
-    educations : Education[] ;
-    skills : Skill[];
-    experiences : Experience [];
-    activities : Activity[];
+    objectives : Objective [] = [];
+    educations : Education[]  = [];
+    skills : Skill[] = [];
+    experiences : Experience [] = [];
+    activities : Activity[] = [];
 }
 
 

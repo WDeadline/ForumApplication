@@ -12,7 +12,7 @@ namespace ForumApi.Interfaces
         Task<User> GetById(string id);
         Task<IEnumerable<User>> GetAll();
         Task<bool> Update(User user);
-        Task CreateUser(CreationUser creationUser);
+        Task<User> CreateUser(CreationUser creationUser);
         bool RegisterAsync(Register register);
         Task<bool> IsExistedUsernameAsync(string username);
         Task<bool> IsExistedEmailAddressAsync(string emailAddress);

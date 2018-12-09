@@ -40,7 +40,7 @@ namespace ForumApi.Services
             }
         }
 
-        public Task CreateUser(CreationUser creationUser)
+        public async Task<User> CreateUser(CreationUser creationUser)
         {
             PasswordManager.CreatePasswordHash(creationUser.Password, out byte[] passwordHash, out byte[] passwordSalt);
             User user = new User {
@@ -55,7 +55,8 @@ namespace ForumApi.Services
                 EmailAddress = creationUser.EmailAddress,
                 Roles = creationUser.Roles,
             };
-            return _userRepository.Add(user);
+            await _userRepository.Add(user);
+            return user;
         }
 
         public async Task<bool> IsExistedEmailAddressAsync(string emailAddress)

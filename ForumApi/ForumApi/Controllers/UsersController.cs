@@ -82,7 +82,7 @@ namespace ForumApi.Controllers
             }
 
             var user = _userService.CreateUser(creationUser);
-            return new OkObjectResult(user);
+            return new OkObjectResult(user.Result);
         }
 
         private async Task CheckUniqueEmailAddressAsync(string emailAddress)
