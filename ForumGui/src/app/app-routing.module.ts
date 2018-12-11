@@ -11,6 +11,10 @@ import {ProfileComponent} from './user/profile/profile.component';
 import {QuestionShowComponent} from './discussion/question-show/question-show.component';
 import {TagComponent} from './tag/tag.component';
 import {JobComponent} from './job/job.component';
+import {JobDetailComponent} from './job-detail/job-detail.component';
+import {RecruitmentComponent} from './recruitment/recruitment.component';
+import {RecruitmentDetailComponent} from './recruitment-detail/recruitment-detail.component';
+
 const routes: Routes = [
   { path: 'home', component: HomeContentComponent },
   { path: 'test', component: TestComponent ,canActivate: [AuthGuard]},
@@ -23,6 +27,7 @@ const routes: Routes = [
   { path: 'makequestion', component: QuestionMakeComponent,canActivate: [AuthGuard] },
   { path: 'showquestion', component: QuestionShowComponent,canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard]},
+  { path: 'jobdetail', component: JobDetailComponent },
   //{path:'questions', component: QuestionShowComponent},
   {
     path: 'profile-update',
@@ -32,6 +37,17 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'recruitment',
+    component : RecruitmentComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'recruitmentdetail',
+    component : RecruitmentDetailComponent,
     canActivate: [AuthGuard]
   },
 

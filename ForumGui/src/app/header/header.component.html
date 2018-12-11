@@ -18,6 +18,8 @@
         <li><a routerLink="/users">Users</a></li>
         <li><a routerLink="/tags">Tags</a></li>
         <li><a routerLink="/jobs">Jobs</a></li>
+        <li><a routerLink="/jobdetail">job detail</a></li>recruitment
+        <li><a routerLink="/recruitment">recruitment</a></li>
         <li *ngIf="!(isLoggedIn$ | async)"><a routerLink="/register">Register</a></li>
         <li *ngIf="!(isLoggedIn$ | async)" ><a routerLink="/login">Login</a></li>
         <li class="dropdown" *ngIf="(isLoggedIn$ | async)">

@@ -25,19 +25,11 @@ export class ProfileUpdateService {
     private  authenticationService :AuthenticationService,
   ) { }
 
-  /*getInfoUser(id: number): Observable<User> {
-    return this.http.get<User>(`${this.config}/${id}`, {headers: this.header});
-  }*/  
-
   changeAvatar(image: File):Observable<Avatar>  {
     this.setTokenToHeader();
     const formData:  FormData = new FormData();
     formData.append('file',image);
     return this.http.post<Avatar>(`${this.config}${this.apiProfile}/avatar`, formData, httpOptions);
-  }
-
-  setUserInfo(currentUser: CurrentUserInfo) {
-    this.getAvatar.emit(currentUser);
   }
 
   setTokenToHeader(){
@@ -49,4 +41,16 @@ export class ProfileUpdateService {
       console.log("this.tokenString 111: " + tokenString);
     }
   }
+
+  /** POST: add a new comment to the database */
+  /*addComment(objective: Objective): Observable<Objective>{
+  this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+  this.setTokenToHeader();
+  return this.http.post<Objective>(`${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiObjective}`, objective, httpOptions)
+    .pipe(
+      catchError(this.handleErrorService.handleError('addObjective',objective))
+    );
+  }*/ 
+
+
 }

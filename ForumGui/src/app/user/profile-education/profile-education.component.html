@@ -1,5 +1,5 @@
 <div>
-    <h3>Education</h3>
+    <h3>Education <a style="margin-right: 0px;" *ngIf="!isAdd && !isEdit" class="update-link update-link-color small" (click)="isAdd = true;"><span class="glyphicon glyphicon-plus"></span></a> </h3>
     <hr style="border: 1px solid ">
     <div  *ngFor="let education of educations">
     <table style="width:100%; ">
@@ -19,16 +19,11 @@
           <td style="width:65%;">GPA: {{education.gpa | number:'1.0-2'}}</td> 
         </tr>      
   </table>
-  <hr>
   </div>
-  <table>
-    <tr *ngIf ="!isAdd && !isEdit">
-      <td style="height: 30px;"><a (click)="isAdd = true;">Add</a></td>
-    </tr>
-  </table>
 
   <!--add-->
 <div *ngIf ="isAdd">
+    <hr>
   <form class="form-horizontal" [formGroup]="educationFormAdd">
     <div class="form-group">
       <label for="universityAdd" class="col-sm-2 control-label">University</label>
@@ -106,6 +101,7 @@
 
   <!--edit-->
 <div *ngIf ="isEdit">
+    <hr>
   <form class="form-horizontal" [formGroup]="educationFormEdit">
     <div class="form-group">
       <label for="universityEdit" class="col-sm-2 control-label">University</label>

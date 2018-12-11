@@ -1,5 +1,5 @@
 <div >
-  <h3>Work Exprience </h3>
+    <h3>Work Experience <a style="margin-right: 0px;" *ngIf="!isAdd && !isEdit" class="update-link update-link-color small" (click)="isAdd = true;"><span class="glyphicon glyphicon-plus"></span></a> </h3>
   <hr style="border: 1px solid ">
   <div *ngFor="let experience of experiences">
     <table style="width:100%; ">
@@ -20,15 +20,11 @@
         <td style="width:65%;">Description: {{experience?.description}}</td>
       </tr>
     </table>
-    <hr>
   </div>
-  <a *ngIf="!isEdit && !isAdd" (click)="isAdd = true;">
-    Add
-  </a>
-  <br>
 
   <!--Add-->
   <div *ngIf="isAdd">
+    <hr>
     <form class="form-horizontal" [formGroup]="experienceAddForm">
       <div class="form-group">
         <label for="workPlace" class="col-sm-2 control-label">Work place</label>
@@ -106,6 +102,7 @@
   </div>
   <!--Edit-->
   <div *ngIf="isEdit">
+    <hr>
     <form class="form-horizontal" [formGroup]="experienceEditForm">
       <div class="form-group">
         <label for="workPlaceEdit" class="col-sm-2 control-label">Company</label>

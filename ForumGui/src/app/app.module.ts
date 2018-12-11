@@ -34,7 +34,10 @@ import {AlertComponent} from './authentication/directives/alert.component';
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagComponent } from './tag/tag.component';
-import { JobComponent } from './job/job.component'; // this is needed!
+import { JobComponent } from './job/job.component';
+import { JobDetailComponent } from './job-detail/job-detail.component';
+import { RecruitmentComponent } from './recruitment/recruitment.component';
+import { RecruitmentDetailComponent } from './recruitment-detail/recruitment-detail.component'; // this is needed!
 
 
 @NgModule({
@@ -55,6 +58,9 @@ import { JobComponent } from './job/job.component'; // this is needed!
     AlertComponent,
     TagComponent,
     JobComponent,
+    JobDetailComponent,
+    RecruitmentComponent,
+    RecruitmentDetailComponent,
     
   ],
   imports: [

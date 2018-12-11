@@ -54,7 +54,8 @@ export class ProfileUpdateComponent implements OnInit {
   }
 
   getUserInfo() {
-    this.currentUser = this.authentication.getCurrentUser();
+    this.authentication.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = this.authentication.currentUserInfo;
   }
 
 

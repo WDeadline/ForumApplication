@@ -1,5 +1,5 @@
 <div>
-  <h3>Objective</h3>
+  <h3>Objective <a style="margin-right: 0px;" *ngIf="!isAdd && !isEdit" class="update-link update-link-color small" (click)="isAdd = true;"><span class="glyphicon glyphicon-plus"></span></a> </h3>
   <hr style="border: 1px solid ">
   <table style="width:100%; ">
     <tr *ngFor="let objective of objectives">
@@ -17,8 +17,6 @@
       </td>
     </tr>
   </table>
-  <hr>
-  <a *ngIf="!isAdd && !isEdit" (click)="isAdd = true;">Add</a>
   <!--Add-->
   <div *ngIf="isAdd">
     <hr>
