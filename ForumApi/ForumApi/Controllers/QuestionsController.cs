@@ -52,6 +52,7 @@ namespace ForumApi.Controllers
             var questionView = new
             {
                 id = question.Id,
+                questionBy = question.QuestionBy,
                 userView = new
                 {
                     id = userFromDb.Id,
@@ -89,6 +90,7 @@ namespace ForumApi.Controllers
             object voteView = new
             {
                 id = vote.Id,
+                voteBy = vote.VoteBy,
                 userView = new
                 {
                     id = userFromDb.Id,
@@ -119,6 +121,7 @@ namespace ForumApi.Controllers
                 object viewView = new
                 {
                     id = view.Id,
+                    viewBy = view.ViewBy,
                     userView = new
                     {
                         id = userFromDb.Id,
@@ -147,6 +150,7 @@ namespace ForumApi.Controllers
                 object reportView = new
                 {
                     id = report.Id,
+                    reportBy = report.ReportBy,
                     UserView = new
                     {
                         id = userFromDb.Id,
@@ -177,6 +181,7 @@ namespace ForumApi.Controllers
                 object answerView = new
                 {
                     id = answer.Id,
+                    answerBy = answer.AnswerBy,
                     UserView = new
                     {
                         id = userFromDb.Id,
@@ -209,6 +214,7 @@ namespace ForumApi.Controllers
                 object commentView = new
                 {
                     id = comment.Id,
+                    commentBy = comment.CommentBy,
                     UserView = new
                     {
                         id = userFromDb.Id,
