@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'jobs', component: JobComponent},
   { path: 'register', component: RegisterComponent },
   { path: 'makequestion', component: QuestionMakeComponent,canActivate: [AuthGuard] },
-  { path: 'showquestion', component: QuestionShowComponent,canActivate: [AuthGuard] },
+  { path: 'showquestion', component: QuestionShowComponent},
   { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard]},
   { path: 'jobdetail', component: JobDetailComponent },
   //{path:'questions', component: QuestionShowComponent},

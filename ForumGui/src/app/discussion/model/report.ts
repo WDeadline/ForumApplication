@@ -1,6 +1,8 @@
 import {UserView} from './userView';
-export class View{
+
+export class Report{
     viewBy: string;
     userView : UserView;
+    description : string;
     creationTime: Date; 
 }

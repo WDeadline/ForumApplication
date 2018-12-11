@@ -1,54 +1,69 @@
-<div class="row">
-  <div class="col-md-1"></div>
-  <div class="col-md-10">
-    <h1 style="color:darkblue;"><b>{{question?.title}}</b></h1>
-    <div [innerHTML]="question?.description"></div>
-    <div class="row">
-        <div class="col-md-1">
-            <a href="#">
-              <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png" alt="...">
-            </a>
-      </div>
-        <div class="col-md-11">
-          <div class="panel panel-default">
-              <div class="panel-heading">Panel heading without title</div>
-              <div class="panel-body">
-                Panel content
+
+
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+              <h1 style="color:darkblue;"><b>{{question?.title}}</b></h1>
+              <div [innerHTML]="question?.description"></div>
+              
+              <!--noi dung-->
+              <div *ngFor="let anwer of anwers">
+                <div class="row">
+                  <div class="col-md-1">
+                    <a href="#">
+                      <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
+                        alt="...">
+                    </a>
+                  </div>
+                  <div class="col-md-11">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">{{anwer.anwerBy}}</div>
+                      <div class="panel-body">
+                        {{anwer.content}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-1">
+                    <a href="#">
+                      <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
+                        alt="...">
+                    </a>
+                  </div>
+                  <div class="col-md-10">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Panel heading without title</div>
+                      <div class="panel-body">
+                        Panel content
+                      </div>
+                    </div>
+                    <a *ngIf="isAddComment" (click)="isComment = true;isAddComment = false">add comment</a>
+                    <form *ngIf="isComment">
+                      <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <textarea class="form-control" rows="3" id="comment"></textarea>
+                        <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs">Post</button>
+                        <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs" (click)="isComment = false;isAddComment = true">Cancle</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <hr>
               </div>
-          </div>
-        </div>
-    </div>
-    <div class="row">
-      <div class="col-md-1"></div>
-      <div class="col-md-1">
-          <a href="#">
-              <img class="avatar" src="https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png" alt="...">
-          </a>
-      </div>
-      <div class="col-md-10">
-          <div class="panel panel-default">
-              <div class="panel-heading">Panel heading without title</div>
-              <div class="panel-body">
-                Panel content
+              <!--noi dung-->
+      
+              <div class="form-group">
+                <h5><b>Anwer</b></h5>
+                <p-editor [(ngModel)]='description' value={{description}} (onTextChange)="onTextChange($event)" [style]="{'height':'240px'}"></p-editor>
+                <button style="margin:3px 2px;" type="submit" class="btn btn-primary" (click) = "postQuestion();">Post Anwer</button>
               </div>
-          </div>
-          <a *ngIf="isAddComment" (click)="isComment = true;isAddComment = false">add comment</a>
-          <form *ngIf="isComment">
-            <div class="form-group" >
-                <label for="comment">Comment:</label>
-                <textarea class="form-control" rows="3" id="comment"></textarea>
-                <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs">Post</button>
-                <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs" (click)="isComment = false;isAddComment = true">Cancle</button>
             </div>
-        </form>
-      </div>
-    </div>
-    <hr>
-    <form>
-      <h5><b>Anwer</b></h5>
-      <p-editor [(ngModel)]='discription' value={{discription}} (onTextChange)="onTextChange($event)" [style]="{'height':'200px'}"></p-editor>
-      <button style="margin:3px 2px;" type="submit" class="btn btn-primary">Post Anwer</button>
-  </form>  
-  </div>
-  <div class="col-md-1"></div>
-</div>
+            <div class="col-md-1"></div>
+          </div>
+
+
+
+
+

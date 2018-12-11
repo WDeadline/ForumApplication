@@ -42,15 +42,5 @@ export class ProfileUpdateService {
     }
   }
 
-  /** POST: add a new comment to the database */
-  /*addComment(objective: Objective): Observable<Objective>{
-  this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
-  this.setTokenToHeader();
-  return this.http.post<Objective>(`${this.config}${this.apiUser}/${this.anthenticationService.currentUserInfo.id}${this.apiObjective}`, objective, httpOptions)
-    .pipe(
-      catchError(this.handleErrorService.handleError('addObjective',objective))
-    );
-  }*/ 
-
 
 }
