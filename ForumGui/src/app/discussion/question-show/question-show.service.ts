@@ -57,13 +57,13 @@ export class QuestionShowService {
     }
 
   /*PUT: update the anwer on the server. Return the updated object upon success */
-  updateAnswer(anwer: Answer,question: Question): Observable<Answer>{
-    const url = `${this.config}${this.apiQuestion}/${question.id}${this.apiAnswers}/${anwer.id}`;
+  updateAnswer(questionId: string, answerid: string, content: string): Observable<Answer>{
+    const url = `${this.config}${this.apiQuestion}/${questionId}${this.apiAnswers}/${answerid}`;
     console.log("edit url:" + url);
     this.setTokenToHeader();
-    return this.http.put<Answer>(url,anwer,httpOptions)
+    return this.http.put<any>(url,{content: content},httpOptions)
       .pipe(
-        catchError(this.handleErrorService.handleError('updateAnswer',anwer))
+        catchError(this.handleErrorService.handleError('updateAnswer', {content: content}))
       );
   }
 
@@ -82,13 +82,25 @@ export class QuestionShowService {
     this.setTokenToHeader();
     return this.http.post<any>(`${this.config}${this.apiQuestion}/${questionId}${this.apiAnswers}/${answerId}${this.apiComment}`, {content : content}, httpOptions)
       .pipe(
-        catchError(this.handleErrorService.handleError('addAnswer', "add comment error"))
+        catchError(this.handleErrorService.handleError('addComment', "add comment error"))
       );
   }
 
+  /*PUT: update the anwer on the server. Return the updated object upon success */
+  updateComment(questionId: string, answerId: string, commentId: string, content: string): Observable<Comment>{
+    const url = `${this.config}${this.apiQuestion}/${questionId}${this.apiAnswers}/${answerId}${this.apiComment}/${commentId}`;
+    console.log("edit url:" + url);
+    this.setTokenToHeader();
+    return this.http.put<any>(url,{content: content},httpOptions)
+      .pipe(
+        catchError(this.handleErrorService.handleError('updatecpmment', {content: content}))
+      );
+  }
+
+
   /** DELETE: delete the comment from the server */
-  deleteComment(questionId: string, answerId: string, commnetId: string) :  Observable<{}>{
-    const url = `${this.config}${this.apiQuestion}/${questionId}${this.apiAnswers}/${answerId}${this.apiComment}/${commnetId}`;
+  deleteComment(questionId: string, answerId: string, commentId: string) :  Observable<{}>{
+    const url = `${this.config}${this.apiQuestion}/${questionId}${this.apiAnswers}/${answerId}${this.apiComment}/${commentId}`;
     this.setTokenToHeader();
     return this.http.delete(url, httpOptions)
       .pipe(

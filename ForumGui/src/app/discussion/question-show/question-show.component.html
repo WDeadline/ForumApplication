@@ -19,8 +19,19 @@
         </div>
         <div class="col-md-11">
           <div class="panel panel-default">
-            <div class="panel-heading">{{answer.userView.name}} <a *ngIf="authenticationService.currentUserInfo && answer.answerBy == authenticationService.currentUserInfo.id"
-                class="update-link-color update-link" (click)="deleteAnwer(answer.id)"><span class="glyphicon glyphicon-remove"></span></a></div>
+            <div class="panel-heading">{{answer.userView.name}}
+                <span *ngIf="!isEditAnswer">
+                  <a *ngIf="authenticationService.currentUserInfo && answer.answerBy == authenticationService.currentUserInfo.id" class="update-link-color update-link"
+                    (click)="isEditAnswer = true; isAddAnswer = false; editAnswer(answer);">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                  <span style="padding-left:5px;"></span>
+                  <a *ngIf="authenticationService.currentUserInfo && answer.answerBy == authenticationService.currentUserInfo.id" class="update-link-color update-link"
+                    (click)="deleteAnwer(answer.id)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </a>
+                </span>
+              </div>
             <div class="panel-body">
               <div [innerHTML]="answer.content | safeHtml"></div>
             </div>
@@ -40,8 +51,12 @@
           </div>
           <div class="col-md-10">
             <div class="panel panel-default">
-              <div class="panel-heading">{{comment.userView.name}} <a *ngIf="authenticationService.currentUserInfo && comment.commentBy == authenticationService.currentUserInfo.id"
-                class="update-link-color update-link" (click)="deleteComment(answer.id, comment.id)"><span class="glyphicon glyphicon-remove"></span></a></div>
+              <div class="panel-heading">{{comment.userView.name}}
+                  <a *ngIf ="authenticationService.currentUserInfo && comment.commentBy == authenticationService.currentUserInfo.id" class="update-link-color update-link" (click)="isEditComment = true; isAddComment = false; editComment(comment); curentAnswerId = answer.id;" ><span class="glyphicon glyphicon-pencil"></span></a>
+                  <span style="padding-left:5px;"></span>
+                 <a *ngIf="!isEditAnswer && authenticationService.currentUserInfo && comment.commentBy == authenticationService.currentUserInfo.id"
+                class="update-link-color update-link" (click)="deleteComment(answer.id, comment.id); isAddAnswer = true; isEditAnswer = false;"><span class="glyphicon glyphicon-remove"></span></a>
+              </div>
               <div class="panel-body">
                   {{comment.content}}
               </div>
@@ -50,28 +65,46 @@
         </div>
       </div>
       <!--end Comment-->
-        <a *ngIf="authenticationService.currentUserInfo && !isComment" (click)="isComment = true; curentAnswerId = answer.id;">Add comment</a>
+        <a *ngIf="authenticationService.currentUserInfo && !isAddComment && !isEditComment" (click)="isAddComment = true; curentAnswerId = answer.id;">Add comment</a>
         <a *ngIf="!authenticationService.currentUserInfo" [routerLink]="['/login']" [queryParams]="{returnUrl: '/showquestion', returnParamId: question.id}">Add your comment</a>
-        <div *ngIf="isComment && answer.id == curentAnswerId">
+        <div *ngIf="isAddComment && answer.id == curentAnswerId">
           <div class="form-group">
             <label for="comment">Comment:</label>
             <textarea [(ngModel)]='comment' class="form-control" rows="3" id="comment"></textarea>
             <p class="error">{{errorComment}}</p>
             <button style="margin: 2px;" type="submit" (click)="postComment(answer.id);" class="btn btn-primary btn-xs" >Post comment</button>
-            <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs" (click)="isComment = false;">Cancle</button>
+            <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs" (click)="isAddComment = false;">Cancle</button>
           </div>
         </div>
+
+        <div *ngIf="isEditComment && answer.id == curentAnswerId">
+            <div class="form-group">
+              <label for="comment">Comment:</label>
+              <textarea [(ngModel)]='commentEdit' class="form-control" rows="3" id="comment"></textarea>
+              <p class="error">{{errorCommentEdit}}</p>
+              <button style="margin: 2px;" type="submit" (click)="putComment()" class="btn btn-primary btn-xs" >Post comment</button>
+              <button style="margin: 2px;" type="submit" class="btn btn-primary btn-xs" (click)="isEditComment = false;">Cancle</button>
+            </div>
+          </div>
       <hr>
     </div>
     <!--answer-->
     <div *ngIf="!authenticationService.currentUserInfo">
       <a [routerLink]="['/login']" [queryParams]="{returnUrl: '/showquestion', returnParamId: question.id}">Add your answer</a>
     </div>
-    <div *ngIf="authenticationService.currentUserInfo">
+    <div *ngIf="authenticationService.currentUserInfo && !isEditAnswer">
       <h5><b>Answer</b></h5>
       <p-editor [(ngModel)]='content' value={{content}} (onTextChange)="onTextChange($event)" [style]="{'height':'200px'}"></p-editor>
       <p class="error">{{errorContent}}</p>
       <button style="margin:3px 2px;" type="submit" (click)="postAnswer();" class="btn btn-primary">Post Anwer</button>
+    </div>
+
+    <div *ngIf="authenticationService.currentUserInfo && isEditAnswer">
+      <h5><b>Answer</b></h5>
+      <p-editor [(ngModel)]='contentEdit' value={{contentEdit}} (onTextChange)="onTextChangeEdit($event)" [style]="{'height':'200px'}"></p-editor>
+      <p class="error">{{errorContent}}</p>
+      <button style="margin:3px 2px;" type="submit" (click)="putAnswer();" class="btn btn-primary">Edit Anwer</button>
+      <button style="margin:3px 2px;" type="submit" (click)="isEditAnswer = false;" class="btn btn-primary">Cancle</button>
     </div>
   </div>
   <div class="col-md-1"></div>
