@@ -37,6 +37,16 @@ export class ProfileSkillService {
       )
   }
 
+  /* GET: get Skill of all users from server */ //api/users/userId/skills
+  getSkillsById(id: string):Observable<Skill[]>{ 
+    const url = `${this.config}${this.apiUser}/${id}${this.apiSkill}`;
+    this.setTokenToHeader();
+    return this.http.get<Skill[]>(url,httpOptions)
+      .pipe(
+        catchError(this.handleErrorService.handleError('getSkills',[]))
+      )
+  }
+
   /** POST: add a new skill to the database */
   addSkill(skill: Skill): Observable<Skill>{
     this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));

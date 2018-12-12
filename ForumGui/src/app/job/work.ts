@@ -3,7 +3,7 @@ import {Tag} from '../discussion/model/tag';
 export class Work {
     id: string;
     companyId : string;
-    userView : UserView;
+    userView : UserView = new UserView();
     title : string;
     position : string;
     description : string;

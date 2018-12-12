@@ -1,0 +1,23 @@
+.avatar {
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 200px;
+    height: 180px;
+}
+
+.inputWrapper {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    /*Using a background color, but you can use a background image to represent a button*/
+}
+
+.fileInput {
+    cursor: pointer;
+    height: 100%;
+    position:absolute;
+    top: 0;
+    right: 0;
+    /*This makes the button huge so that it can be clicked on*/
+    font-size:50px;
+}

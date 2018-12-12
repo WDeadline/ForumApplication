@@ -46,6 +46,14 @@ export class ProfileObjectiveService {
           catchError(this.handleErrorService.handleError('getObjectives',[]))
         )
     }
+    /* GET: get Objectives of all users from server */
+    getObjectivesById(id: string): Observable<Objective[]>{
+      this.setTokenToHeader();
+      return this.http.get<Objective[]>(`${this.config}${this.apiUser}/${id}${this.apiObjective}`, httpOptions)
+        .pipe(
+          catchError(this.handleErrorService.handleError('getObjectives',[]))
+        )
+    }    
 
     /*PUT: update the Object on the server. Return the updated object upon success */
     updateObjective(objective: Objective): Observable<Objective>{

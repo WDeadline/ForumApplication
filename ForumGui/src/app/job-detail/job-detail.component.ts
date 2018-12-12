@@ -14,6 +14,7 @@ export class JobDetailComponent implements OnInit {
   subscription : Subscription;
   id: string ='';
   work: Work = new Work();
+  imageURL: string = "assets/img/default.png";
   constructor(
     private activateRoute: ActivatedRoute,
     private router : Router,

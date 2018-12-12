@@ -99,7 +99,9 @@ namespace ForumApi.Services
         {
             try
             {
-                return _userRepository.Delete(id);
+                var user = _userRepository.GetById(id).Result;
+                user.Active = false;
+                return _userRepository.Update(user);
             }
             catch (Exception ex)
             {

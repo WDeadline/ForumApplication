@@ -4,29 +4,13 @@
   </div>
     <!--noi dung-->
     <div class="panel-body">
-      <a>(Senior) Front End Developer</a><br>
-      <span class="glyphicon glyphicon-map-marker"></span> Binh Duong, Vietnam<br>
-      <a class="btn btn-primary btn-xs">angular</a><span  style="padding-left:3px;"></span>
+      <div *ngFor="let work of works">
+        <a [routerLink]="['/jobdetail']" [queryParams]="{id: work.id}">{{work.title}}</a><br>
+        <span class="glyphicon glyphicon-map-marker"></span> {{work.address}}<br>
+        <a *ngFor="let tag of work.tags" class="btn btn-primary btn-xs"  style="margin-left: 3px;">{{tag.value}}</a>
+        <hr>
+      </div>
     </div>
     <!--noi dung-->
-    <hr>
-    <div class="panel-body">
-        <a>Senior Software Engineer (Full stack)</a><br>
-        <span class="glyphicon glyphicon-map-marker"></span> Ho Chi Minh City, Vietnam<br>
-        <a class="btn btn-primary btn-xs">javascript</a><span  style="padding-left:3px;"></span>
-        <a class="btn btn-primary btn-xs">nodejs</a><span  style="padding-left:3px;"></span>
-      </div>
-    <hr>
-    <div class="panel-body">
-      <a>DevOps Engineer</a><br>
-      <span class="glyphicon glyphicon-map-marker"></span> Can Tho City, Vietnam<br>
-      <a class="btn btn-primary btn-xs">c++</a><span  style="padding-left:3px;"></span>
-    </div>
-    <hr>
-    <div class="panel-body">
-      <a>Frontend Developer - Vue.js, React, Angular... (Remote)</a><br>
-      <span class="glyphicon glyphicon-map-marker"></span> No office<br>
-      <a class="btn btn-primary btn-xs">Nodejs</a><span  style="padding-left:3px;"></span>
-      <a class="btn btn-primary btn-xs">Angular</a><span  style="padding-left:3px;"></span>
-    </div>
+
 </div> 

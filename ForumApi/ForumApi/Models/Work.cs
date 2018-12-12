@@ -32,7 +32,7 @@ namespace ForumApi.Models
         public string Salary { get; set; }
 
         [BsonElement("tags"), BsonRequired, Required]
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("update"), DataType(DataType.DateTime)]

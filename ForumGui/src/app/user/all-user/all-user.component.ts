@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from '../model1/user';
 import {AllUserService} from './all-user.service';
+import { Observable } from 'rxjs';
+import {AuthenticationService} from '../../authentication/service/authentication.service';
 @Component({
   selector: 'app-all-user',
   templateUrl: './all-user.component.html',
@@ -11,12 +13,20 @@ export class AllUserComponent implements OnInit {
   users : User[];
   usersView : User[];
   imageURL: string = "assets/img/default.png";
+  isLoggedIn$: Observable<boolean>;
   constructor(
     private allUserService : AllUserService,
+    private authentication : AuthenticationService,
   ) { }
 
   ngOnInit() {
+    this.isLoggedIn$ = this.authentication.isLoggedIn();
     this.getAllUser();
+  }
+
+  getUserRole(): string {
+    console.log("userRole: "+this.authentication.getUserRoleFromLocalStorage());
+    return this.authentication.getUserRoleFromLocalStorage();
   }
 
   getAllUser(){

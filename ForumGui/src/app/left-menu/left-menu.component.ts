@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import {JobService} from '../job/job.service';
+import {Work} from '../job/work';
 @Component({
   selector: 'app-left-menu',
   templateUrl: './left-menu.component.html',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeftMenuComponent implements OnInit {
 
-  constructor() { }
+  works : Work[] = [];
+  constructor(
+    private jobService : JobService,
+  ) { }
 
   ngOnInit() {
+    this.getAllJobs();
+  }
+
+  getAllJobs(){
+    this.jobService.getWorks()
+      .subscribe(data =>{
+        for(var i =0; i < 5 && i < data.length; i++){
+          this.works[i] = data[i];
+        }
+      });
   }
 
 }

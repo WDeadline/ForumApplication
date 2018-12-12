@@ -18,13 +18,13 @@
         <li><a routerLink="/users">Users</a></li>
         <li><a routerLink="/tags">Tags</a></li>
         <li><a routerLink="/jobs">Jobs</a></li>
-        <li *ngIf="!(isLoggedIn$ | async)"><a routerLink="/recruitment">recruitment</a></li>
+        <li *ngIf="(isLoggedIn$ | async)"><a routerLink="/recruitment">recruitment</a></li>
         <li *ngIf="!(isLoggedIn$ | async)"><a routerLink="/register">Register</a></li>
         <li *ngIf="!(isLoggedIn$ | async)" ><a routerLink="/login">Login</a></li>
         <li class="dropdown" *ngIf="(isLoggedIn$ | async)">
           <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{authentication.currentUserInfo?.username | uppercase}} <span class="caret"></span></a>
           <ul class="dropdown-menu" >
-            <!-- <li *ngIf="(isLoggedIn$ | async) && (getUserRole() == 1 )" ><a routerLink="/profile">Question Profile</a></li> -->
+            <li *ngIf="(isLoggedIn$ | async) && (getUserRole() == 1 )" ><a routerLink="/profile">Question Profile</a></li>
             <li *ngIf="(isLoggedIn$ | async) && (getUserRole() == 1 )"><a routerLink="/profile-update">Profile</a></li>
             <li *ngIf="(isLoggedIn$ | async) && (getUserRole() == 2 )"><a routerLink="/manage-job">Manage jobs</a></li>
             <li *ngIf="(isLoggedIn$ | async) && (getUserRole() == 2 )"><a routerLink="/manage-recruitment">Manage recruitment</a></li>

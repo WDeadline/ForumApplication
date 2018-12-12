@@ -56,13 +56,9 @@ export class LoginComponent implements OnInit {
       }
       
       this.loading = true;
-      let shaObj = new jsSHA("SHA-256", "TEXT");
-      shaObj.update(this.f.password.value);
-      let passwordHash = shaObj.getHash("HEX");
-      console.log("hash:"+passwordHash);
 
       //ma hoa mat khau
-      this.authenticationService.login(this.f.username.value, passwordHash)
+      this.authenticationService.login(this.f.username.value, this.f.password.value)
           .pipe(first())
           .subscribe(            
               data => {
@@ -88,14 +84,7 @@ export class LoginComponent implements OnInit {
                         
                     }
                   //this.cookie.set('accessCookie', this.curentUserInfo.token, 0.5);
-                  let returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-                  let paramId = this.route.snapshot.queryParams['returnParamId'];
-                  if(paramId){
-                    this.router.navigate([returnUrl], {queryParams: {id : paramId}});
-                  }else{
-                    this.router.navigate([returnUrl]);
-                  }
-                  
+                  this.router.navigate([this.returnUrl]);
               },
               error => {
                   this.error = this.authenticationService.getErrorLogin(error);

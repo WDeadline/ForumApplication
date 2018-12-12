@@ -42,7 +42,8 @@ import {SafeHtmlPipe} from "./safehtml.pipe";
 import { CommonModule } from '@angular/common';
 import { ManageJobComponent } from './company/manage-job/manage-job.component';
 import { ManageRecruitmentComponent } from './company/manage-recruitment/manage-recruitment.component';
-
+import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
+import { RatingModule } from 'ngx-bootstrap/rating';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +68,7 @@ import { ManageRecruitmentComponent } from './company/manage-recruitment/manage-
     SafeHtmlPipe,
     ManageJobComponent,
     ManageRecruitmentComponent,
+    ProfileDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -77,6 +79,8 @@ import { ManageRecruitmentComponent } from './company/manage-recruitment/manage-
     EditorModule,
     TagInputModule,
     BsDatepickerModule.forRoot(), 
+    RatingModule.forRoot(), //ng-bootstrap rating
+
     ReactiveFormsModule,
     BrowserAnimationsModule,
 

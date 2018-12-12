@@ -36,7 +36,7 @@
         <p class="info">
             {{user.name}}<br>
             <small style="font-size:9px;">14</small><br>
-            <a class="tag">angular</a><span  style="padding-left:3px;"></span>
+            <a *ngIf="(isLoggedIn$ | async) && (getUserRole() == 2 )" [routerLink]="['/showCV']" [queryParams]="{id: user.id}" class="tag">show cv</a><span  style="padding-left:3px;"></span>
         </p>
       </div>
     </div>         

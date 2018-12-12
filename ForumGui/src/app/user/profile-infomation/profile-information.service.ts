@@ -37,6 +37,16 @@ export class ProfileInformationService {
       catchError(this.handleErrorService.handleError('updateInformation', user))
     );
   }
+  /* GET: get information of user from server */
+  getInformationById(id: string) :Observable<User>{
+    var user = new User();
+    const url = `${this.config}${this.apiUser}/${id}`;
+    this.setTokenToHeader();
+    return this.http.get<User>(url,httpOptions)
+    .pipe(
+      catchError(this.handleErrorService.handleError('updateInformation', user))
+    );
+  }
 
   setTokenToHeader(){
     let tokenString :string;

@@ -51,14 +51,10 @@ export class RegisterComponent implements OnInit {
     this.checkPasswords();
     this.loading = true;
     
-    //ma hoa mat khau
-    let shaObj = new jsSHA("SHA-256", "TEXT");
-    shaObj.update(this.f.password.value);
-    let passwordHash = shaObj.getHash("HEX");
-    console.log("hash1:"+ passwordHash);
+
     //this.f.firstName.value, this.f.lastName.value,
     this.authenticationService.register(this.f.lastName.value,
-      this.f.username.value,this.f.emailAddress.value, passwordHash)
+      this.f.username.value,this.f.emailAddress.value, this.f.password.value)
         .pipe(first())
           .subscribe(
             data => {

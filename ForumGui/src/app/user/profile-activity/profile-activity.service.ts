@@ -38,6 +38,17 @@ export class ProfileActivityService {
       )
   }
 
+  
+  /* GET: get activity of user from server */  //api/users/userId/activities
+  getActivitiesById(id: string):Observable<Activity[]>{ 
+    const url = `${this.config}${this.apiUser}/${id}${this.apiActivity}`;
+    this.setTokenToHeader();
+    return this.http.get<Activity[]>(url,httpOptions)
+      .pipe(
+        catchError(this.handleErrorService.handleError('getActivities',[]))
+      )
+  }
+
   /** POST: add a new activity to the database */
   addActivity(activity: Activity): Observable<Activity>{
     this.anthenticationService.currentUserInfo = JSON.parse(localStorage.getItem('currentUser'));
