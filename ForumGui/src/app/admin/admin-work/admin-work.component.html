@@ -1,5 +1,5 @@
-
-<div class="row">
+<!--Add tag-->
+<div *ngIf="isAdd" class="row">
   <div class="col-md-3"></div>
   <div class="col-md-6">
     <h3>Add tag</h3>
@@ -19,7 +19,9 @@
           </div>         
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-primary">Submit</button>
+                <button  type="submit" class="btn btn-primary"(click)="addUser();disable=false;">Submit</button>
+                <span style="padding-left:3px;"></span>
+                <button type="submit" class="btn btn-primary" (click) = "isAdd = false;disable=false;">Cancle</button>
             </div>
           </div>
         </form>
@@ -27,8 +29,8 @@
   <div class="col-md-3"></div>
 </div>
 
-
-<div class="row">
+<!--Edit tag-->
+<div *ngIf="isEdit" class="row">
   <div class="col-md-3"></div>
   <div class="col-md-6">
     <h3>Edit tag</h3>
@@ -48,7 +50,9 @@
           </div>         
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" (click)="disable=false;">Submit</button>
+                <span style="padding-left:3px;"></span>
+                <button type="submit" class="btn btn-primary" (click)="disable=false;isEdit=false;">Cancle</button>
             </div>
           </div>
         </form>
@@ -76,7 +80,7 @@
       <div class="col-md-2">
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary">Add work</button>
+            <button type="button" class="btn btn-primary" [disabled]="disable" (click)="isAdd = true;disable=true;">Add work</button>
           </div>
         </div>
       </div>
@@ -104,8 +108,8 @@
             <td>java</td>
             <td>java</td>
             <td>java</td>
-            <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-pencil"></span></a></th>
-            <th><a class="update-link-color update-link"><span class="glyphicon glyphicon-remove"></span></a></th>
+            <th><a class="update-link-color update-link" [class.disable]="disable" (click)="isEdit= true;disable=true; "><span class="glyphicon glyphicon-pencil"></span></a></th>
+            <th><a class="update-link-color update-link" [class.disable]="disable" ><span class="glyphicon glyphicon-remove"></span></a></th>
           </tr>
         </table>
       </div>

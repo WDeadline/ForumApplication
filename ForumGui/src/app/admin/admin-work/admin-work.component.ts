@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminWorkComponent implements OnInit {
 
+  isAdd= false;
+  isEdit=false;
+  disable = false;
   constructor() { }
 
   ngOnInit() {

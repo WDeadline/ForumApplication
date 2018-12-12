@@ -9,7 +9,7 @@ namespace ForumApi.Validations
 {
     public class PersonNameAttribute : ValidationAttribute
     {
-        private const string NAME_REGEX = @"^([A-ZÀ-ÝẠ-ỸĂĐĨŨƠƯ][a-zà-ýạ-ỹăđĩũơư]*)(([',.-]$)|(([',.-]?[ ]|[ ])([A-ZÀ-ÝẠ-ỸĂĐĨŨƠƯ][a-zà-ýạ-ỹăđĩũơư]*)))*$";
+        private const string NAME_REGEX = @"^([a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ][a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ]*)(([',.-]$)|(([',.-]?[ ]|[ ])([a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ][a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ]*)))*$";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

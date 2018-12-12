@@ -34,6 +34,14 @@ namespace ForumApi.Controllers
             return new OkObjectResult(GetWorksView(works).Result);
         }
 
+        // GET: api/works/companies/companyId
+        [HttpGet("companies/{companyId:length(24)}")]
+        public async Task<IActionResult> GetWorksByCompanyId(string companyId)
+        {
+            var works = await _workRepository.GetMany(w => w.CompanyId == companyId);
+            return new OkObjectResult(GetWorksView(works).Result);
+        }
+
 
         // GET: api/Works/id
         [HttpGet("{id:length(24)}")]
@@ -64,6 +72,7 @@ namespace ForumApi.Controllers
             object workView = new
             {
                 id = work.Id,
+                companyId = work.CompanyId,
                 userView = new
                 {
                     id = userFromDb.Id,

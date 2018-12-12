@@ -29,7 +29,7 @@ import { CookieService } from 'ngx-cookie-service';
 import {AlertService} from './authentication/service/alert.service';
 import { from } from 'rxjs';
 import {AlertComponent} from './authentication/directives/alert.component';
-
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,6 +38,9 @@ import { JobComponent } from './job/job.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
 import { RecruitmentComponent } from './recruitment/recruitment.component';
 import { RecruitmentDetailComponent } from './recruitment-detail/recruitment-detail.component'; // this is needed!
+import { CommonModule } from '@angular/common';
+import { ManageJobComponent } from './company/manage-job/manage-job.component';
+import { ManageRecruitmentComponent } from './company/manage-recruitment/manage-recruitment.component';
 
 
 @NgModule({
@@ -61,17 +64,23 @@ import { RecruitmentDetailComponent } from './recruitment-detail/recruitment-det
     JobDetailComponent,
     RecruitmentComponent,
     RecruitmentDetailComponent,
+    ManageJobComponent,
+    ManageRecruitmentComponent,
     
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     EditorModule,
     TagInputModule,
-    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(), 
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+
+
   ],
   providers: [
     CookieService,

@@ -15,6 +15,7 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { ProfileActivityComponent } from './profile-activity/profile-activity.component';
 
+
 @NgModule({
   declarations: [
     ProfileUpdateComponent,
@@ -24,7 +25,8 @@ import { ProfileActivityComponent } from './profile-activity/profile-activity.co
     ProfileExperienceComponent,
     ProfileEducationComponent,
     ProfileSkillComponent,
-    ProfileActivityComponent
+    ProfileActivityComponent,
+
   ],
   imports: [
     CommonModule,

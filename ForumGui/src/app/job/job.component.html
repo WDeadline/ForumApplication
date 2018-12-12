@@ -12,29 +12,28 @@
             </div>
         </div>
 
-        <div >
+        <div *ngFor="let work of works" >
             <!--start noi dung-->
                 <div  class="panel panel-default questionHeight">
                 <div class="panel-body" style ="max-height: 100%;">
                     <table style="width:100%; max-height: 100%;">
                     <tr>
-                        <p class="jobname">Ten cong viec</p>
+                        <a [routerLink]="['/jobdetail']" [queryParams]="{id: work.id}" class="jobname" class="jobname">{{work.title}}</a>
                     </tr>
                     <tr>
-                        <span class="glyphicon glyphicon-map-marker"></span> Tên công ty
+                        <span class="glyphicon glyphicon-map-marker"></span> {{work.address}}
                     </tr>
                     <tr>
                         <td class="salary">
                             <span class="glyphicon glyphicon-usd"></span>
-                            35-40k usd
+                            {{work.salary}}
                         </td>                    
                     </tr>
                     <tr>          
                         <td>
-                        <a  class="btn btn-primary btn-xs atg">c#</a><span style="padding-left:3px;"></span>
-                        <a  class="btn btn-primary btn-xs atg">java</a><span style="padding-left:3px;"></span>
+                                <a *ngFor="let tag of work.tags" class="btn btn-primary btn-xs" style="margin-left: 3px;">{{tag.value}}</a>
                         </td>
-                        <td class="datetime">15-5-2014</td>
+                        <td  style="text-align: right;" class="datetime">{{work.updationTime | date : 'dd-MM-yyyy'}}</td>
                     </tr>
                     </table>
                 </div>
@@ -42,36 +41,6 @@
             <!--end noi dung-->
         </div>
 
-
-        <div >
-                <!--start noi dung-->
-                    <div  class="panel panel-default questionHeight">
-                    <div class="panel-body" style ="max-height: 100%;">
-                        <table style="width:100%; max-height: 100%;">
-                        <tr>
-                            <p class="jobname">Ten cong viec</p>
-                        </tr>
-                        <tr>
-                            <span class="glyphicon glyphicon-map-marker"></span> Tên công ty
-                        </tr>
-                        <tr>
-                            <td class="salary">
-                                <span class="glyphicon glyphicon-usd"></span>
-                                35-40k usd
-                            </td>                    
-                        </tr>
-                        <tr>          
-                            <td>
-                            <a  class="btn btn-primary btn-xs atg">c#</a><span style="padding-left:3px;"></span>
-                            <a  class="btn btn-primary btn-xs atg">java</a><span style="padding-left:3px;"></span>
-                            </td>
-                            <td class="datetime">15-5-2014</td>
-                        </tr>
-                        </table>
-                    </div>
-                    </div>
-                <!--end noi dung-->
-            </div>
 
 
     </div>
