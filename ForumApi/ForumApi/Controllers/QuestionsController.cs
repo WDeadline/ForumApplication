@@ -446,20 +446,20 @@ namespace ForumApi.Controllers
             var questionFromDb = await _questionService.GetById(id);
             if (questionFromDb == null)
                 return new NotFoundResult();
-            Answer questionAnswer = questionFromDb.Answers.FirstOrDefault(s => s.Id == answerId);
-            if (questionAnswer == null)
+            var answer = questionFromDb.Answers.FirstOrDefault(s => s.Id == answerId);
+            if (answer == null)
                 return new NotFoundResult();
             string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            if (!(questionFromDb.QuestionBy.Equals(userId)
+            if (!(answer.AnswerBy.Equals(userId)
                 || HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Administrator")))
             {
                 return Forbid();
             }
-            questionAnswer.Content = answerRequest.Content;
-            questionAnswer.UpdationTime = DateTime.UtcNow;
+            answer.Content = answerRequest.Content;
+            answer.UpdationTime = DateTime.UtcNow;
             _questionService.Update(questionFromDb);
-            return new OkObjectResult(GetAnswerView(questionAnswer).Result);
+            return new OkObjectResult(GetAnswerView(answer).Result);
         }
 
         [Authorize]
@@ -467,24 +467,114 @@ namespace ForumApi.Controllers
         [HttpDelete("{id:length(24)}/answers/{answerId:length(24)}")]
         public async Task<IActionResult> DeleteAnswer(string id, string answerId)
         {
+            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var questionFromDb = await _questionService.GetById(id);
             if (questionFromDb == null)
                 return new NotFoundResult();
-            Answer questionAnswer = questionFromDb.Answers.FirstOrDefault(s => s.Id == answerId);
-            if (questionAnswer == null)
+            var answer = questionFromDb.Answers.FirstOrDefault(s => s.Id == answerId);
+            if (answer == null)
                 return new NotFoundResult();
-            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            if (!(questionFromDb.QuestionBy.Equals(userId)
+            if (!(answer.AnswerBy.Equals(userId)
                 || HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Administrator")))
             {
                 return Forbid();
             }
-            questionFromDb.Answers.Remove(questionAnswer);
+            questionFromDb.Answers.Remove(answer);
             _questionService.Update(questionFromDb);
             return new OkResult();
         }
         #endregion
 
+        #region answer
+        // GET: api/questions/questionId/answers/answerId/comments
+        [HttpGet("{id:length(24)}/answers/{answerId:length(24)}/comments")]
+        public async Task<IActionResult> GetComments(string id, string answerId)
+        {
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            var answer = questionFromDb.Answers.FirstOrDefault(a => a.Id == answerId);
+            if(answer == null)
+                return new NotFoundResult();
+
+            return new OkObjectResult(GetCommentsView(answer.Comments).Result);
+        }
+
+        [Authorize]
+        // POST: api/questions/questionId/answers/answerId.comments
+        [HttpPost("{id:length(24)}/answers/{answerId:length(24)}/comments")]
+        public async Task<IActionResult> PostComments(string id, string answerId, [FromBody]CommentRequest commentRequest)
+        {
+            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            var answer = questionFromDb.Answers.FirstOrDefault(a => a.Id == answerId);
+            if (answer == null)
+                return new NotFoundResult();
+            Comment comment = new Comment
+            {
+                CommentBy = userId,
+                Content = commentRequest.Content
+            };
+            answer.Comments.Add(comment);
+            _questionService.Update(questionFromDb);
+
+            return new OkObjectResult(GetCommentView(comment).Result);
+        }
+
+        [Authorize]
+        // PUT: api/questions/questionId/answers/answerId/comments/commentId
+        [HttpPut("{id:length(24)}/answers/{answerId:length(24)}/comments/{commentId:length(24)}")]
+        public async Task<IActionResult> PutComment(string id, string answerId, string commentId, [FromBody]CommentRequest commentRequest)
+        {
+            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            var answer = questionFromDb.Answers.FirstOrDefault(a => a.Id == answerId);
+            if (answer == null)
+                return new NotFoundResult();
+            var comment = answer.Comments.FirstOrDefault(c => c.Id == commentId);
+            if(comment == null)
+                return new NotFoundResult();
+            if (!(comment.CommentBy.Equals(userId)
+                || HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Administrator")))
+            {
+                return Forbid();
+            }
+
+            comment.Content = commentRequest.Content;
+            comment.UpdationTime = DateTime.UtcNow;
+            _questionService.Update(questionFromDb);
+            return new OkObjectResult(GetCommentView(comment).Result);
+        }
+
+        [Authorize]
+        // PUT: api/questions/questionId/answers/answerId/comments/commentId
+        [HttpDelete("{id:length(24)}/answers/{answerId:length(24)}/comments/{commentId:length(24)}")]
+        public async Task<IActionResult> DeleteAnswer(string id, string answerId, string commentId)
+        {
+            string userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var questionFromDb = await _questionService.GetById(id);
+            if (questionFromDb == null)
+                return new NotFoundResult();
+            var answer = questionFromDb.Answers.FirstOrDefault(a => a.Id == answerId);
+            if (answer == null)
+                return new NotFoundResult();
+            var comment = answer.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)
+                return new NotFoundResult();
+            if (!(comment.CommentBy.Equals(userId)
+                || HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Administrator")))
+            {
+                return Forbid();
+            }
+            answer.Comments.Remove(comment);
+            _questionService.Update(questionFromDb);
+            return new OkResult();
+        }
+        #endregion
     }
 }

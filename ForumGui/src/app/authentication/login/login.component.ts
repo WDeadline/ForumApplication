@@ -88,7 +88,14 @@ export class LoginComponent implements OnInit {
                         
                     }
                   //this.cookie.set('accessCookie', this.curentUserInfo.token, 0.5);
-                  this.router.navigate([this.returnUrl]);
+                  let returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+                  let paramId = this.route.snapshot.queryParams['returnParamId'];
+                  if(paramId){
+                    this.router.navigate([returnUrl], {queryParams: {id : paramId}});
+                  }else{
+                    this.router.navigate([returnUrl]);
+                  }
+                  
               },
               error => {
                   this.error = this.authenticationService.getErrorLogin(error);

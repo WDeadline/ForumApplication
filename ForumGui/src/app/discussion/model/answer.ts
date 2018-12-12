@@ -2,14 +2,14 @@ import {Vote} from './vote';
 import {Comment} from './comment';
 import {UserView} from './userView';
 
-export class Anwer{
+export class Answer{
     id:string;
-    anwerBy :string;
+    answerBy :string;
     userView : UserView;
     content: string;
     creationTime: Date;
     updationTime: Date;
-    votes : Vote[];
-    comment: Comment[];
+    votes : Vote[] = [];
+    comments: Comment[] = [];
 }
 

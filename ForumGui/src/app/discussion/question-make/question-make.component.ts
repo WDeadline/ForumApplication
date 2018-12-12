@@ -47,7 +47,7 @@ export class QuestionMakeComponent implements OnInit {
       this.errorTag = "Sorry, the list tags is not empty";
     }
 
-    if(this.discription == ''){
+    if(this.discription == null || this.discription.trim() == ''){
       this.errorDiscription = "Sorry, the discription is not empty";
     }
     if(this.errorTitle != '' || this.errorTag != '' || this.errorDiscription != ''){
@@ -85,6 +85,7 @@ export class QuestionMakeComponent implements OnInit {
   }
 
   onTextChange(event){
+    this.discription = event.htmlValue;
     console.log("this.discription: "+this.discription);
     console.log("discription text: "+event);
     if(this.discription != ''){

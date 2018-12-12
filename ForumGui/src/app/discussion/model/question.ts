@@ -1,6 +1,6 @@
 import {View} from './view';
 import {Vote} from './vote';
-import {Anwer} from './anwer';
+import {Answer} from './answer';
 import {Tag} from './tag';
 import {UserView} from './userView';
 import {Report} from './report';
@@ -11,11 +11,11 @@ export class Question{
     userView : UserView;
     title : string;
     description: string;
-    tags : Tag[];
-    views : View[];
-    votes : Vote[];
-    reports : Report[];
-    anwers : Anwer[];
+    tags : Tag[] = [];
+    views : View[] = [];
+    votes : Vote[] = [];
+    reports : Report[] = [];
+    answers : Answer[] = [];
     updationTime: Date;
 }
 

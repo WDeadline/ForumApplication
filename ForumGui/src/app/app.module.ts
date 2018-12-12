@@ -38,7 +38,7 @@ import { JobComponent } from './job/job.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
 import { RecruitmentComponent } from './recruitment/recruitment.component';
 import { RecruitmentDetailComponent } from './recruitment-detail/recruitment-detail.component'; // this is needed!
-
+import {SafeHtmlPipe} from "./safehtml.pipe";
 
 @NgModule({
   declarations: [
@@ -61,7 +61,7 @@ import { RecruitmentDetailComponent } from './recruitment-detail/recruitment-det
     JobDetailComponent,
     RecruitmentComponent,
     RecruitmentDetailComponent,
-    
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,
