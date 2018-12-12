@@ -51,7 +51,7 @@ export class QuestionMakeComponent implements OnInit {
       this.errorDiscription = "Sorry, the discription is not empty";
     }
     if(this.errorTitle != '' || this.errorTag != '' || this.errorDiscription != ''){
-      console.log("error rồi cmn");
+      console.log("error");
       console.log(this.errorTitle + this.errorTag + this.errorDiscription);
       return;
     }

@@ -6,7 +6,7 @@
     <hr >
       <form class="form-horizontal" [formGroup]="userAddForm">
           <div class="form-group">
-            <label for="nameAdd" class="col-sm-2 control-label">Full name</label>
+            <label for="nameAdd" class="col-sm-2 control-label">Full name*</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" placeholder="Please enter your full name" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
               formControlName="nameAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.nameAdd.errors }">
@@ -17,18 +17,54 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="usernameAdd" class="col-sm-2 control-label">Username</label>
+              <label for="birthDayAdd" class="col-sm-2 control-label">Birthday</label>
+              <div class="col-sm-10">
+                <input class="form-control"
+                 placeholder="01-01-2018"
+                 bsDatepicker (bsValueChange)="onValueChangeAdd($event)"
+                 formControlName="birthDayAdd"
+                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" />
+                 <div *ngIf="submittedAdd" class="error">
+                    <div *ngIf="formAdd.birthDayAdd.errors && formAdd.birthDayAdd.errors.required">Sorry, birthday is required</div>
+                    <div *ngIf="isErrorBirthDayAdd">The join date must be less than the today</div>
+                  </div>
+              </div>
+            </div> 
+          <div class="form-group">
+            <label for="usernameAdd" class="col-sm-2 control-label">Username*</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" placeholder="Please enter username" pattern="[a-zA-Z0-9]*"
                 formControlName="usernameAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.usernameAdd.errors }">
                 <div *ngIf="submittedAdd && formAdd.usernameAdd.errors" class="error">
-                  <div *ngIf="formAdd.usernameAdd.errors.required">Sorry, full name is required</div>
-                  <div *ngIf="formAdd.usernameAdd.errors.pattern">Sorry, full name can not empty</div>
+                  <div *ngIf="formAdd.usernameAdd.errors.required">Sorry, username is required</div>
+                  <div *ngIf="formAdd.usernameAdd.errors.pattern">Sorry, username can not valid</div>
                 </div>
               </div>
           </div>
           <div class="form-group">
-              <label for="emailAdd" class="col-sm-2 control-label">Email</label>
+              <label for="phoneNumberAdd" class="col-sm-2 control-label">Phone number</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="Please enter phone number" pattern="^([0-9]*)$"
+                  formControlName="phoneNumberAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.phoneNumberAdd.errors }">
+                  <div *ngIf="submittedAdd && formAdd.phoneNumberAdd.errors" class="error">
+                    <div *ngIf="formAdd.phoneNumberAdd.errors.required">Sorry, phone number is required</div>
+                    <div *ngIf="formAdd.phoneNumberAdd.errors.pattern">Sorry, phone number is only number</div>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="addressAdd" class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Please enter your address" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+                    formControlName="addressAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.addressAdd.errors }">
+                    <div *ngIf="submittedAdd && formAdd.addressAdd.errors" class="error">
+                      <div *ngIf="formAdd.addressAdd.errors.required">Sorry, address is required</div>
+                      <div *ngIf="formAdd.addressAdd.errors.pattern">Sorry, address can not empty</div>
+                    </div>
+                  </div>
+            </div>
+          <div class="form-group">
+              <label for="emailAdd" class="col-sm-2 control-label">Email*</label>
               <div class="col-sm-10">
                   <input type="email" class="form-control" placeholder="Please enter email"
                   formControlName="emailAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.emailAdd.errors }">
@@ -39,31 +75,31 @@
                 </div>
             </div>
             <div class="form-group">
-              <label for="passwordAdd" class="col-sm-2 control-label">Password</label>
+              <label for="passwordAdd" class="col-sm-2 control-label">Password*</label>
               <div class="col-sm-10">
                   <input type="password" class="form-control" placeholder="Please enter password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$"
                   formControlName="passwordAdd" [ngClass]="{ 'is-invalid': submittedAdd && formAdd.passwordAdd.errors }">
                   <div *ngIf="submittedAdd && formAdd.passwordAdd.errors" class="error">
                     <div *ngIf="formAdd.passwordAdd.errors.required">Sorry, password is required</div>
-                    <div *ngIf="formAdd.passwordAdd.errors.pattern">Sorry, password can not empty</div>
+                    <div *ngIf="formAdd.passwordAdd.errors.pattern">Sorry, password can not valid</div>
                   </div>
                 </div>
             </div>
           <div class="form-group">
-              <label for="inputPassword3" class="col-sm-2 control-label">Role</label>
+              <label for="inputPassword3" class="col-sm-2 control-label">Role*</label>
               <div class="col-sm-10">
                   <select class="form-control form-control-lg" (change)="onChange($event.target.value)">
                     <option value="1">Student</option>
-                    <option value="2">company</option>  
+                    <option value="2">Company</option>  
                     <option value="0">Administrator</option>
                   </select>
               </div>
             </div>          
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button [disabled]="loading" type="submit" class="btn btn-primary"(click)="addUser();">Submit</button>
+              <button  type="submit" class="btn btn-primary"(click)="addUser();disable=false;">Submit</button>
               <span style="padding-left:3px;"></span>
-              <button type="submit" class="btn btn-primary" (click) = "isAdd = false;">Cancle</button>
+              <button type="submit" class="btn btn-primary" (click) = "isAdd = false;disable=false;">Cancle</button>
             </div>
           </div>
         </form>
@@ -79,7 +115,7 @@
       <hr >
         <form class="form-horizontal" [formGroup]="userEditForm">
           <div class="form-group">
-            <label for="nameEdit" class="col-sm-2 control-label">Full name</label>
+            <label for="nameEdit" class="col-sm-2 control-label">Full name*</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" placeholder="Please enter your full name" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
               formControlName="nameEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.nameEdit.errors }">
@@ -90,7 +126,21 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="usernameEdit" class="col-sm-2 control-label">Username</label>
+              <label for="birthDayEdit" class="col-sm-2 control-label">Birthday</label>
+              <div class="col-sm-10">
+                <input class="form-control"
+                 placeholder="01-01-2018"
+                 bsDatepicker (bsValueChange)="onValueChangeEdit($event)"
+                 formControlName="birthDayEdit"
+                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-blue' }" />
+                 <div *ngIf="submittedEdit" class="error">
+                    <div *ngIf="formEdit.birthDayEdit.errors && formEdit.birthDayEdit.errors.required">Sorry, birthday is required</div>
+                    <div *ngIf="isErrorBirthDayAdd">The join date must be less than the today</div>
+                  </div>
+              </div>
+            </div> 
+          <div class="form-group">
+            <label for="usernameEdit" class="col-sm-2 control-label">Username*</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" placeholder="Please enter username" pattern="[a-zA-Z0-9]*"
                 formControlName="usernameEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.usernameEdit.errors }">
@@ -101,7 +151,29 @@
               </div>
           </div>
           <div class="form-group">
-              <label for="emailEdit" class="col-sm-2 control-label">Email</label>
+              <label for="phoneNumberEdit" class="col-sm-2 control-label">Phone number</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="Please enter phone number" pattern="^([0-9]*)$"
+                  formControlName="phoneNumberEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.phoneNumberEdit.errors }">
+                  <div *ngIf="submittedEdit && formEdit.phoneNumberAdd.errors" class="error">
+                    <div *ngIf="formEdit.phoneNumberEdit.errors.required">Sorry, phone number is required</div>
+                    <div *ngIf="formEdit.phoneNumberEdit.errors.pattern">Sorry, phone number is only number</div>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="addressEdit" class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Please enter your address" pattern="^([^]*[a-zA-Zà-ýÀ-Ýạ-ỹẠ-ỸăĂđĐĩĨũŨơƠưƯ0-9]+[^]*)$"
+                    formControlName="addressEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.addressEdit.errors }">
+                    <div *ngIf="submittedEdit && formEdit.addressAdd.errors" class="error">
+                      <div *ngIf="formEdit.addressAdd.errors.required">Sorry, address is required</div>
+                      <div *ngIf="formEdit.addressAdd.errors.pattern">Sorry, address can not valid</div>
+                    </div>
+                  </div>
+            </div>
+          <div class="form-group">
+              <label for="emailEdit" class="col-sm-2 control-label">Email*</label>
               <div class="col-sm-10">
                   <input type="email" class="form-control" placeholder="Please enter email"
                   formControlName="emailEdit" [ngClass]="{ 'is-invalid': submittedEdit && formEdit.emailEdit.errors }">
@@ -112,28 +184,20 @@
                 </div>
             </div>
             <div class="form-group">
-              <label for="passwordEdit" class="col-sm-2 control-label">Password</label>
-              <div class="col-sm-10">
-                  <input type="password" class="form-control" placeholder="Please enter password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$"
-                  formControlName="passwordEdit" [ngClass]="{ 'is-invalid': submittedAdd && formEdit.passwordEdit.errors }">
-                  <div *ngIf="submittedAdd && formEdit.passwordEdit.errors" class="error">
-                    <div *ngIf="formEdit.passwordEdit.errors.required">Sorry, password is required</div>
-                    <div *ngIf="formEdit.passwordEdit.errors.pattern">Sorry, password can not empty</div>
-                  </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label">Role</label>
+                <label for="inputPassword3" class="col-sm-2 control-label">Role*</label>
                 <div class="col-sm-10">
-                    <select class="form-control form-control-lg">
-                        <option>Student</option>
-                        <option>No</option>
+                    <select class="form-control form-control-lg" (change)="onChangeEdit($event.target.value)">
+                        <option value="1" [selected] = "editUser.roles[0]==1">Student</option>
+                        <option value="2" [selected] = "editUser.roles[0]==2">Company</option>
+                        <option value="0" [selected] = "editUser.roles[0]==0">Administrator</option>
                     </select>
                 </div>
               </div>          
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" (click)="updateUser();disable=false;">Submit</button>
+                <span style="padding-left:3px;"></span>
+                <button type="submit" class="btn btn-primary" (click)="disable=false;isEdit=false;">Cancle</button>
               </div>
             </div>
           </form>
@@ -161,7 +225,7 @@
         <div class="col-md-2">
           <div class="btn-group btn-group-justified" role="group" aria-label="...">
             <div class="btn-group" role="group">
-              <button type="button" class="btn btn-primary" (click)="isAdd = true;">Add User</button>
+              <button type="button" class="btn btn-primary" [disabled]="disable" (click)="isAdd = true;disable=true;">Add User</button>
             </div>
           </div>
         </div>
@@ -172,26 +236,32 @@
           <table class="table table-hover">
             <tr>
               <th style="width:5%;">Stt</th>
-              <th style="width:25%;">Name</th>
-              <th style="width:25%;">Email</th>
-              <th style="width:15%;">Username</th>
-              <th style="width:10%;">Active</th>      
-              <th style="width:10%;">Role</th>         
+              <th style="width:15%;">Name</th>
+              <th style="width:10%;">BirthDay</th>
+              <th style="width:15%;">Email</th>
+              <th style="width:10%;">Username</th>
+              <th style="width:10%;">Phone number</th>
+              <th style="width:15%;">Address</th>
+              <th style="width:5%;">Active</th>      
+              <th style="width:5%;">Role</th>         
               <th style="width:5%;">Edit</th>
               <th style="width:5%;">Move</th>
             </tr>
             <tr *ngFor= "let user of usersView; let i = index">
               <td>{{i+1}}</td>
               <td>{{user?.name}}</td>
+              <td>{{user?.birthday | date : 'dd-MM-yyyy'}}</td>
               <td>{{user?.emailAddress}}</td>
               <td>{{user?.username}}</td>
+              <td>{{user?.phoneNumber}}</td>
+              <td>{{user?.address}}</td>
               <td *ngIf="user.active && user.active == true"> yes</td>
               <td *ngIf="user.active && user.active == false"> no</td>
               <td *ngIf ="user.roles[0] == 0">Administrator</td>
               <td *ngIf ="user.roles[0] == 1">Student</td>
               <td *ngIf ="user.roles[0] == 2">Company</td>
-              <th><a class="update-link-color update-link" (click)="edit();isEdit= true;"><span class="glyphicon glyphicon-pencil"></span></a></th>
-              <th><a class="update-link-color update-link" (click)="deleteEducation(user);"><span class="glyphicon glyphicon-remove"></span></a></th>
+              <th><a class="update-link-color update-link" [class.disable]="disable" (click)="edit(user);isEdit= true;disable=true; "><span class="glyphicon glyphicon-pencil"></span></a></th>
+              <th><a class="update-link-color update-link" [class.disable]="disable" (click)="deleteEducation(user); "><span class="glyphicon glyphicon-remove"></span></a></th>
             </tr>                            
           </table>
         </div>

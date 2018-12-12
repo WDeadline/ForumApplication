@@ -14,3 +14,10 @@ a.update-link:hover, a.update-link:visited{
 a.update-link:hover, a.update-link:active {
 	color: black;
 }
+
+.disable{
+    color: gray;
+    pointer-events: none;
+    cursor: not-allowed;
+    text-decoration: underline;
+}

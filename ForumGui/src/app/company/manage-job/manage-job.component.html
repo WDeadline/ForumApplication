@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-7">
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Jobs</h3>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <br>
+        <a class="btn btn-primary" style="width:160px;" (click)="isAdd=true;">Add Job</a>
+      </div>
+    </div>
+  <!--Add-->
+    <div *ngIf="isAdd">
+      <hr>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Title</label>
+        <input type="text" class="form-control"  placeholder="Please enter title" [(ngModel)]='titleAdd'
+          (input)="onTitleChangeAdd($event.target.value)">
+        <div class="error" *ngIf="isErrorTitleAdd">Sorry, the title is not empty and length is not greater than 150</div>
+      </div>
+      <div class="form-group">
+          <label for="exampleInputEmail1">Positon</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Please enter position" [(ngModel)]='positionAdd'
+            (input)="onPositionChangeAdd($event.target.value)">
+            <div class="error" *ngIf="isErrorPositionAdd">Sorry, the position is not empty and length is not greater than 150</div>
+      </div>
+      <div class="form-group">
+          <label for="exampleInputEmail1">Salary</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Please enter salary" [(ngModel)]='salaryAdd'
+            (input)="onSalaryAddChangeAdd($event.target.value)">
+            <div class="error" *ngIf="isErrorSalaryAdd">Sorry, the salary is not empty and length is not greater than 150</div>
+      </div>
+      <div class="form-group">
+          <label for="exampleInputEmail1">Address</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Please enter address" [(ngModel)]='addressAdd'
+            (input)="onAddressChangeAdd($event.target.value)">
+            <div class="error" *ngIf="isErrorAddressAdd">Sorry, the address is not empty and length is not greater than 150</div>
+      </div>
+      <div class="form-group">
+        <label>Tag question</label>
+        <tag-input [(ngModel)]='itemsAdd' (onAdd)="onItemAdded($event)" [maxItems]='5'>
+          <tag-input-dropdown [autocompleteItems]="allTag" [showDropdownIfEmpty]="true" [dynamicUpdate]="false">
+          </tag-input-dropdown>
+        </tag-input>
+        <div class="error" *ngIf="isErrorTagAdd">Sorry, the list tags is not empty</div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <p-editor [(ngModel)]='descriptionAdd' value={{descriptionAdd}} (onTextChange)="onTextChangeAdd($event)" [style]="{'height':'200px'}"></p-editor>
+        <div class="error" *ngIf="isErrorDescriptionAdd">Sorry, the discription is not empty</div>
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="addJob();">Submit</button>
+      <span style="padding-left:3px;"></span>
+      <button type="submit" class="btn btn-primary" (click)="isAdd = false;">Cancle</button>
+    </div>
+  <!--End Add-->
+<hr>
+  <!--list-->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" (input)="onSearchChange($event.target.value)">
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let work of worksView">
+      <!--start noi dung-->
+      <div class="panel panel-default questionHeight">
+        <div class="panel-body" style="max-height: 100%;">
+          <table style="width:100%; max-height: 100%;">
+            <tr>
+              <a [routerLink]="['/jobdetail']" [queryParams]="{id: work.id}" class="jobname">
+                {{work.title}}
+              </a>
+            </tr>
+            <tr>
+              <span class="glyphicon glyphicon-map-marker"></span> {{work.address}}
+            </tr>
+            <tr>
+              <td class="salary">
+                <span class="glyphicon glyphicon-usd"></span>
+                {{work.salary}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                  <a *ngFor="let tag of work.tags" class="btn btn-primary btn-xs" style="margin-left: 3px;">{{tag.value}}</a>
+              </td>
+              <td style="text-align: right;" class="datetime">{{work.updationTime | date : "dd-MM-yyyy"}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!--end noi dung-->
+    </div>
+    <!--end list-->
+
+
+
+  </div>
+  <div class="col-md-3">
+    <app-left-menu></app-left-menu>
+  </div>
+  <div class="col-md-1"></div>
+</div>

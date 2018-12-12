@@ -14,7 +14,7 @@ import { AdminCommentComponent } from './admin-comment/admin-comment.component';
 import { AdminWorkComponent } from './admin-work/admin-work.component';
 import { AdminRecruitmentComponent } from './admin-recruitment/admin-recruitment.component';
 import { AdminInterviewComponent } from './admin-interview/admin-interview.component';
-
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [AdminUserComponent, AdminTagComponent, AdminQuestionComponent, AdminVoteComponent, AdminViewComponent, AdminReportComponent, AdminAnwerComponent, AdminCommentComponent, AdminWorkComponent, AdminRecruitmentComponent, AdminInterviewComponent ],
@@ -22,6 +22,7 @@ import { AdminInterviewComponent } from './admin-interview/admin-interview.compo
     CommonModule,
     FormsModule,
     ReactiveFormsModule, //su dung cho [formGroup] in html
+    BsDatepickerModule.forRoot(), 
     AdminRoutingModule
   ]
 })

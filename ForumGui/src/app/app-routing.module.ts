@@ -14,7 +14,8 @@ import {JobComponent} from './job/job.component';
 import {JobDetailComponent} from './job-detail/job-detail.component';
 import {RecruitmentComponent} from './recruitment/recruitment.component';
 import {RecruitmentDetailComponent} from './recruitment-detail/recruitment-detail.component';
-
+import {ManageJobComponent} from './company/manage-job/manage-job.component';
+import {ManageRecruitmentComponent} from './company/manage-recruitment/manage-recruitment.component';
 const routes: Routes = [
   { path: 'home', component: HomeContentComponent },
   { path: 'test', component: TestComponent ,canActivate: [AuthGuard]},
@@ -28,7 +29,8 @@ const routes: Routes = [
   { path: 'showquestion', component: QuestionShowComponent},
   { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard]},
   { path: 'jobdetail', component: JobDetailComponent },
-  //{path:'questions', component: QuestionShowComponent},
+  { path: 'manage-job', component: ManageJobComponent,canActivate: [AuthGuard] },
+  { path: 'manage-recruitment', component: ManageRecruitmentComponent,canActivate: [AuthGuard] },
   {
     path: 'profile-update',
     loadChildren: './user/profile-update.module#ProfileUpdateModule',
